@@ -1,0 +1,20 @@
+.mySwiper {
+  padding: 10px 0;
+}
+
+.slider-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  padding: 10px 10px;
+  border: 1px solid #DCDFE3;
+  border-radius: 100px;
+  white-space: nowrap; 
+  cursor: pointer;
+}
+
+.slider-item.active {
+  background: #007bff; /* Faol element uchun rang */
+  color: white; /* Matn rangi */
+}

@@ -1,9 +1,10 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { ComponentList } from "./router/ComponentList";
 import LoginPage from "./views/LoginPage";
-import LoginLayout from "./layout/LoginLayout";
+import LoginLayout from "./layout/AuthLayout";
 import { useEffect } from "react";
-import { verifyToken } from "./api/verifyToken";
+import { verifyToken } from "./services/verifyToken";
+
 
 const App = () => {
   const navigate = useNavigate();

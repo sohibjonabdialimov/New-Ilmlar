@@ -22,8 +22,13 @@ export default {
         23: "23px",
       },
       colors: {
-        text_color: "#1E1E1E",
-        route_link_black: "#272727",
+        main_color: "#1B1D20",
+        secondary_color: "#758195",
+        blue_color: "#1D7AFC"
+      },
+      backgroundColor: {
+        layout_color: "#F0F0F0FF",
+        bg_color: "#fff"
       },
       boxShadow: {
         product_shadow: "7px 35px 51px 0px rgba(0, 0, 0, 0.14)",

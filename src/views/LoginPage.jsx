@@ -1,76 +1,35 @@
 import { Controller, useForm } from "react-hook-form";
 import { Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
-import axiosT from "../api/axios";
-// import img from "../../public/img/img.png";
+import axiosT from "../services/axios";
 
 const LoginPage = () => {
   const { control, getValues } = useForm();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
-  // const submitHandler = () => {
-  //   if (login.username === "tuit" && login.password === "rektor") {
-  //     localStorage.setItem("tuit_token", true);
 
-  //     messageApi.open({
-  //       type: "info",
-  //       content: "Tizimga muvaffaqqiyatli kirildi",
-  //     });
-  //     window.location.reload();
-  //     navigate("/");
-  //   } else {
-  //     navigate("/login");
-  //     messageApi.open({
-  //       type: "error",
-  //       content: "Username yoki parol xato kiritildi",
-  //     });
-  //   }
-  // };
   const submitHandler = async () => {
-    const login = getValues().LOGIN;
+    // const login = getValues().LOGIN;
 
-    axiosT
-    .post("/accounts/Token", login)
-      .then(({ data }) => {
-        localStorage.setItem("accessToken", data.access_token);
-        localStorage.setItem("refreshToken", data.refresh_token);
-        messageApi.open({
-          type: "info",
-          content: "Tizimga muvaffaqqiyatli kirildi",
-        });
-        navigate("/");
-      })
-      .catch((error) => {
-        console.log(error);
+    // axiosT
+    //   .post("/accounts/Token", login)
+    //   .then(({ data }) => {
+    //     localStorage.setItem("accessToken", data.access_token);
+    //     localStorage.setItem("refreshToken", data.refresh_token);
+    //     messageApi.open({
+    //       type: "info",
+    //       content: "Tizimga muvaffaqqiyatli kirildi",
+    //     });
+    //     navigate("/");
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
 
-        messageApi.open({
-          type: "error",
-          content: "Bunday login parol mavjud emas",
-        });
-      });
-
-
-    // try {
-    //   const response = await axiosInstance.post("/accounts/Token", login);
-    //   const { access_token, refresh_token } = response.data;
-    //   console.log(access_token, refresh_token);
-
-    //   localStorage.setItem("accessToken", access_token);
-    //   localStorage.setItem("refreshToken", refresh_token);
-
-    //   messageApi.open({
-    //     type: "info",
-    //     content: "Tizimga muvaffaqqiyatli kirildi",
+    //     messageApi.open({
+    //       type: "error",
+    //       content: "Bunday login parol mavjud emas",
+    //     });
     //   });
-    //   navigate("/"); 
-    // } catch (error) {
-    //   console.error(error);
-
-    //   messageApi.open({
-    //     type: "error",
-    //     content: "Bunday login parol mavjud emas",
-    //   });
-    // }
   };
   return (
     <>
