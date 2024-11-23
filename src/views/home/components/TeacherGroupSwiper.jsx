@@ -32,24 +32,22 @@ const TeacherGroupSwiper = () => {
     },
   ];
   return (
-    <div>
-      <Swiper
-        slidesPerView={4.5}
-        spaceBetween={10}
-        navigation={true}
-        freeMode={true}
-        modules={[FreeMode, Navigation]}
-        className="mySwiper"
-      >
-        {navData.map((item) => {
-          return (
-            <SwiperSlide key={item.id} className="">
-              <NewCourseCard />
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
-    </div>
+    <Swiper
+      slidesPerView={4.5}
+      spaceBetween={10}
+      navigation={true}
+      freeMode={true}
+      modules={[FreeMode, Navigation]}
+      className="mySwiper"
+    >
+      {navData.map((item) => {
+        return (
+          <SwiperSlide key={item.id} className="">
+            <NewCourseCard />
+          </SwiperSlide>
+        );
+      })}
+    </Swiper>
   );
 };
 

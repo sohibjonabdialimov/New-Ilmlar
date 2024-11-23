@@ -1,12 +1,16 @@
-import { Dropdown, Select } from "antd";
+import { Drawer, Dropdown, Select } from "antd";
 
-import logoSrc from "public/img/logo.webp";
+import vector1 from "../assets/images/vector1.svg";
+import vector2 from "../assets/images/vector2.svg";
+import user_card from "../assets/images/user_card.svg";
+import card from "../assets/images/card.svg";
+import filter from "../assets/images/filter.svg";
+import { Link, useNavigate } from "react-router-dom";
 import uzb from "public/img/flag_uzb.png";
 import eng from "public/img/flag_eng.png";
 import rus from "public/img/flag_rus.png";
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-
+import "./styles.css";
 const items = [
   {
     key: "1",
@@ -21,12 +25,18 @@ const items = [
     ),
   },
 ];
-
 const { Option } = Select;
 const Header = () => {
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
-
+  const [open, setOpen] = useState(false);
+  const bool = true;
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
   function toggleFullScreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -41,76 +51,40 @@ const Header = () => {
   return (
     <>
       <div className="py-[0.8rem]">
-        <header className="w-full px-4 flex flex-wrap items-center justify-between rounded-2xl mx-auto gap-4 bg-bg_color">
-          <div
-            onClick={() => navigate("/")}
-            className="logo flex items-center gap-[0.3rem] cursor-pointer"
-          >
-            <div className="col">
-              <img
-                src={logoSrc}
-                alt="TUIT logo"
-                className="w-[4.5rem] h-[4.5rem] object-fit object-center"
-              />
+        <header className="w-full px-6 py-2 flex flex-wrap items-center justify-between rounded-2xl mx-auto gap-4 bg-bg_color">
+          <div className="flex items-center gap-6">
+            <div className="flex gap-4 items-center">
+              <img className="w-[11px] h-[17px]" src={vector1} alt="" />
+              <img className="w-[11px] h-[17px]" src={vector2} alt="" />
             </div>
-            <div className="col">
-              <div className="inter text-[0.857rem] text-[#1E1E1EB2] font-[500] leading-[1.1rem] uppercase">
-                MUHAMMAD AL-XORAZMIY NOMIDAGI
-              </div>
-              <div className="inter text-[0.857rem] text-[#1E1E1EB2] font-[500] leading-[1.1rem] uppercase">
-                Toshkent axborot <br /> texnologiyalari unversiteti
-              </div>
-            </div>
-          </div>
-          <nav className="flex items-center gap-6">
-            {window.location.pathname === "/all-faculties" && (
-              <Select
-                defaultValue="kif"
-                style={{ width: "fit-content" }}
-                onChange={() => console.log("O'quv yili tanlandi")}
-                options={[
-                  { value: "kif", label: "Kompyuter injiniring fakulteti" },
-                  { value: "dif", label: "Dasturiy injiniring fakulteti" },
-                  { value: "ax", label: "Axborot xavfsizligi" },
-                ]}
-              />
-            )}
-            <div className="nav-search rounded-[8px] border-[2px] border-solid border-[#1E1E1E1A] w-[20rem] p-[0.5rem_1rem] bg-white flex items-center justify-between gap-2 text-[#1E1E1E99] font-[500] focus:drop-shadow-[0_15px_15px_rgba(0,0,0,0.2)] hover:drop-shadow-[0_5px_5px_rgba(0,0,0,0.15)]">
+            <div className="nav-search rounded-[100px] border-[2px] border-solid border-[#1E1E1E1A] w-[20rem] p-[0.5rem_1rem] bg-[#F1F2F4] flex items-center justify-between gap-2 text-[#1E1E1E99] font-[500] focus:drop-shadow-[0_15px_15px_rgba(0,0,0,0.2)] hover:drop-shadow-[0_5px_5px_rgba(0,0,0,0.15)]">
               <i className="fa-solid fa-magnifying-glass w-[1.125rem] h-[1.125rem]"></i>
               <input
                 type="text"
                 value={searchText}
-                placeholder={"Qidiruv"}
+                placeholder={"Qidirish..."}
                 onChange={(e) => handleSearchInput(e)}
-                className="header_search outline-none border-none text-black placeholder:text-[#1E1E1E99]"
+                className="header_search bg-[#F1F2F4] w-full outline-none border-none text-[#758195] text-sm placeholder:text-[#1E1E1E99]"
               />
+              <div className="header_filter relative w-[24px] h-[24px]">
+                <img className="w-full h-full" src={filter} alt="" />
+              </div>
             </div>
-            <div
-              onClick={toggleFullScreen}
-              className="mail cursor-pointer border-[1px] border-solid border-[#1E1E1E33] p-2 flex items-center justify-center rounded-[0.375rem]"
-            >
-              <i className="fa-solid fa-expand text-[1.2rem]"></i>
-            </div>
-            <div className="languages flex items-center gap-1">
-              <Select
-                defaultValue="2023/2024"
-                style={{ width: "fit-content" }}
-                onChange={() => console.log("O'quv yili tanlandi")}
-                options={[
-                  { value: "2023/2024", label: "2023/2024" },
-                  { value: "2022/2023", label: "2022/2023" },
-                  { value: "2021/2022", label: "2021/2022" },
-                ]}
-              />
-              <Select
-                defaultValue="Birinchi semestr"
-                style={{ width: "fit-content" }}
-                onChange={() => console.log("Semestr tanlandi")}
-                options={[
-                  { value: "Birinchi semestr", label: "Birinchi semestr" },
-                  { value: "Ikkinchi semestr", label: "Ikkinchi semestr" },
-                ]}
-              />
+          </div>
+          {bool ? (
+            <nav className="flex items-center gap-6">
+              <div
+                onClick={showDrawer}
+                className="cursor-pointer w-[44px] h-[44px] bg-[#E9F2FF] rounded-full flex items-center justify-center"
+              >
+                <img className="w-[24px] h-[24px]" src={card} alt="" />
+              </div>
+              <div
+                onClick={toggleFullScreen}
+                className="cursor-pointer w-[44px] h-[44px] bg-[#E9F2FF] rounded-full flex items-center justify-center"
+              >
+                <i className="fa-solid fa-expand text-[1.2rem]"></i>
+              </div>
               <Select
                 defaultValue={"uzb"}
                 style={{
@@ -138,34 +112,30 @@ const Header = () => {
                   </div>
                 </Option>
               </Select>
-            </div>
+              <Dropdown
+                menu={{
+                  items,
+                }}
+                placement="bottom"
+              >
+                <div className="cursor-pointer w-[44px] h-[44px] flex justify-center items-center bg-blue_color rounded-full">
+                  <p className="text-white text-xl font-semibold">S</p>
+                </div>
 
-            <Dropdown
-              menu={{
-                items,
-              }}
-              placement="bottom"
+              </Dropdown>
+            </nav>
+          ) : (
+            <button
+              onClick={() => navigate("/login")}
+              className="btn p-[8px_25px]"
             >
-              <div className="user cursor-pointer flex items-center gap-2">
-                <div className="col">
-                  <img
-                    src={logoSrc}
-                    alt="User Image"
-                    className="object-fit object-cover rounded-full h-[2.25rem] w-[2.25rem]"
-                  />
-                </div>
-                <div className="col">
-                  <div className="user__name text-[0.875rem] font-[500] text-[#1E1E1E]">
-                    Admin
-                  </div>
-                  <div className="user__role text-[0.75rem] font-[400] text-[#1E1E1EB2]">
-                    Admin
-                  </div>
-                </div>
-              </div>
-            </Dropdown>
-          </nav>
+              Kirish
+            </button>
+          )}
         </header>
+        <Drawer title="Hamyon" onClose={onClose} open={open}>
+          <img src={user_card} alt="" />
+        </Drawer>
       </div>
     </>
   );

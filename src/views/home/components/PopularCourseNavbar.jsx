@@ -20,18 +20,18 @@ const PopularCourseNavbar = () => {
   };
   return (
     <Swiper
-      slidesPerView={6.5}
-      spaceBetween={10}
+      slidesPerView={7.5}
+      spaceBetween={16}
       freeMode={true}
       modules={[FreeMode]}
-      className="mySwiper"
+      className="mySwiper popular_navbar"
     >
       {navData.map((item, index) => {
         return (
           <SwiperSlide
             onClick={() => handleSlideClick(index)}
             key={item}
-            className={`slider-item text-main_color font-normal text-base ${
+            className={`popular_slider_item text-main_color font-normal text-base ${
               activeIndex === index ? "active" : ""
             }`}
           >

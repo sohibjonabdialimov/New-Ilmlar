@@ -1,10 +1,11 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { ComponentList } from "./router/ComponentList";
-import LoginPage from "./views/LoginPage";
+import LoginPage from "./views//auth/LoginPage";
 import LoginLayout from "./layout/AuthLayout";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { verifyToken } from "./services/verifyToken";
-
+import DesktopLayout from "./layout/DesktopLayout";
+const CourseInfo = React.lazy(() => import("./views/course-info/CourseInfo"));
 
 const App = () => {
   const navigate = useNavigate();
@@ -23,9 +24,17 @@ const App = () => {
           </LoginLayout>
         }
       />
-
-      <Route path="/*" element={<ComponentList />} />
+      <Route
+        key={"/courses/:id"}
+        path={"/courses/:id"}
+        element={
+          <DesktopLayout>
+            <CourseInfo />
+          </DesktopLayout>
+        }
+      />
       {/* {ComponentList()} */}
+      <Route path="/*" element={<ComponentList />} />
     </Routes>
   );
 };

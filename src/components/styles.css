@@ -1,0 +1,9 @@
+.header_filter::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10px;
+  height: 100%;
+  width: 1px;
+  background-color: #DCDFE3;
+}
