@@ -35,7 +35,7 @@ const RegisterPage = () => {
       {contextHolder}
 
       <div className="grid grid-cols-12 p-6 w-full gap-6">
-        <div className="col-span-6 mx-[60px] flex justify-center items-center">
+        <div className="col-span-6 mx-[50px] flex justify-center items-center">
           <Form
             layout="vertical"
             className="register_form px-24 pt-4 pb-8 auth_form w-full"
@@ -44,15 +44,15 @@ const RegisterPage = () => {
               submitHandler();
             }}
           >
-            <h1 className="text-main_color text-[30px] leading-[38px] font-semibold text-center mb-3">
-              Join Our Community
+            <h1 className="text-main_color text-[25px] leading-[30px] font-semibold text-center mb-3">
+              Katta imkoniyatlar dunyosiga qadam qo'ying
             </h1>
             <div className="grid grid-cols-1 gap-0">
               <Form.Item
-              className="mb-2"
+                className="mb-2"
                 label={
                   <span className="text-secondary_color font-semibold text-base">
-                    FISH
+                    Ism
                   </span>
                 }
               >
@@ -67,8 +67,8 @@ const RegisterPage = () => {
                       <>
                         <Input
                           {...field}
-                          placeholder="To'liq ism-familiyangiz"
-                          className="w-full py-3 px-4 rounded-[10px]"
+                          placeholder="Ismingizni kiriting..."
+                          className="w-full py-2.5 px-4 rounded-[10px]"
                         />
                       </>
                     );
@@ -76,7 +76,34 @@ const RegisterPage = () => {
                 />
               </Form.Item>
               <Form.Item
-              className="mb-2"
+                className="mb-2"
+                label={
+                  <span className="text-secondary_color font-semibold text-base">
+                    Familiya
+                  </span>
+                }
+              >
+                <Controller
+                  rules={{
+                    required: "Field is required",
+                  }}
+                  control={control}
+                  name="LOGIN.lastname"
+                  render={({ field }) => {
+                    return (
+                      <>
+                        <Input
+                          {...field}
+                          placeholder="Familiyangizni kiriting..."
+                          className="w-full py-2.5 px-4 rounded-[10px]"
+                        />
+                      </>
+                    );
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                className="mb-2"
                 label={
                   <span className="text-secondary_color font-semibold text-base">
                     Foydalanuvchi nomi
@@ -95,7 +122,7 @@ const RegisterPage = () => {
                         <Input
                           {...field}
                           placeholder="Foydalanuvchi nomi"
-                          className="w-full py-3 px-4 rounded-[10px]"
+                          className="w-full py-2.5 px-4 rounded-[10px]"
                         />
                       </>
                     );
@@ -122,7 +149,7 @@ const RegisterPage = () => {
                         {...field}
                         type="email"
                         placeholder="user@gmail.com"
-                        className="w-full py-3 px-5 rounded-[10px]"
+                        className="w-full py-2.5 px-5 rounded-[10px]"
                       />
                     );
                   }}
@@ -148,7 +175,7 @@ const RegisterPage = () => {
                         {...field}
                         type="password"
                         placeholder="********"
-                        className="w-full py-3 px-5 rounded-[10px]"
+                        className="w-full py-2.5 px-5 rounded-[10px]"
                       />
                     );
                   }}
@@ -174,13 +201,12 @@ const RegisterPage = () => {
                         {...field}
                         type="password"
                         placeholder="********"
-                        className="w-full py-3 px-5 rounded-[10px]"
+                        className="w-full py-2.5 px-5 rounded-[10px]"
                       />
                     );
                   }}
                 />
               </Form.Item>
-              
 
               <button
                 type="submit"
@@ -190,7 +216,10 @@ const RegisterPage = () => {
               </button>
               <p className="text-center text-secondary_color text-sm font-normal ">
                 Shaxsiy sahifangiz bormi?{" "}
-                <Link className="cursor-pointer font-medium text-blue_color" to={"/login"}>
+                <Link
+                  className="cursor-pointer font-medium text-blue_color"
+                  to={"/login"}
+                >
                   Kirish
                 </Link>
               </p>

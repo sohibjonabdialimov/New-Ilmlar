@@ -35,7 +35,7 @@ const LoginPage = () => {
       {contextHolder}
 
       <div className="grid grid-cols-12 p-6 w-full gap-6">
-        <div className="col-span-6 mx-[60px] flex justify-center items-center">
+        <div className="col-span-6 mx-[50px] flex justify-center items-center">
           <Form
             layout="vertical"
             className="px-24 py-16 auth_form w-full"
@@ -44,14 +44,14 @@ const LoginPage = () => {
               submitHandler();
             }}
           >
-            <h1 className="text-main_color text-[30px] leading-[38px] font-semibold text-center mb-5">
-              Join Our Community
+            <h1 className="text-main_color text-[30px] leading-[50px] font-semibold text-center mb-5">
+              Bugun yangi bilimlarni kashf qiling
             </h1>
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-2">
               <Form.Item
                 label={
                   <span className="text-secondary_color font-semibold text-base">
-                    Username
+                    Foydalanuvchi nomi yoki email
                   </span>
                 }
               >
@@ -66,7 +66,7 @@ const LoginPage = () => {
                       <>
                         <Input
                           {...field}
-                          placeholder="Username"
+                          placeholder="Foydalanuvchi nomi yoki emailni kiriting..."
                           className="w-full py-3 px-4 rounded-[10px]"
                         />
                       </>
@@ -78,7 +78,7 @@ const LoginPage = () => {
                 className=""
                 label={
                   <span className="text-secondary_color font-semibold text-base">
-                    Password
+                    Parol
                   </span>
                 }
               >
@@ -93,7 +93,7 @@ const LoginPage = () => {
                       <Input.Password
                         {...field}
                         type="password"
-                        placeholder="Password"
+                        placeholder="********"
                         className="w-full py-3 px-5 rounded-[10px]"
                       />
                     );
@@ -108,7 +108,13 @@ const LoginPage = () => {
                 Kirish
               </button>
               <p className="text-center text-secondary_color text-sm font-normal">
-                Shaxsiy sahifangiz yo'qmi? <Link className="cursor-pointer text-blue_color" to={"/register"}>Ro'yxatdan o'ting</Link>
+                Shaxsiy sahifangiz yo'qmi?{" "}
+                <Link
+                  className="cursor-pointer text-blue_color"
+                  to={"/register"}
+                >
+                  Ro'yxatdan o'ting
+                </Link>
               </p>
             </div>
           </Form>

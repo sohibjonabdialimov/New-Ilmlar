@@ -5,6 +5,7 @@ import LoginLayout from "./layout/AuthLayout";
 import React, { useEffect } from "react";
 import { verifyToken } from "./services/verifyToken";
 import DesktopLayout from "./layout/DesktopLayout";
+import Lessons from "./views/lessons/Lessons";
 const CourseInfo = React.lazy(() => import("./views/course-info/CourseInfo"));
 
 const App = () => {
@@ -25,7 +26,7 @@ const App = () => {
         }
       />
       <Route
-        key={"/courses/:id"}
+        key={"courses/:id"}
         path={"/courses/:id"}
         element={
           <DesktopLayout>
@@ -33,8 +34,16 @@ const App = () => {
           </DesktopLayout>
         }
       />
-      {/* {ComponentList()} */}
-      <Route path="/*" element={<ComponentList />} />
+      <Route
+        key={"lessons/:id"}
+        path={"/lessons/:id"}
+        element={
+          <DesktopLayout>
+            <Lessons />
+          </DesktopLayout>
+        }
+      />
+      {ComponentList()}
     </Routes>
   );
 };

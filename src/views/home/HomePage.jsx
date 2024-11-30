@@ -47,7 +47,7 @@ const HomePage = () => {
     },
   ];
   return (
-    <div className="py-6">
+    <div className="py-7">
       <div className="relative">
         <h1 className="title absolute top-0">Yangi qo’shilgan kurslar</h1>
         <Swiper

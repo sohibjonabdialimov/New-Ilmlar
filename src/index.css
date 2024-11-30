@@ -41,10 +41,14 @@ button:focus {
   color: #fff;
   text-align: center;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
+  transition: all 0.5s;
+  border: 1px solid transparent;
 }
-
+.btn:hover{
+  background-color: #fff;
+  border: 1px solid #1d7afc;
+  color: #1d7afc;
+}
 .title {
   color: #1b1d20;
   font-size: 28px;
@@ -55,6 +59,10 @@ button:focus {
 .swiper-wrapper{
   padding-top: 60px;
 }
+.comments_swiper .swiper-wrapper{
+  padding-top: 70px;
+}
+
 .swiper-button-prev, .swiper-button-next{
   color: #fff !important;
   width: 40px !important;
@@ -80,7 +88,12 @@ button:focus {
   color: #465670 !important;
   background-color: #F1F2F4 !important;
 }
-
+.bar_container div div{
+  background-color: #007bff !important;
+}
+.bar_container div{
+  background-color: #F1F2F4FF !important;
+}
 
 
 @media only screen and (max-width: 1024px) {

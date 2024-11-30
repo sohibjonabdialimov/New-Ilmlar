@@ -29,8 +29,8 @@ const { Option } = Select;
 const Header = () => {
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
-  const [open, setOpen] = useState(false);
   const bool = true;
+  const [open, setOpen] = useState(false);
   const showDrawer = () => {
     setOpen(true);
   };
