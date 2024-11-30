@@ -205,17 +205,24 @@ const MyCourse = () => {
         </Accordion.Root>
       </div>
 
-      <div className="flex justify-end mb-5 mt-10 gap-10">
-        <div className="flex items-center gap-2 btn-primary cursor-pointer">
+      <div className="flex justify-end items-center mb-5 mt-10 gap-5">
+        {/* <div className="flex items-center gap-2 cursor-pointer">
           <i className="fa-solid fa-share-nodes"></i>
           <button className="">Ulashish</button>
+        </div> */}
+        <div
+          onClick={() => navigate(-1)}
+          className="btn inline-flex items-center gap-3 cursor-pointer p-[10px_20px]"
+        >
+          <i className="fa-solid fa-share-nodes"></i>
+          <button className="text-lg">Ulashish</button>
         </div>
         <div
           onClick={showModal}
-          className="flex items-center gap-2 btn-primary cursor-pointer"
+          className="btn inline-flex items-center gap-3 cursor-pointer p-[10px_20px]"
         >
-          <i className="fa-regular fa-face-rolling-eyes"></i>
-          <button>Baholash</button>
+         <i className="fa-regular fa-face-rolling-eyes"></i>
+          <button className="text-lg">Baholash</button>
         </div>
       </div>
 

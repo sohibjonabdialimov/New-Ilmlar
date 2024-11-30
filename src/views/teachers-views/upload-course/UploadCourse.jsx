@@ -78,7 +78,7 @@ const UploadCourse = () => {
           <Form.Item
             label={
               <span className="text-secondary_color font-semibold text-base">
-                Ism
+                Kurs nomi
               </span>
             }
             className="w-full col-span-1 row-span-1"
@@ -91,19 +91,18 @@ const UploadCourse = () => {
             ]}
           >
             <Input
-              placeholder="Ohh"
-              className="w-full py-2.5 px-3 rounded-[10px] text-base"
+              placeholder="Kurs nomi"
+              className="w-full py-2 px-3 rounded-[10px] text-base"
             />
           </Form.Item>
-
           <Form.Item
-            className="col-span-1 row-span-1"
             label={
               <span className="text-secondary_color font-semibold text-base">
-                Input Label
+                Kategoriya tanlang
               </span>
             }
-            name="InputNumber"
+            name="Kategoriya"
+            className="col-span-1 row-span-1"
             rules={[
               {
                 required: true,
@@ -111,13 +110,118 @@ const UploadCourse = () => {
               },
             ]}
           >
-            <InputNumber className="w-full py-1.5 px-3 rounded-[10px] text-base" />
+            <Select
+              className="w-full rounded-[10px] text-base"
+              style={{ height: 40 }}
+              placeholder="Kategoriyalar"
+              options={[
+                {
+                  value: "Dasturlash",
+                  label: "Dasturlash",
+                },
+                {
+                  value: "Dizayn",
+                  label: "Dizayn",
+                },
+                {
+                  value: "Biznes",
+                  label: "Biznes",
+                },
+                {
+                  value: "Fan va texnika",
+                  label: "Fan va texnika",
+                },
+                {
+                  value: "Shaxsiy rivojlanish",
+                  label: "Shaxsiy rivojlanish",
+                },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item
+            label={
+              <span className="text-secondary_color font-semibold text-base">
+                Ta'lim tili
+              </span>
+            }
+            name="Til"
+            className="col-span-1 row-span-1"
+            rules={[
+              {
+                required: true,
+                message: "Please input!",
+              },
+            ]}
+          >
+            <Select
+              className="w-full rounded-[10px] text-base"
+              style={{ height: 40 }}
+              placeholder="Ta'lim tili"
+              options={[
+                {
+                  value: "O'zbek tili",
+                  label: "uzb",
+                },
+                {
+                  value: "Rus tili",
+                  label: "rus",
+                },
+                {
+                  value: "Ingliz tili",
+                  label: "eng",
+                },
+              ]}
+            />
           </Form.Item>
 
           <Form.Item
             label={
               <span className="text-secondary_color font-semibold text-base">
-                Text Area
+                Obuna muddati
+              </span>
+            }
+            name="Obuna"
+            className="col-span-1 row-span-1"
+            rules={[
+              {
+                required: true,
+                message: "Please input!",
+              },
+            ]}
+          >
+            <Select
+              className="w-full rounded-[10px] text-base"
+              style={{ height: 40 }}
+              placeholder="Tanlang"
+              options={[
+                {
+                  value: "1 oy",
+                  label: "1 oy",
+                },
+                {
+                  value: "3 oy",
+                  label: "3 oy",
+                },
+                {
+                  value: "6 oy",
+                  label: "6 oy",
+                },
+                {
+                  value: "9 oy",
+                  label: "9 oy",
+                },
+                {
+                  value: "1 yil",
+                  label: "1 yil",
+                },
+              ]}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label={
+              <span className="text-secondary_color font-semibold text-base">
+                Kurs haqida ma’lumot
               </span>
             }
             name="TextArea"
@@ -132,17 +236,38 @@ const UploadCourse = () => {
             <Input.TextArea
               className="w-full py-1.5 px-3 rounded-[10px] text-base"
               style={{ height: 150 }}
-              placeholder="O’zingiz haqingizda ma’lumot qoldiring."
+              placeholder="Kurs haqida ma’lumot"
+            />
+          </Form.Item>
+          <Form.Item
+            label={
+              <span className="text-secondary_color font-semibold text-base">
+                Kursdan nimalar o’rganiladi
+              </span>
+            }
+            name="Okk"
+            className="col-span-2 row-span-2"
+            rules={[
+              {
+                required: true,
+                message: "Please input!",
+              },
+            ]}
+          >
+            <Input.TextArea
+              className="w-full py-1.5 px-3 rounded-[10px] text-base"
+              style={{ height: 150 }}
+              placeholder="Kursdan nimalar o’rganiladi"
             />
           </Form.Item>
 
           <Form.Item
             label={
               <span className="text-secondary_color font-semibold text-base">
-                Select
+                Murakkabligi
               </span>
             }
-            name="Select"
+            name="Murakkablik"
             className="col-span-1 row-span-1"
             rules={[
               {
@@ -154,31 +279,31 @@ const UploadCourse = () => {
             <Select
               className="w-full rounded-[10px] text-base"
               style={{ height: 40 }}
+              placeholder="Tanlang"
               options={[
                 {
-                  value: "jack",
-                  label: "Jack",
+                  value: "Boshlang'ich",
+                  label: "Boshlang'ich",
                 },
                 {
-                  value: "lucy",
-                  label: "Lucy",
+                  value: "O'rta",
+                  label: "O'rta",
                 },
                 {
-                  value: "Yiminghe",
-                  label: "yiminghe",
+                  value: "yuqori",
+                  label: "Yuqori",
                 },
               ]}
             />
           </Form.Item>
-
           <Form.Item
+            className="col-span-1 row-span-1"
             label={
               <span className="text-secondary_color font-semibold text-base">
-                Ism
+                Kurs narxi ( so’m )
               </span>
             }
-            className="w-full col-span-1 row-span-1"
-            name="Input"
+            name="InputNumber"
             rules={[
               {
                 required: true,
@@ -186,96 +311,17 @@ const UploadCourse = () => {
               },
             ]}
           >
-            <Input
-              placeholder="Ohh"
-              className="w-full py-2.5 px-3 rounded-[10px] text-base"
-            />
-          </Form.Item>
-
-          <Form.Item
-            label={
-              <span className="text-secondary_color font-semibold text-base">
-                Ism
-              </span>
-            }
-            className="w-full col-span-1 row-span-1"
-            name="Input"
-            rules={[
-              {
-                required: true,
-                message: "Please input!",
-              },
-            ]}
-          >
-            <Input
-              placeholder="Ohh"
-              className="w-full py-2.5 px-3 rounded-[10px] text-base"
-            />
-          </Form.Item>
-          <Form.Item
-            label={
-              <span className="text-secondary_color font-semibold text-base">
-                Ism
-              </span>
-            }
-            className="w-full col-span-1 row-span-1"
-            name="Input"
-            rules={[
-              {
-                required: true,
-                message: "Please input!",
-              },
-            ]}
-          >
-            <Input
-              placeholder="Ohh"
-              className="w-full py-2.5 px-3 rounded-[10px] text-base"
-            />
-          </Form.Item>
-          <Form.Item
-            label={
-              <span className="text-secondary_color font-semibold text-base">
-                Ism
-              </span>
-            }
-            className="w-full col-span-1 row-span-1"
-            name="Input"
-            rules={[
-              {
-                required: true,
-                message: "Please input!",
-              },
-            ]}
-          >
-            <Input
-              placeholder="Ohh"
-              className="w-full py-2.5 px-3 rounded-[10px] text-base"
-            />
-          </Form.Item>
-          <Form.Item
-            label={
-              <span className="text-secondary_color font-semibold text-base">
-                Ism
-              </span>
-            }
-            className="w-full col-span-1 row-span-1"
-            name="Input"
-            rules={[
-              {
-                required: true,
-                message: "Please input!",
-              },
-            ]}
-          >
-            <Input
-              placeholder="Ohh"
-              className="w-full py-2.5 px-3 rounded-[10px] text-base"
+            <InputNumber
+              placeholder="Narxni kiriting..."
+              className="w-full py-1 px-2 rounded-[10px] text-base"
             />
           </Form.Item>
         </div>
         <div className="flex gap-16">
           <Form.Item
-            label="Upload"
+            label={<span className="text-secondary_color font-semibold text-base">
+              Treler video
+            </span>}
             className="col-span-1 row-span-1"
             name="Upload"
             valuePropName="fileList"
@@ -313,7 +359,9 @@ const UploadCourse = () => {
             </div>
           </Form.Item>
           <Form.Item
-            label="Upload Image"
+            label={<span className="text-secondary_color font-semibold text-base">
+              Muqova rasm
+            </span>}
             className="col-span-1 row-span-1"
             name="Upload"
             valuePropName="fileList"
@@ -334,7 +382,7 @@ const UploadCourse = () => {
                 }}
                 onChange={handleImageChange}
               >
-                Rasm yuklash
+                Yuklash
               </Upload>
               {imageFile && (
                 <div className="w-[200px] h-[200px] mt-5">

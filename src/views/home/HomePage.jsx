@@ -7,7 +7,9 @@ import NewCourseCard from "./components/NewCourseCard";
 import PopularCourseNavbar from "./components/PopularCourseNavbar";
 import TeachersGroupCard from "./components/TeachersGroupCard";
 import "./home.css";
+import { useNavigate } from "react-router-dom";
 const HomePage = () => {
+  const navigate = useNavigate();
   const navData = [
     {
       id: 1,
@@ -94,7 +96,13 @@ const HomePage = () => {
         })}
       </div>
       <div className="flex justify-center">
-        <button className="bg-blue_color text-white font-normal rounded-[100px] py-3 px-14 text-base">
+        <button
+          onClick={() => {
+            navigate("/courses");
+            window.scrollTo(0, 0);
+          }}
+          className="bg-blue_color text-white font-normal rounded-[100px] py-3 px-14 text-base"
+        >
           Hammasi ko’rish
         </button>
       </div>

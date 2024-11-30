@@ -216,24 +216,29 @@ const TeacherProfile = () => {
                     return (
                       <Select
                         defaultValue="lucy"
-                        // style={{
-                        //   width: 120,
-                        // }}
                         {...field}
                        className="w-full h-[40px] rounded-[10px]"
                         onChange={handleChange}
                         options={[
                           {
-                            value: "jack",
-                            label: "Jack",
+                            value: "Dasturlash",
+                            label: "Dasturlash",
                           },
                           {
-                            value: "lucy",
-                            label: "Lucy",
+                            value: "Dizayn",
+                            label: "Dizayn",
                           },
                           {
-                            value: "Yiminghe",
-                            label: "yiminghe",
+                            value: "Biznes",
+                            label: "Biznes",
+                          },
+                          {
+                            value: "Fan va texnika",
+                            label: "Fan va texnika",
+                          },
+                          {
+                            value: "Shaxsiy rivojlanish",
+                            label: "Shaxsiy rivojlanish",
                           },
                         ]}
                       />
@@ -272,7 +277,7 @@ const TeacherProfile = () => {
                 className=""
                 label={
                   <span className="text-secondary_color font-semibold text-base">
-                    Ism
+                    O’zingiz haqingizda ma’lumot
                   </span>
                 }
               >
@@ -287,7 +292,7 @@ const TeacherProfile = () => {
                       <>
                         <TextArea
                           {...field}
-                          placeholder="O’zingiz haqingizda ma’lumot qoldiring."
+                          placeholder="O’zingiz haqingizda ma’lumot yozing..."
                           className="text-base"
                           style={{
                             height: 150,
@@ -311,9 +316,9 @@ const TeacherProfile = () => {
 
       <div className="relative mt-14 mb-5">
         <h1 className="title mb-8">Kurslar</h1>
-        <div className="grid grid-cols-4 justify-between w-full gap-5">
+        <div className="grid grid-cols-4 justify-between w-full gap-5 gap-y-7">
           {navData.map((item) => {
-            return <NewCourseCard key={item.id} />;
+            return <NewCourseCard role={"teacher"} key={item.id} />;
           })}
         </div>
       </div>

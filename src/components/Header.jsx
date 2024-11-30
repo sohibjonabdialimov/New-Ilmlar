@@ -1,8 +1,7 @@
 import { Drawer, Dropdown, Select } from "antd";
 
-import vector1 from "../assets/images/vector1.svg";
-import vector2 from "../assets/images/vector2.svg";
-import user_card from "../assets/images/user_card.svg";
+import teacherLogo from "../assets/images/teacher-logo.svg";
+import mycard from "../assets/images/my_card.svg";
 import card from "../assets/images/card.svg";
 import filter from "../assets/images/filter.svg";
 import { Link, useNavigate } from "react-router-dom";
@@ -53,9 +52,8 @@ const Header = () => {
       <div className="py-[0.8rem]">
         <header className="w-full px-6 py-2 flex flex-wrap items-center justify-between rounded-2xl mx-auto gap-4 bg-bg_color">
           <div className="flex items-center gap-6">
-            <div className="flex gap-4 items-center">
-              <img className="w-[11px] h-[17px]" src={vector1} alt="" />
-              <img className="w-[11px] h-[17px]" src={vector2} alt="" />
+            <div onClick={() => navigate("/")} className="cursor-pointer">
+              <img className="h-[35px]" src={teacherLogo} alt="" />
             </div>
             <div className="nav-search rounded-[100px] border-[2px] border-solid border-[#1E1E1E1A] w-[20rem] p-[0.5rem_1rem] bg-[#F1F2F4] flex items-center justify-between gap-2 text-[#1E1E1E99] font-[500] focus:drop-shadow-[0_15px_15px_rgba(0,0,0,0.2)] hover:drop-shadow-[0_5px_5px_rgba(0,0,0,0.15)]">
               <i className="fa-solid fa-magnifying-glass w-[1.125rem] h-[1.125rem]"></i>
@@ -121,7 +119,6 @@ const Header = () => {
                 <div className="cursor-pointer w-[44px] h-[44px] flex justify-center items-center bg-blue_color rounded-full">
                   <p className="text-white text-xl font-semibold">S</p>
                 </div>
-
               </Dropdown>
             </nav>
           ) : (
@@ -134,7 +131,19 @@ const Header = () => {
           )}
         </header>
         <Drawer title="Hamyon" onClose={onClose} open={open}>
-          <img src={user_card} alt="" />
+          <div className="relative">
+            <img
+              className="aspect-[25/16] h-full w-full"
+              src={mycard}
+              alt="Student's Plastic card"
+            />
+            <p className="absolute bottom-20 left-5 font-medium text-xl text-white">
+              120 000 000 UZS
+            </p>
+            <p className="absolute bottom-3 left-3 text-base text-white">
+              3827 4637 3103 7389
+            </p>
+          </div>
         </Drawer>
       </div>
     </>

@@ -56,7 +56,7 @@ const AllCourses = () => {
           })}
         </div>
       </div>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center mt-8">
         <Pagination className="custom-pagination" current={current} onChange={onChange} total={250} />
       </div>
     </div>

@@ -78,7 +78,7 @@ const UploadLesson = () => {
           <Form.Item
             label={
               <span className="text-secondary_color font-semibold text-base">
-                Ism
+                Video dars nomi
               </span>
             }
             className="w-full col-span-2 row-span-1"
@@ -91,7 +91,7 @@ const UploadLesson = () => {
             ]}
           >
             <Input
-              placeholder="Ohh"
+              placeholder="Video dars nomi"
               className="w-full py-2.5 px-3 rounded-[10px] text-base"
             />
           </Form.Item>
@@ -99,7 +99,7 @@ const UploadLesson = () => {
           <Form.Item
             label={
               <span className="text-secondary_color font-semibold text-base">
-                Text Area
+                Video dars haqida matn
               </span>
             }
             name="TextArea"
@@ -114,7 +114,7 @@ const UploadLesson = () => {
             <Input.TextArea
               className="w-full py-1.5 px-3 rounded-[10px] text-base"
               style={{ height: 150 }}
-              placeholder="O’zingiz haqingizda ma’lumot qoldiring."
+              placeholder="Video dars haqida matn"
             />
           </Form.Item>
 
@@ -129,19 +129,21 @@ const UploadLesson = () => {
             ]}
             label={
               <span className="text-secondary_color font-semibold text-base">
-                Label
+                Video darsni avvaldan ko’rish
               </span>
             }
           >
             <Radio.Group className="w-full py-1.5 px-3 rounded-[10px] text-base">
-              <Radio value="apple"> Apple </Radio>
-              <Radio value="pear"> Pear </Radio>
+              <Radio value="apple"> Ha </Radio>
+              <Radio value="pear"> Yo'q </Radio>
             </Radio.Group>
           </Form.Item>
         </div>
         <div className="flex gap-16">
           <Form.Item
-            label="Upload"
+            label={<span className="text-secondary_color font-semibold text-base">
+              Video dars ( video fayl )
+            </span>}
             className="col-span-1 row-span-1"
             name="Upload"
             valuePropName="fileList"
@@ -163,7 +165,7 @@ const UploadLesson = () => {
                 }}
                 onChange={handleChange}
               >
-                Treller yuklash
+                Yuklash
               </Upload>
               {videoFile && (
                 <div className="w-[200px] h-[200px] mt-5">
@@ -179,7 +181,9 @@ const UploadLesson = () => {
             </div>
           </Form.Item>
           <Form.Item
-            label="Upload Image"
+            label={<span className="text-secondary_color font-semibold text-base">
+              Qo’shimcha fayl ( pdf, word, excel, ppt )
+            </span>}
             className="col-span-1 row-span-1"
             name="Upload"
             valuePropName="fileList"
@@ -197,7 +201,7 @@ const UploadLesson = () => {
                 }}
                 onChange={handleDocumentChange}
               >
-                <Button>Upload File</Button>
+                <Button>Yuklash</Button>
               </Upload>
               {file && (
                 <div style={{ marginTop: 20 }}>
@@ -210,10 +214,10 @@ const UploadLesson = () => {
         </div>
         <div className="w-full flex items-center justify-end gap-3 mt-1">
           <Button className="w-[15%]" type="primary" htmlType="submit">
-            Bekor qilish
+            Yakunlash
           </Button>
           <Button className="w-[15%]" type="primary" htmlType="submit">
-            Kurs yaratish
+            Video darsni qo'shish
           </Button>
         </div>
       </Form>

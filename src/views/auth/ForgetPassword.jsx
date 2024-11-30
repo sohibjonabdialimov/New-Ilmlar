@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import axiosT from "../../../services/axios";
 import auth from "../../assets/images/auth_img.png";
 import "./auth.css";
-const LoginPage = () => {
+const ForgetPassword = () => {
   const { control, getValues } = useForm();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
@@ -45,13 +45,13 @@ const LoginPage = () => {
             }}
           >
             <h1 className="text-main_color text-[30px] leading-[50px] font-semibold text-center mb-5">
-              Yangi bilimlarni kashf qiling
+              Parolni unitdingizmi?
             </h1>
             <div className="grid grid-cols-1 gap-2">
               <Form.Item
                 label={
                   <span className="text-secondary_color font-semibold text-base">
-                    Foydalanuvchi nomi yoki email
+                    Email
                   </span>
                 }
               >
@@ -66,36 +66,10 @@ const LoginPage = () => {
                       <>
                         <Input
                           {...field}
-                          placeholder="Foydalanuvchi nomi yoki emailni kiriting..."
+                          placeholder="Emailni kiriting..."
                           className="w-full py-3 px-4 rounded-[10px]"
                         />
                       </>
-                    );
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                className=""
-                label={
-                  <span className="text-secondary_color font-semibold text-base">
-                    Parol
-                  </span>
-                }
-              >
-                <Controller
-                  rules={{
-                    required: "Field is required",
-                  }}
-                  control={control}
-                  name="LOGIN.password"
-                  render={({ field }) => {
-                    return (
-                      <Input.Password
-                        {...field}
-                        type="password"
-                        placeholder="********"
-                        className="w-full py-3 px-5 rounded-[10px]"
-                      />
                     );
                   }}
                 />
@@ -105,9 +79,8 @@ const LoginPage = () => {
                 type="submit"
                 className="w-full text-base py-2 text-white rounded-2xl bg-blue_color cursor-pointer transition-opacity hover:opacity-85"
               >
-                Kirish
+                Emailga kod jo'natish
               </button>
-              <div className="flex items-center justify-between">
               <p className="text-center text-secondary_color text-sm font-normal">
                 Shaxsiy sahifangiz yo'qmi?{" "}
                 <Link
@@ -117,11 +90,6 @@ const LoginPage = () => {
                   Ro'yxatdan o'ting
                 </Link>
               </p>
-              <Link to={"/forget-password"} className="text-center text-blue_color text-sm font-normal">
-                Parolni unitdingizmi?
-              </Link>
-
-              </div>
             </div>
           </Form>
         </div>
@@ -134,4 +102,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default ForgetPassword;

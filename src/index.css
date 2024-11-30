@@ -44,6 +44,7 @@ button:focus {
   transition: all 0.5s;
   border: 1px solid transparent;
 }
+
 .btn:hover{
   background-color: #fff;
   border: 1px solid #1d7afc;

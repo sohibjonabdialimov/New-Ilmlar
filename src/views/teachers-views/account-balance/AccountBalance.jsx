@@ -5,21 +5,18 @@ import "./account-balance.css"
 const data = [
   {
     key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
+    name: "100 000 so'm",
+    age: "11.09.2024",
   },
   {
     key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
+    name: "100 000 so'm",
+    age: "12.09.2024",
   },
   {
     key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
+    name: "100 000 so'm",
+    age: "13.09.2024",
   },
 ];
 
@@ -35,11 +32,6 @@ const columns = [
     title: 'Chiqim ( pul yechib olingan )',
     dataIndex: 'age',
     key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
   },
  
 ];
@@ -82,7 +74,7 @@ const AccountBalance = () => {
       <div>
       <Table className="account_balance_table" size="middle" columns={columns} dataSource={data} />
       </div>
-      <Drawer title="Profilni tahrirlash" onClose={onClose} open={open}>
+      <Drawer title="Pul yechib olish" onClose={onClose} open={open}>
         <Form
           layout="vertical"
           className="w-full"
@@ -95,7 +87,7 @@ const AccountBalance = () => {
             <Form.Item
               label={
                 <span className="text-secondary_color font-semibold text-base">
-                  Ism
+                  Pul miqdori ( so’m )
                 </span>
               }
             >
@@ -110,7 +102,7 @@ const AccountBalance = () => {
                     <>
                       <Input
                         {...field}
-                        placeholder="Ismingizni kiriting..."
+                        // placeholder="Ismingizni kiriting..."
                         className="w-full py-3 px-4 rounded-[10px]"
                       />
                     </>
@@ -121,7 +113,7 @@ const AccountBalance = () => {
             <Form.Item
               label={
                 <span className="text-secondary_color font-semibold text-base">
-                  Familiya
+                  Karta raqam ( Humo yoki UzCard )
                 </span>
               }
             >
@@ -136,7 +128,7 @@ const AccountBalance = () => {
                     <>
                       <Input
                         {...field}
-                        placeholder="Familiyangizni kiriting..."
+                        // placeholder="Familiyangizni kiriting..."
                         className="w-full py-3 px-4 rounded-[10px]"
                       />
                     </>
@@ -147,7 +139,7 @@ const AccountBalance = () => {
             <Form.Item
               label={
                 <span className="text-secondary_color font-semibold text-base">
-                  Foydalanuvchi nomi
+                  JSHSHR ( Karta raqam egasiniki )
                 </span>
               }
             >
@@ -162,7 +154,7 @@ const AccountBalance = () => {
                     <>
                       <Input
                         {...field}
-                        placeholder="Foydalanuvchi nomini kiriting..."
+                        // placeholder="Foydalanuvchi nomini kiriting..."
                         className="w-full py-3 px-4 rounded-[10px]"
                       />
                     </>
@@ -171,38 +163,12 @@ const AccountBalance = () => {
               />
             </Form.Item>
 
-            <Form.Item
-              className=""
-              label={
-                <span className="text-secondary_color font-semibold text-base">
-                  Email
-                </span>
-              }
-            >
-              <Controller
-                rules={{
-                  required: "Field is required",
-                }}
-                control={control}
-                name="EDITPROFILE.email"
-                render={({ field }) => {
-                  return (
-                    <Input
-                      {...field}
-                      type="email"
-                      placeholder="email@gmail.com"
-                      className="w-full py-3 px-5 rounded-[10px]"
-                    />
-                  );
-                }}
-              />
-            </Form.Item>
 
             <button
               type="submit"
               className="w-full text-base py-2 text-white rounded-2xl bg-blue_color cursor-pointer transition-opacity hover:opacity-85"
             >
-              Saqlash
+              Pulni o'tkazish
             </button>
           </div>
         </Form>

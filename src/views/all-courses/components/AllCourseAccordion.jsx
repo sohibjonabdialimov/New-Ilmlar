@@ -6,52 +6,77 @@ import { Checkbox } from "antd";
 
 const options = [
   {
-    label: "All Levels",
-    value: "All Levels",
+    label: "Hammasi",
+    value: "Hammasi",
     count: 10000,
   },
   {
-    label: "Beginner",
-    value: "Beginner",
+    label: "Dasturlash",
+    value: "Dasturlash",
     count: 10000,
   },
   {
-    label: "Intermediate",
-    value: "Intermediate",
+    label: "Dizayn",
+    value: "Dizayn",
     count: 3742,
   },
   {
-    label: "Expert",
-    value: "Expert",
+    label: "Biznes",
+    value: "Biznes",
+    count: 705,
+  },
+  {
+    label: "Fan va texnika",
+    value: "fan",
+    count: 705,
+  },
+  {
+    label: "Shaxsiy rivojlanish",
+    value: "shaxsiy",
     count: 705,
   },
 ];
 
 const languageOptions = [
   {
-    label: "English",
-    value: "English",
+    label: "Pullik",
+    value: "pullik",
     count: 10000,
   },
   {
-    label: "Português",
-    value: "Português",
+    label: "Bepul",
+    value: "bepul",
+    count: 2294,
+  },
+];
+const levelOption = [
+  {
+    label: "Barcha darajalar",
+    value: "old",
+    count: 10000,
+  },
+  {
+    label: "Boshlang'ich",
+    value: "old",
+    count: 10000,
+  },
+  {
+    label: "O'rta",
+    value: "bepul",
     count: 2294,
   },
   {
-    label: "Español",
-    value: "Español",
-    count: 1860,
-  },
-  {
-    label: "日本語",
-    value: "日本語",
-    count: 1586,
+    label: "Yuqori",
+    value: "yuqori",
+    count: 2294,
   },
 ];
 
 const AllCourseAccordion = () => {
-  const [selectedLevels, setSelectedLevels] = useState(["All Levels", "Beginner"]);
+  const [selectedLevels, setSelectedLevels] = useState([
+    "All Levels",
+    "Beginner",
+  ]);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
 
   const handleLevelChange = (checkedValues) => {
@@ -72,15 +97,16 @@ const AllCourseAccordion = () => {
       collapsible
     >
       <Accordion.Item className="AccordionItem" value="item-1">
-        <AccordionTrigger>Level</AccordionTrigger>
+        <AccordionTrigger>Kategoriya</AccordionTrigger>
         <AccordionContent>
-          <Checkbox.Group
-            value={selectedLevels}
-            onChange={handleLevelChange}
-          >
+          <Checkbox.Group value={selectedLevels} onChange={handleLevelChange}>
             <div className="checkbox-list">
               {options.map((item) => (
-                <Checkbox className="text-[17px]" key={item.value} value={item.value}>
+                <Checkbox
+                  className="text-[17px]"
+                  key={item.value}
+                  value={item.value}
+                >
                   {item.label} ({item.count})
                 </Checkbox>
               ))}
@@ -90,7 +116,7 @@ const AllCourseAccordion = () => {
       </Accordion.Item>
 
       <Accordion.Item className="AccordionItem" value="item-2">
-        <AccordionTrigger>Language</AccordionTrigger>
+        <AccordionTrigger>Narx</AccordionTrigger>
         <AccordionContent>
           <Checkbox.Group
             value={selectedLanguages}
@@ -98,7 +124,11 @@ const AllCourseAccordion = () => {
           >
             <div className="checkbox-list">
               {languageOptions.map((item) => (
-                  <Checkbox className="text-[17px]" key={item.value} value={item.value}>
+                <Checkbox
+                  className="text-[17px]"
+                  key={item.value}
+                  value={item.value}
+                >
                   {item.label} ({item.count})
                 </Checkbox>
               ))}
@@ -108,11 +138,24 @@ const AllCourseAccordion = () => {
       </Accordion.Item>
 
       <Accordion.Item className="AccordionItem" value="item-3">
-        <AccordionTrigger>Additional Filters</AccordionTrigger>
+        <AccordionTrigger>Daraja</AccordionTrigger>
         <AccordionContent>
-          <div className="AccordionContentText">
-            Here you can add more filter options.
-          </div>
+          <Checkbox.Group
+            value={selectedLanguages}
+            onChange={handleLanguageChange}
+          >
+            <div className="checkbox-list">
+              {levelOption.map((item) => (
+                <Checkbox
+                  className="text-[17px]"
+                  key={item.value}
+                  value={item.value}
+                >
+                  {item.label} ({item.count})
+                </Checkbox>
+              ))}
+            </div>
+          </Checkbox.Group>
         </AccordionContent>
       </Accordion.Item>
     </Accordion.Root>
@@ -128,7 +171,10 @@ const AccordionTrigger = React.forwardRef(
         ref={forwardedRef}
       >
         {children}
-        <i className="fa-solid fa-chevron-down AccordionChevron" aria-hidden="true"></i>
+        <i
+          className="fa-solid fa-chevron-down AccordionChevron"
+          aria-hidden="true"
+        ></i>
       </Accordion.Trigger>
     </Accordion.Header>
   )

@@ -2,7 +2,7 @@ import newCourse from "../../../assets/images/new-course.png";
 import avatar from "../../../assets/images/avatar.png";
 import star from "../../../assets/images/star.svg";
 import ProgressBar from "@ramonak/react-progress-bar";
-const NewCourseCard = ({ type }) => {
+const NewCourseCard = ({ type, role }) => {
   return (
     <div className="cursor-pointer">
       <img
@@ -38,8 +38,19 @@ const NewCourseCard = ({ type }) => {
       </div>
       {type ? (
         <ProgressBar height="18px" className="bar_container" completed={70} />
+      ) : role === "teacher" ? (
+        <div className="flex items-center justify-between">
+          <p className="text-blue_color text-base font-semibold">Kurs Narxi</p>
+          <p className="text-[#00FF84] text-base font-semibold">Ommaviy</p>
+        </div>
       ) : (
-        <p className="text-blue_color text-base font-semibold">Kurs Narxi</p>
+        <div className="flex items-center justify-between">
+          <p className="text-blue_color text-base font-semibold">Kurs Narxi</p>
+          <div className="flex items-center gap-2">
+            <i className="fa-regular fa-bookmark text-2xl"></i>
+            {/* <i className="fa-solid fa-bookmark text-2xl"></i> */}
+          </div>
+        </div>
       )}
     </div>
   );

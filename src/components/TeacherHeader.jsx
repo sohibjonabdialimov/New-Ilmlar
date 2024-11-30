@@ -40,10 +40,8 @@ const TeacherHeader = () => {
     <>
       <div className="py-[0.8rem] h-[90px]">
         <header className="w-full px-6 py-2 flex flex-wrap items-center justify-between rounded-2xl mx-auto gap-4 bg-bg_color">
-          <div className="flex items-center gap-6">
-            <div className="flex gap-4 items-center">
-              <img className="h-[35px]" src={teacherLogo} alt="" />
-            </div>
+          <div className="flex gap-4 items-center">
+            <img className="h-[35px]" src={teacherLogo} alt="" />
           </div>
 
           <nav className="flex items-center gap-6">

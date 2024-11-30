@@ -38,7 +38,7 @@
   outline: none;
 }
 
-:root {
+/* :root {
   --primary-color: #c8dc71;
   --gradient-color: linear-gradient(180deg, #d2ff00 0%, #00d2ff 100%);
 }
@@ -89,4 +89,4 @@
     0 6px 6px -4px rgba(0, 0, 0, 0.35);
   transition: all 0.25s ease-in-out;
 
-}
+} */
