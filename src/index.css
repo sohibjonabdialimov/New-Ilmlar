@@ -17,6 +17,7 @@
 body {
   background-color: white;
   font-family: "Inter", sans-serif;
+  overflow-x: hidden;
 }
 
 a {
@@ -45,7 +46,7 @@ button:focus {
   border: 1px solid transparent;
 }
 
-.btn:hover{
+.btn:hover {
   background-color: #fff;
   border: 1px solid #1d7afc;
   color: #1d7afc;
@@ -57,14 +58,15 @@ button:focus {
   font-family: "Inter", sans-serif;
   line-height: 32px;
 }
-.swiper-wrapper{
+.swiper-wrapper {
   padding-top: 60px;
 }
-.comments_swiper .swiper-wrapper{
+.comments_swiper .swiper-wrapper {
   padding-top: 70px;
 }
 
-.swiper-button-prev, .swiper-button-next{
+.swiper-button-prev,
+.swiper-button-next {
   color: #fff !important;
   width: 40px !important;
   height: 40px !important;
@@ -72,30 +74,30 @@ button:focus {
   top: 40px !important;
   background-color: #1d7afc;
 }
-.swiper-button-prev{
+.swiper-button-prev {
   left: 93% !important;
 }
-.swiper-button-prev::after, .swiper-button-next::after{
+.swiper-button-prev::after,
+.swiper-button-next::after {
   font-size: 20px !important;
   font-weight: 700 !important;
 }
-.swiper-button-prev.swiper-button-disabled{
+.swiper-button-prev.swiper-button-disabled {
   opacity: 1 !important;
   color: #465670 !important;
-  background-color: #F1F2F4 !important;
+  background-color: #f1f2f4 !important;
 }
-.swiper-button-next.swiper-button-disabled{
+.swiper-button-next.swiper-button-disabled {
   opacity: 1 !important;
   color: #465670 !important;
-  background-color: #F1F2F4 !important;
+  background-color: #f1f2f4 !important;
 }
-.bar_container div div{
+.bar_container div div {
   background-color: #007bff !important;
 }
-.bar_container div{
-  background-color: #F1F2F4FF !important;
+.bar_container div {
+  background-color: #f1f2f4ff !important;
 }
-
 
 @media only screen and (max-width: 1024px) {
   html {
@@ -110,5 +112,33 @@ button:focus {
 @media only screen and (max-width: 540px) {
   html {
     font-size: 10px;
+  }
+  .swiper-wrapper {
+    padding-top: 40px;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 30px !important;
+    height: 30px !important;
+    top: 30px !important;
+  }
+  .swiper-button-prev {
+    left: 80% !important;
+  }
+  .swiper-button-prev::after,
+  .swiper-button-next::after {
+    font-size: 14px !important;
+  }
+
+  .title {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 20px;
+  }
+}
+@media only screen and (max-width: 450px) {
+  .swiper-button-prev {
+    left: 74% !important;
   }
 }

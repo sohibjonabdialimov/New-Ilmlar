@@ -53,10 +53,24 @@ const HomePage = () => {
       <div className="relative">
         <h1 className="title absolute top-0">Yangi qo’shilgan kurslar</h1>
         <Swiper
-          slidesPerView={4}
+          slidesPerView={1.5}
           spaceBetween={16}
           navigation={true}
           freeMode={true}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 16,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 16,
+            },
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 16,
+            },
+          }}
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
@@ -72,10 +86,28 @@ const HomePage = () => {
       <div className="relative mt-16 mb-14">
         <h1 className="title absolute top-0">Obuna bo‘ling va o‘rganing</h1>
         <Swiper
-          slidesPerView={6}
-          spaceBetween={24}
+          slidesPerView={2}
+          spaceBetween={15}
           navigation={true}
           freeMode={true}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 4,
+              spaceBetween: 24,
+            },
+            1024: {
+              slidesPerView: 5,
+              spaceBetween: 24,
+            },
+            1440: {
+              slidesPerView: 6,
+              spaceBetween: 24,
+            },
+          }}
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
@@ -90,7 +122,7 @@ const HomePage = () => {
       </div>
       <h1 className="title">Ommabop kurslarimiz</h1>
       <PopularCourseNavbar />
-      <div className="grid grid-cols-4 gap-x-4 gap-y-8 mb-5">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 grid-cols-1 gap-x-4 gap-y-8 mb-5">
         {navData.map((item) => {
           return <NewCourseCard key={item.id} />;
         })}
@@ -109,9 +141,23 @@ const HomePage = () => {
       <div className="relative mt-14 mb-10">
         <h1 className="title absolute top-0">Bepul kurslar</h1>
         <Swiper
-          slidesPerView={4}
+          slidesPerView={1.5}
           spaceBetween={16}
           navigation={true}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 16,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 16,
+            },
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 16,
+            },
+          }}
           freeMode={true}
           modules={[FreeMode, Navigation]}
           className="mySwiper"

@@ -9,6 +9,10 @@ const navData = [
   "Dizayn",
   "Biznes",
   "Fan va texnika",
+  "Dasturlash",
+  "Dizayn",
+  "Biznes",
+  "Fan va texnika",
   "Shaxsiy rivojlanish"
 ];
 import "./style.css";
@@ -20,8 +24,22 @@ const PopularCourseNavbar = () => {
   };
   return (
     <Swiper
-      slidesPerView={7.5}
-      spaceBetween={16}
+      slidesPerView={3.5}
+      spaceBetween={5}
+      breakpoints={{
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 16,
+        },
+        768: {
+          slidesPerView: 4,
+          spaceBetween: 16,
+        },
+        1024: {
+          slidesPerView: 8.5,
+          spaceBetween: 16,
+        },
+      }}
       freeMode={true}
       modules={[FreeMode]}
       className="mySwiper popular_navbar"

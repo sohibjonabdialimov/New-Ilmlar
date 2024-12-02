@@ -2,7 +2,7 @@ import teacher from "../../../assets/images/teacher.jpeg";
 import "./style.css";
 const TeachersGroupCard = () => {
   return (
-    <div className="teachers_group rounded-2xl">
+    <div className="relative rounded-2xl sm:aspect-[228/320] aspect-[173/234]">
       <div className="w-full h-full teachers_group_img">
        <img className="w-full h-full rounded-2xl object-cover" src={teacher} alt="" />
       </div>

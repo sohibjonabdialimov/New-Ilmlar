@@ -53,9 +53,9 @@ const Header = () => {
         <header className="w-full px-6 py-2 flex flex-wrap items-center justify-between rounded-2xl mx-auto gap-4 bg-bg_color">
           <div className="flex items-center gap-6">
             <div onClick={() => navigate("/")} className="cursor-pointer">
-              <img className="h-[35px]" src={teacherLogo} alt="" />
+              <img className="sm:h-[35px] h-[24px]" src={teacherLogo} alt="" />
             </div>
-            <div className="nav-search rounded-[100px] border-[2px] border-solid border-[#1E1E1E1A] w-[20rem] p-[0.5rem_1rem] bg-[#F1F2F4] flex items-center justify-between gap-2 text-[#1E1E1E99] font-[500] focus:drop-shadow-[0_15px_15px_rgba(0,0,0,0.2)] hover:drop-shadow-[0_5px_5px_rgba(0,0,0,0.15)]">
+            <div className="nav-search rounded-[100px] border-[2px] border-solid border-[#1E1E1E1A] w-[20rem] p-[0.5rem_1rem] bg-[#F1F2F4] hidden sm:flex items-center justify-between gap-2 text-[#1E1E1E99] font-[500] focus:drop-shadow-[0_15px_15px_rgba(0,0,0,0.2)] hover:drop-shadow-[0_5px_5px_rgba(0,0,0,0.15)]">
               <i className="fa-solid fa-magnifying-glass w-[1.125rem] h-[1.125rem]"></i>
               <input
                 type="text"
@@ -79,33 +79,31 @@ const Header = () => {
               </div>
               <div
                 onClick={toggleFullScreen}
-                className="cursor-pointer w-[44px] h-[44px] bg-[#E9F2FF] rounded-full flex items-center justify-center"
+                className="cursor-pointer w-[44px] h-[44px] bg-[#E9F2FF] rounded-full hidden sm:flex items-center justify-center"
               >
                 <i className="fa-solid fa-expand text-[1.2rem]"></i>
               </div>
               <Select
                 defaultValue={"uzb"}
-                style={{
-                  width: 100,
-                }}
+                className="sm:w-[100px] w-[60px] sm:block hidden"
                 onChange={(value) => console.log(`Selected language ${value}`)}
                 placeholder="Select a country"
               >
                 <Option value="uzb">
                   <div className="flex items-center gap-2">
-                    <img src={uzb} alt="USA" style={{ width: 16 }} />
+                    <img src={uzb} alt="USA" className="sm:w-[16px] w-[10px]" />
                     UZB
                   </div>
                 </Option>
                 <Option value="rus">
                   <div className="flex items-center gap-2">
-                    <img src={rus} alt="Canada" style={{ width: 16 }} />
+                    <img src={rus} alt="Canada" className="sm:w-[16px] w-[10px]" />
                     RUS
                   </div>
                 </Option>
                 <Option value="eng">
                   <div className="flex items-center gap-2">
-                    <img src={eng} alt="UK" style={{ width: 16 }} />
+                    <img src={eng} alt="UK" className="sm:w-[16px] w-[10px]" />
                     ENG
                   </div>
                 </Option>
