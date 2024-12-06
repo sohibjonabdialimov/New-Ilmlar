@@ -46,34 +46,34 @@ const TeacherProfileForStudents = () => {
   ];
   return (
     <div className="py-7">
-      <div className="flex justify-between mb-16">
-        <div className="flex gap-5">
-          <img className="w-[142px] h-[146px] rounded-3xl" src={teacher_profile} alt="" />
-          <div className="flex justify-between flex-col py-3">
-            <h1 className="text-main_color font-semibold text-xl mb-1">
+      <div className="flex justify-between sm:flex-row flex-col gap-5 mb-16">
+        <div className="flex items-center sm:gap-5 gap-3">
+          <img className="sm:w-[142px] sm:h-[146px] w-[84px] h-[102px] sm:rounded-3xl rounded-[8px] object-cover" src={teacher_profile} alt="" />
+          <div className="flex gap-1.5 justify-between flex-col">
+            <h1 className="text-main_color font-semibold sm:text-xl text-base mb-1">
               Michael Wong
             </h1>
-            <p className="text-[#758195] text-base font-medium">
+            <p className="text-[#758195] sm:text-base text-xs font-medium">
               Qisqa bio Lorem, ipsum dolor.
             </p>
-            <p className="text-[#758195] text-base font-semibold">
+            <p className="text-[#758195] sm:text-base text-xs font-semibold">
               Kurslar soni: <span className="font-normal">2 ta</span>
             </p>
-            <p className="text-[#758195] text-base font-semibold">
+            <p className="text-[#758195] sm:text-base text-xs font-semibold">
               Obunachilar soni: <span className="font-normal">159 ta</span>
             </p>
           </div>
         </div>
-        <div>
-          <button className="btn text-sm p-[10px_30px]">Obuna bo'ling</button>
+        <div className="sm:w-auto w-full">
+          <button className="btn text-sm sm:p-[10px_30px] p-[8px_20px] w-full">Obuna bo'ling</button>
         </div>
       </div>
 
-      <div className="p-6 bg-[#f1f2f466] rounded-[16px] mb-16">
-        <h2 className="text-3xl text-main_color font-semibold mb-6">
+      <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px] sm:mb-16 mb-6">
+        <h2 className="sm:text-3xl text-lg text-main_color font-semibold sm:mb-6 mb-2">
           O’qituvchi haqida ma’lumot
         </h2>
-        <p className="text-lg leading-8">
+        <p className="sm:text-xl sm:leading-8 text-sm">
           Explore Auto Layout in Figma, starting with horizontal, vertical, and
           wrap layouts. Manage padding, gaps, and alignment, and use constraints
           like fixed, hug, and fill for optimal sizing. Design navigation bars,
@@ -83,15 +83,29 @@ const TeacherProfileForStudents = () => {
         </p>
       </div>
 
-      <div className="relative mt-14 mb-5">
+      <div className="relative mt-14 sm:mb-5 mb-10">
         <h1 className="title absolute top-0">Kurslar</h1>
         <Swiper
-          slidesPerView={4}
+          slidesPerView={1.5}
           spaceBetween={16}
           navigation={true}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 16,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 16,
+            },
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 16,
+            },
+          }}
           freeMode={true}
           modules={[FreeMode, Navigation]}
-          className="comments_swiper"
+          className="mySwiper"
         >
           {navData.map((item) => {
             return (

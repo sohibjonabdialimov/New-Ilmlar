@@ -53,46 +53,46 @@ const TeacherProfile = () => {
   };
   return (
     <div className="py-7">
-      <div className="flex justify-between mb-16">
-        <div className="flex gap-5">
+      <div className="flex sm:flex-row flex-col justify-between sm:mb-16 mb-10 gap-4">
+        <div className="flex sm:gap-5 gap-3">
           <img
-            className="w-[142px] h-[146px] rounded-full"
+            className="sm:w-[142px] sm:h-[146px] w-[80px] h-[80px] rounded-full"
             src={teacher_profile}
             alt=""
           />
-          <div className="flex flex-col justify-center gap-2 py-0">
-            <h1 className="text-main_color font-semibold text-xl mb-1">
+          <div className="flex flex-col justify-center sm:gap-2 gap-1 py-0">
+            <h1 className="text-main_color font-semibold sm:text-xl text-base sm:mb-1 mb-0">
               Michael Wong
             </h1>
-            <p className="text-[#758195] text-base font-medium">
+            <p className="text-[#758195] sm:text-base text-xs font-medium">
               Biznes yo'nalishi
             </p>
-            <p className="text-[#758195] text-base font-semibold">
+            <p className="text-[#758195] sm:text-base text-xs font-semibold">
               Kurslar soni: <span className="font-normal">2 ta</span>
             </p>
-            <p className="text-[#758195] text-base font-semibold">
+            <p className="text-[#758195] sm:text-base text-xs font-semibold">
               Obunachilar soni: <span className="font-normal">159 ta</span>
             </p>
           </div>
         </div>
-        <div>
-          <button className="btn text-sm p-[10px_30px]">Kurs yuklash</button>
+        <div className="sm:w-auto w-full">
+          <button className="btn text-sm sm:p-[10px_30px] p-[8px_20px] w-full">Kurs yuklash</button>
         </div>
       </div>
 
-      <div className="p-6 bg-[#f1f2f466] rounded-[16px] mb-16">
+      <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px] sm:mb-16">
         <Form
           layout="vertical"
-          className="px-24 pt-4 pb-8 w-full"
+          className="sm:px-24 px-0 sm:pt-4 pt-2 pb-2 sm:pb-8 w-full"
           onSubmitCapture={(e) => {
             e.preventDefault();
             submitHandler();
           }}
         >
           <div className="grid grid-cols-2 gap-5">
-            <div className="grid grid-cols-2 gap-x-5">
+            <div className="sm:col-span-1 col-span-2 grid grid-cols-2 gap-x-5">
               <Form.Item
-                className=""
+                className="sm:col-span-1 col-span-2"
                 label={
                   <span className="text-secondary_color font-semibold text-base">
                     Ism
@@ -119,7 +119,7 @@ const TeacherProfile = () => {
                 />
               </Form.Item>
               <Form.Item
-                className=""
+                className="sm:col-span-1 col-span-2"
                 label={
                   <span className="text-secondary_color font-semibold text-base">
                     Familiya
@@ -146,7 +146,7 @@ const TeacherProfile = () => {
                 />
               </Form.Item>
               <Form.Item
-                className=""
+                className="sm:col-span-1 col-span-2"
                 label={
                   <span className="text-secondary_color font-semibold text-base">
                     Foydalanuvchi nomi
@@ -173,7 +173,7 @@ const TeacherProfile = () => {
                 />
               </Form.Item>
               <Form.Item
-                className=""
+                className="sm:col-span-1 col-span-2"
                 label={
                   <span className="text-secondary_color font-semibold text-base">
                     Email
@@ -199,7 +199,7 @@ const TeacherProfile = () => {
                 />
               </Form.Item>
               <Form.Item
-                className=""
+                className="sm:col-span-1 col-span-2"
                 label={
                   <span className="text-secondary_color font-semibold text-base">
                     Mutaxassislik
@@ -247,7 +247,7 @@ const TeacherProfile = () => {
                 />
               </Form.Item>
               <Form.Item
-                className=""
+                className="sm:col-span-1 col-span-2"
                 label={
                   <span className="text-secondary_color font-semibold text-base">
                     Havola
@@ -272,9 +272,9 @@ const TeacherProfile = () => {
                 />
               </Form.Item>
             </div>
-            <div>
+            <div className="sm:col-span-1 col-span-2">
               <Form.Item
-                className=""
+                className="sm:col-span-1 col-span-2"
                 label={
                   <span className="text-secondary_color font-semibold text-base">
                     O’zingiz haqingizda ma’lumot
@@ -314,9 +314,9 @@ const TeacherProfile = () => {
         </Form>
       </div>
 
-      <div className="relative mt-14 mb-5">
+      <div className="relative mt-14 sm:mb-5 mb-10">
         <h1 className="title mb-8">Kurslar</h1>
-        <div className="grid grid-cols-4 justify-between w-full gap-5 gap-y-7">
+        <div className="grid sm:grid-cols-4 grid-cols-1 justify-between w-full gap-5 gap-y-7">
           {navData.map((item) => {
             return <NewCourseCard role={"teacher"} key={item.id} />;
           })}

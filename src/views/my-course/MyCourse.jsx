@@ -73,63 +73,63 @@ const MyCourse = () => {
     <div className="py-7">
       <div
         onClick={() => navigate(-1)}
-        className="btn back_btn inline-flex items-center gap-3 cursor-pointer p-[4px_20px]"
+        className="btn back_btn inline-flex items-center sm:gap-3 gap-1 cursor-pointer sm:p-[4px_20px] p-[2px_10px]"
       >
-        <i className="fa-solid fa-arrow-left"></i>
-        <button className="text-lg">Ortga qaytish</button>
+        <i className="fa-solid fa-arrow-left sm:text-base text-xs"></i>
+        <button className="sm:text-lg text-sm">Ortga qaytish</button>
       </div>
-      <div className="pb-20 pt-12">
+      <div className="sm:pb-20 sm:pt-12 pt-5 pb-10">
         <div className="col-span-1 flex flex-col justify-between">
           <div className="">
-            <h1 className="text-2xl font-semibold italic text-[#758195]">
+            <h1 className="sm:text-2xl text-lg font-semibold italic text-[#758195]">
               Fan va texnika yo'nalishi
             </h1>
-            <h1 className="text-5xl font-semibold pb-8">
+            <h1 className="sm:text-5xl text-xl font-semibold sm:pb-8 pb-5">
               Memorable UI Design For Interactive Experiences.
             </h1>
-            <h4 className="text-xl mb-10">
+            <h4 className="sm:text-xl text-sm sm:mb-10 mb-5">
               Kurs muallifi:{" "}
-              <Link className="text-2xl font-semibold border-b-2 border-black">
+              <Link className="sm:text-2xl text-base font-semibold border-b-2 border-black">
                 {"Saidjon Azamatov"}
               </Link>
             </h4>
           </div>
 
-          <div className="flex items-center justify-between gap-10 mb-6 w-[35%]">
-            <div className="flex items-center gap-3 text-base">
+          <div className="flex items-center justify-between sm:gap-10 gap-2 mb-6 sm:w-[35%] w-full">
+            <div className="flex items-center sm:gap-3 gap-1 sm:text-base text-sm">
               <i className="fa-solid fa-star text-[#DF742EFF]"></i>
               <p className="font-normal">4.0</p>
             </div>
-            <div className="flex items-center gap-3 text-base">
+            <div className="flex items-center gap-3 sm:text-base text-sm">
               <i className="fa-solid fa-comments"></i>
               <p className="font-normal">10 ta sharh</p>
             </div>
-            <div className="flex items-center gap-3 text-base">
+            <div className="flex items-center gap-3 sm:text-base text-sm">
               <i className="fa-regular fa-circle-check text-blue_color"></i>
               <p className="font-normal">125 ta o'quvchi</p>
             </div>
           </div>
 
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between sm:items-center items-start sm:flex-row flex-col gap-4">
             <ProgressBar
               height="25px"
-              className="bar_container w-[35%]"
+              className="bar_container sm:w-[35%] w-full"
               completed={80}
             />
-            <div className="flex items-center gap-4">
-              <i className="text-xl text-blue_color fa-solid fa-clock"></i>
-              <p className="text-lg font-medium text-[#758195]">
+            <div className="flex items-center sm:gap-4 gap-2">
+              <i className="sm:text-xl text-base text-blue_color fa-solid fa-clock"></i>
+              <p className="sm:text-lg text-sm font-medium text-[#758195]">
                 5 oy 3 kun 4 soat
               </p>
             </div>
           </div>
         </div>
       </div>
-      <div className="p-6 bg-[#f1f2f466] rounded-[16px] mb-16">
-        <h2 className="text-3xl text-main_color font-semibold mb-6">
+      <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px] sm:mb-16 mb-6">
+        <h2 className="sm:text-3xl text-xl text-main_color font-semibold sm:mb-6 mb-2">
           Kurs haqida qisqacha
         </h2>
-        <p className="text-xl leading-8">
+        <p className="sm:text-xl sm:leading-8 text-sm">
           Explore Auto Layout in Figma, starting with horizontal, vertical, and
           wrap layouts. Manage padding, gaps, and alignment, and use constraints
           like fixed, hug, and fill for optimal sizing. Design navigation bars,
@@ -144,20 +144,22 @@ const MyCourse = () => {
         </p>
       </div>
 
-      <div className="p-6 bg-[#f1f2f466] rounded-[16px]">
-        <h2 className="text-3xl text-main_color font-semibold mb-6">
+      <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px]">
+        <h2 className="sm:text-3xl text-xl text-main_color font-semibold sm:mb-6 mb-2">
           Video darslar
         </h2>
         <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center sm:gap-4 gap-2">
             <i className="fa-solid fa-book"></i>
-            <p className="text-[#1B1D20] font-normal text-base">
+            <p className="text-[#1B1D20] font-normal sm:text-base text-sm">
               12 ta darslik
             </p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center sm:gap-4 gap-2">
             <img className="w-[18px] h-[18px]" src={time} alt="" />
-            <p className="text-[#1B1D20] font-normal text-base">1.40 soat</p>
+            <p className="text-[#1B1D20] font-normal sm:text-base text-sm">
+              1.40 soat
+            </p>
           </div>
         </div>
         <Accordion.Root type="multiple" className="my-course_accordion w-full">
@@ -169,18 +171,18 @@ const MyCourse = () => {
             >
               <Accordion.Header className="accordion-header">
                 <Accordion.Trigger className="accordion-trigger">
-                  <div className="flex items-center gap-3">
-                    <img className="w-[20px]" src={right} alt="" />
+                  <div className="flex items-center sm:gap-3 gap-1">
+                    <img className="sm:w-[20px] w-[15px]" src={right} alt="" />
                     <p>{module.title}</p>
                   </div>
                   {module.isOpen ? (
-                    <button className="btn text-blue_color font-normal p-[10px_20px]">
+                    <button className="btn text-blue_color font-normal sm:text-base text-xs sm:p-[10px_20px] p-[5px_10px]">
                       Ko'rish
                     </button>
                   ) : (
                     <button
                       disabled
-                      className="btn text-blue_color font-normal p-[10px_20px]"
+                      className="btn text-blue_color font-normal sm:text-base text-xs sm:p-[10px_20px] p-[5px_10px]"
                     >
                       Yopiq
                     </button>
@@ -205,24 +207,20 @@ const MyCourse = () => {
         </Accordion.Root>
       </div>
 
-      <div className="flex justify-end items-center mb-5 mt-10 gap-5">
-        {/* <div className="flex items-center gap-2 cursor-pointer">
-          <i className="fa-solid fa-share-nodes"></i>
-          <button className="">Ulashish</button>
-        </div> */}
+      <div className="flex justify-end items-center sm:mb-5 mb-[35px] sm:mt-10 mt-4 sm:gap-5 gap-3">
         <div
           onClick={() => navigate(-1)}
-          className="btn inline-flex items-center gap-3 cursor-pointer p-[10px_20px]"
+          className="btn inline-flex items-center sm:gap-3 gap-2 cursor-pointer sm:p-[10px_20px] p-[5px_15px]"
         >
           <i className="fa-solid fa-share-nodes"></i>
-          <button className="text-lg">Ulashish</button>
+          <button className="sm:text-lg text-sm">Ulashish</button>
         </div>
         <div
           onClick={showModal}
-          className="btn inline-flex items-center gap-3 cursor-pointer p-[10px_20px]"
+          className="btn inline-flex items-center sm:gap-3 gap-2 cursor-pointer sm:p-[10px_20px] p-[5px_15px]"
         >
-         <i className="fa-regular fa-face-rolling-eyes"></i>
-          <button className="text-lg">Baholash</button>
+          <i className="fa-regular fa-face-rolling-eyes"></i>
+          <button className="sm:text-lg text-sm">Baholash</button>
         </div>
       </div>
 

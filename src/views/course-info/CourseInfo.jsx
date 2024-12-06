@@ -346,7 +346,7 @@ function CourseInfo() {
         <hr />
 
         <div className="flex justify-center items-center pt-4">
-          <button className="w-full py-[10px] rounded-[100px] text-white bg-blue_color sm:text-base text-sm font-medium">
+          <button className="w-full py-[10px] rounded-[100px] text-white bg-blue_color text-sm font-medium">
             Sotib olish
           </button>
         </div>

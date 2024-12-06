@@ -41,3 +41,12 @@
   outline: none;
 }
 
+@media only screen and (max-width: 540px){
+  .accordion-trigger {
+    border: 1.5px dashed #dcdfe3;
+    margin-bottom: 5px;
+    padding: 4px 5px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+}

@@ -64,7 +64,7 @@ const UploadLesson = () => {
     return e?.fileList;
   };
   return (
-    <div className="py-7 px-10">
+    <div className="py-7 sm:px-10 sm:mb-0 mb-16">
       <Form
         onFinish={onFinish}
         form={form}
@@ -81,7 +81,7 @@ const UploadLesson = () => {
                 Video dars nomi
               </span>
             }
-            className="w-full col-span-2 row-span-1"
+            className="w-full sm:col-span-2 sm:row-span-1 col-span-4 row-span-2"
             name="Input"
             rules={[
               {
@@ -103,7 +103,7 @@ const UploadLesson = () => {
               </span>
             }
             name="TextArea"
-            className="col-span-2 row-span-2"
+            className="sm:col-span-2 sm:row-span-2 col-span-4 row-span-2"
             rules={[
               {
                 required: true,
@@ -120,7 +120,7 @@ const UploadLesson = () => {
 
           <Form.Item
             name="radio"
-            className="col-span-2 row-span-2"
+            className="sm:col-span-2 sm:row-span-2 col-span-4 row-span-2"
             rules={[
               {
                 required: true,
@@ -139,10 +139,10 @@ const UploadLesson = () => {
             </Radio.Group>
           </Form.Item>
         </div>
-        <div className="flex gap-16">
+        <div className="flex sm:gap-16 gap-5">
           <Form.Item
             label={<span className="text-secondary_color font-semibold text-base">
-              Video dars ( video fayl )
+              Video dars (video fayl)
             </span>}
             className="col-span-1 row-span-1"
             name="Upload"
@@ -168,7 +168,7 @@ const UploadLesson = () => {
                 Yuklash
               </Upload>
               {videoFile && (
-                <div className="w-[200px] h-[200px] mt-5">
+                <div className="sm:w-[200px] sm:h-[150px] w-[150px] h-[120px] mt-5">
                   <video
                     controls
                     className="w-full h-full"
@@ -213,10 +213,10 @@ const UploadLesson = () => {
           </Form.Item>
         </div>
         <div className="w-full flex items-center justify-end gap-3 mt-1">
-          <Button className="w-[15%]" type="primary" htmlType="submit">
+          <Button className="sm:w-[15%] w-[50%]" type="primary" htmlType="submit">
             Yakunlash
           </Button>
-          <Button className="w-[15%]" type="primary" htmlType="submit">
+          <Button className="sm:w-[15%] w-[50%]" type="primary" htmlType="submit">
             Video darsni qo'shish
           </Button>
         </div>

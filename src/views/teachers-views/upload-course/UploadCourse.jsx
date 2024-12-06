@@ -64,7 +64,7 @@ const UploadCourse = () => {
     return e?.fileList;
   };
   return (
-    <div className="py-7 px-10">
+    <div className="py-7 sm:mb-0 mb-16 sm:px-10 px-0">
       <Form
         onFinish={onFinish}
         form={form}
@@ -81,7 +81,7 @@ const UploadCourse = () => {
                 Kurs nomi
               </span>
             }
-            className="w-full col-span-1 row-span-1"
+            className="w-full sm:col-span-1 col-span-4 row-span-3 sm:row-span-1"
             name="Input"
             rules={[
               {
@@ -102,7 +102,7 @@ const UploadCourse = () => {
               </span>
             }
             name="Kategoriya"
-            className="col-span-1 row-span-1"
+            className="sm:col-span-1 sm:row-span-1 col-span-4 row-span-3"
             rules={[
               {
                 required: true,
@@ -145,7 +145,7 @@ const UploadCourse = () => {
               </span>
             }
             name="Til"
-            className="col-span-1 row-span-1"
+            className="sm:col-span-1 sm:row-span-1 col-span-4 row-span-3"
             rules={[
               {
                 required: true,
@@ -181,7 +181,7 @@ const UploadCourse = () => {
               </span>
             }
             name="Obuna"
-            className="col-span-1 row-span-1"
+            className="sm:col-span-1 sm:row-span-1 col-span-4 row-span-3"
             rules={[
               {
                 required: true,
@@ -225,7 +225,7 @@ const UploadCourse = () => {
               </span>
             }
             name="TextArea"
-            className="col-span-2 row-span-2"
+            className="sm:col-span-2 sm:row-span-2 col-span-4 row-span-3"
             rules={[
               {
                 required: true,
@@ -246,7 +246,7 @@ const UploadCourse = () => {
               </span>
             }
             name="Okk"
-            className="col-span-2 row-span-2"
+            className="sm:col-span-2 sm:row-span-2 col-span-4 row-span-3"
             rules={[
               {
                 required: true,
@@ -268,7 +268,7 @@ const UploadCourse = () => {
               </span>
             }
             name="Murakkablik"
-            className="col-span-1 row-span-1"
+            className="sm:col-span-1 sm:row-span-1 col-span-4 row-span-3"
             rules={[
               {
                 required: true,
@@ -297,7 +297,7 @@ const UploadCourse = () => {
             />
           </Form.Item>
           <Form.Item
-            className="col-span-1 row-span-1"
+            className="sm:col-span-1 sm:row-span-1 col-span-4 row-span-3"
             label={
               <span className="text-secondary_color font-semibold text-base">
                 Kurs narxi ( so’m )
@@ -317,7 +317,7 @@ const UploadCourse = () => {
             />
           </Form.Item>
         </div>
-        <div className="flex gap-16">
+        <div className="flex sm:gap-16 gap-8">
           <Form.Item
             label={<span className="text-secondary_color font-semibold text-base">
               Treler video
@@ -346,7 +346,7 @@ const UploadCourse = () => {
                 Treller yuklash
               </Upload>
               {videoFile && (
-                <div className="w-[200px] h-[200px] mt-5">
+                <div className="sm:w-[200px] sm:h-[150px] w-[150px] h-[120px] mt-5">
                   <video
                     controls
                     className="w-full h-full"
@@ -385,7 +385,7 @@ const UploadCourse = () => {
                 Yuklash
               </Upload>
               {imageFile && (
-                <div className="w-[200px] h-[200px] mt-5">
+                <div className="sm:w-[200px] sm:h-[150px] w-[150px] h-[120px] mt-5">
                   <img
                     style={{
                       objectFit: "contain",
@@ -400,10 +400,10 @@ const UploadCourse = () => {
           </Form.Item>
         </div>
         <div className="w-full flex items-center justify-end gap-3 mt-1">
-          <Button className="w-[15%]" type="primary" htmlType="submit">
+          <Button className="sm:w-[15%] w-[50%]" type="primary" htmlType="submit">
             Bekor qilish
           </Button>
-          <Button className="w-[15%]" type="primary" htmlType="submit">
+          <Button className="sm:w-[15%] w-[50%]" type="primary" htmlType="submit">
             Kurs yaratish
           </Button>
         </div>

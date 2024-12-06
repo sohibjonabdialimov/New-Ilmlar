@@ -52,21 +52,21 @@ const AccountBalance = () => {
   };
 
   return (
-    <div className="py-7">
-      <h1 className="title mb-5">Hisob balans</h1>
-      <div className="flex justify-between">
+    <div className="py-7 sm:mb-0 mb-16">
+      <h1 className="title sm:mb-5 mb-4">Hisob balans</h1>
+      <div className="flex justify-between sm:flex-row flex-col gap-3">
         <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-10">
-            <h3 className="text-[#758195] text-[22px] font-semibold">Hisob raqamingiz:</h3>
-            <p className="text-[#758195] text-[22px] font-medium">***********</p>
+          <div className="flex items-center sm:gap-10 gap-3">
+            <h3 className="text-[#758195] sm:text-[22px] text-[15px] font-semibold">Hisob raqamingiz:</h3>
+            <p className="text-[#758195] sm:text-[22px] text-[15px] font-medium">***********</p>
           </div>
-          <div className="flex items-center gap-10">
-            <h3 className="text-[#758195] text-[22px] font-semibold">Hisobingizdagi pul miqdori:</h3>
-            <p className="text-[#758195] text-[22px] font-medium">145 ming so'm</p>
+          <div className="flex items-center sm:gap-10 gap-3">
+            <h3 className="text-[#758195] sm:text-[22px] text-[15px] font-semibold">Hisobingizdagi pul miqdori:</h3>
+            <p className="text-[#758195] sm:text-[22px] text-[15px] font-medium">145 ming so'm</p>
           </div>
         </div>
         <div>
-          <button onClick={showDrawer} className="btn p-[10px_20px]">Pul yechib olish</button>
+          <button onClick={showDrawer} className="btn sm:text-base sm:p-[10px_20px] p-[8px_15px] text-sm">Pul yechib olish</button>
         </div>
       </div>
 
