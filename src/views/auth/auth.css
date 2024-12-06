@@ -41,3 +41,8 @@
 .otp-input:focus {
   border-color: #007bff;
 }
+@media only screen and (max-width: 1024px) {
+  .auth_form {
+    box-shadow: none;
+  }
+}

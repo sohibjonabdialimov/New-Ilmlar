@@ -34,24 +34,24 @@ const RegisterPage = () => {
     <>
       {contextHolder}
 
-      <div className="grid grid-cols-12 p-6 w-full gap-6">
-        <div className="col-span-6 mx-[50px] flex justify-center items-center">
+      <div className="grid grid-cols-12 p-6 w-full gap-6 min-h-[100dvh]">
+        <div className="sm:col-span-6 col-span-12 sm:mx-[50px] mx-auto flex justify-center items-center">
           <Form
             layout="vertical"
-            className="register_form px-24 pt-4 pb-8 auth_form w-full"
+            className="register_form sm:px-24 px-10 sm:pt-4 sm:pb-8 auth_form w-full"
             onSubmitCapture={(e) => {
               e.preventDefault();
               submitHandler();
             }}
           >
-            <h1 className="text-main_color text-[25px] leading-[30px] font-semibold text-center mb-3">
+            <h1 className="text-main_color sm:text-[25px] text-xl sm:leading-[30px] font-semibold text-center mb-3">
               Katta imkoniyatlar dunyosiga qadam qo'ying
             </h1>
             <div className="grid grid-cols-1 gap-0">
               <Form.Item
                 className="mb-2"
                 label={
-                  <span className="text-secondary_color font-semibold text-base">
+                  <span className="text-secondary_color font-semibold sm:text-base text-sm">
                     Ism
                   </span>
                 }
@@ -68,7 +68,7 @@ const RegisterPage = () => {
                         <Input
                           {...field}
                           placeholder="Ismingizni kiriting..."
-                          className="w-full py-2.5 px-4 rounded-[10px]"
+                          className="w-full py-2.5 px-4 rounded-[10px] sm:text-base text-sm sm:placeholder:text-base placeholder:text-xs "
                         />
                       </>
                     );
@@ -78,7 +78,7 @@ const RegisterPage = () => {
               <Form.Item
                 className="mb-2"
                 label={
-                  <span className="text-secondary_color font-semibold text-base">
+                  <span className="text-secondary_color font-semibold sm:text-base text-sm">
                     Familiya
                   </span>
                 }
@@ -95,7 +95,7 @@ const RegisterPage = () => {
                         <Input
                           {...field}
                           placeholder="Familiyangizni kiriting..."
-                          className="w-full py-2.5 px-4 rounded-[10px]"
+                          className="w-full py-2.5 px-4 rounded-[10px] sm:text-base text-sm"
                         />
                       </>
                     );
@@ -105,7 +105,7 @@ const RegisterPage = () => {
               <Form.Item
                 className="mb-2"
                 label={
-                  <span className="text-secondary_color font-semibold text-base">
+                  <span className="text-secondary_color font-semibold sm:text-base text-sm">
                     Foydalanuvchi nomi
                   </span>
                 }
@@ -122,7 +122,7 @@ const RegisterPage = () => {
                         <Input
                           {...field}
                           placeholder="Foydalanuvchi nomi"
-                          className="w-full py-2.5 px-4 rounded-[10px]"
+                          className="w-full py-2.5 px-4 rounded-[10px] sm:text-base text-sm"
                         />
                       </>
                     );
@@ -132,7 +132,7 @@ const RegisterPage = () => {
               <Form.Item
                 className="mb-2"
                 label={
-                  <span className="text-secondary_color font-semibold text-base">
+                  <span className="text-secondary_color font-semibold sm:text-base text-sm">
                     Email
                   </span>
                 }
@@ -149,7 +149,7 @@ const RegisterPage = () => {
                         {...field}
                         type="email"
                         placeholder="user@gmail.com"
-                        className="w-full py-2.5 px-5 rounded-[10px]"
+                        className="w-full py-2.5 px-5 rounded-[10px] sm:text-base text-sm"
                       />
                     );
                   }}
@@ -158,7 +158,7 @@ const RegisterPage = () => {
               <Form.Item
                 className="mb-2"
                 label={
-                  <span className="text-secondary_color font-semibold text-base">
+                  <span className="text-secondary_color font-semibold sm:text-base text-sm">
                     Parol
                   </span>
                 }
@@ -175,7 +175,7 @@ const RegisterPage = () => {
                         {...field}
                         type="password"
                         placeholder="********"
-                        className="w-full py-2.5 px-5 rounded-[10px]"
+                        className="w-full py-2.5 px-5 rounded-[10px] sm:text-base text-sm"
                       />
                     );
                   }}
@@ -210,7 +210,7 @@ const RegisterPage = () => {
 
               <button
                 type="submit"
-                className="w-full my-[10px] text-base py-2 text-white rounded-2xl bg-blue_color cursor-pointer transition-opacity hover:opacity-85"
+                className="w-full my-[10px] sm:text-base text-sm sm:py-2 py-1.5 text-white rounded-2xl bg-blue_color cursor-pointer transition-opacity hover:opacity-85"
               >
                 Kirish
               </button>
@@ -227,7 +227,7 @@ const RegisterPage = () => {
           </Form>
         </div>
 
-        <div className="auth_img col-span-6">
+        <div className="auth_img sm:block hidden col-span-6">
           <img className="" src={auth} alt="" />
         </div>
       </div>

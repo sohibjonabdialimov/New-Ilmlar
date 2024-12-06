@@ -18,9 +18,9 @@ export default {
       },
     },
     extend: {
-      fontSize: {
-        23: "23px",
-      },
+      // fontSize: {
+      //   23: "23px",
+      // },
       colors: {
         main_color: "#1B1D20",
         secondary_color: "#758195",

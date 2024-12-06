@@ -24,10 +24,6 @@ a {
   text-decoration: none;
 }
 
-html {
-  font-size: 1rem;
-}
-
 button {
   outline: none;
   border: none;
@@ -92,6 +88,10 @@ button:focus {
   color: #465670 !important;
   background-color: #f1f2f4 !important;
 }
+.mySwiper {
+  padding: 10px 0;
+}
+
 .bar_container div div {
   background-color: #007bff !important;
 }
@@ -99,36 +99,32 @@ button:focus {
   background-color: #f1f2f4ff !important;
 }
 
+
+
 @media only screen and (max-width: 1024px) {
-  html {
-    font-size: 14px;
-  }
 }
 @media only screen and (max-width: 780px) {
-  html {
-    font-size: 12px;
-  }
 }
 @media only screen and (max-width: 540px) {
-  html {
-    font-size: 10px;
-  }
   .swiper-wrapper {
     padding-top: 40px;
   }
 
   .swiper-button-prev,
   .swiper-button-next {
-    width: 30px !important;
-    height: 30px !important;
+    width: 25px !important;
+    height: 25px !important;
     top: 30px !important;
   }
   .swiper-button-prev {
-    left: 80% !important;
+    left: 82% !important;
+  }
+  .swiper-button-next {
+    right: 0% !important;
   }
   .swiper-button-prev::after,
   .swiper-button-next::after {
-    font-size: 14px !important;
+    font-size: 12px !important;
   }
 
   .title {
@@ -136,9 +132,15 @@ button:focus {
     font-weight: 600;
     line-height: 20px;
   }
+  .comments_swiper .swiper-wrapper {
+    padding-top: 45px;
+  }
+  .ant-select-selector{
+    padding: 0 4px !important;
+  }
 }
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 420px) {
   .swiper-button-prev {
-    left: 74% !important;
+    left: 80% !important;
   }
 }

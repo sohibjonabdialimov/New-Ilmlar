@@ -70,12 +70,12 @@ const Header = () => {
             </div>
           </div>
           {bool ? (
-            <nav className="flex items-center gap-6">
+            <nav className="flex items-center sm:gap-6 gap-2">
               <div
                 onClick={showDrawer}
-                className="cursor-pointer w-[44px] h-[44px] bg-[#E9F2FF] rounded-full flex items-center justify-center"
+                className="cursor-pointer sm:w-[44px] sm:h-[44px] w-[30px] h-[30px] bg-[#E9F2FF] rounded-full flex items-center justify-center"
               >
-                <img className="w-[24px] h-[24px]" src={card} alt="" />
+                <img className="sm:w-[24px] sm:h-[24px] w-[15px] h-[15px]" src={card} alt="" />
               </div>
               <div
                 onClick={toggleFullScreen}
@@ -85,25 +85,25 @@ const Header = () => {
               </div>
               <Select
                 defaultValue={"uzb"}
-                className="sm:w-[100px] w-[60px] sm:block hidden"
+                className="sm:w-[100px] w-[70px]"
                 onChange={(value) => console.log(`Selected language ${value}`)}
                 placeholder="Select a country"
               >
                 <Option value="uzb">
-                  <div className="flex items-center gap-2">
-                    <img src={uzb} alt="USA" className="sm:w-[16px] w-[10px]" />
+                  <div className="flex items-center sm:gap-2 gap-[2px] sm:text-base text-xs">
+                    <img src={uzb} alt="USA" className="sm:w-[16px] w-[12px]" />
                     UZB
                   </div>
                 </Option>
                 <Option value="rus">
-                  <div className="flex items-center gap-2">
-                    <img src={rus} alt="Canada" className="sm:w-[16px] w-[10px]" />
+                  <div className="flex items-center sm:gap-2 gap-[2px] sm:text-base text-xs">
+                    <img src={rus} alt="Canada" className="sm:w-[16px] w-[12px]" />
                     RUS
                   </div>
                 </Option>
                 <Option value="eng">
-                  <div className="flex items-center gap-2">
-                    <img src={eng} alt="UK" className="sm:w-[16px] w-[10px]" />
+                  <div className="flex items-center sm:gap-2 gap-[2px] sm:text-base text-xs">
+                    <img src={eng} alt="UK" className="sm:w-[16px] w-[12px]" />
                     ENG
                   </div>
                 </Option>
@@ -114,8 +114,8 @@ const Header = () => {
                 }}
                 placement="bottom"
               >
-                <div className="cursor-pointer w-[44px] h-[44px] flex justify-center items-center bg-blue_color rounded-full">
-                  <p className="text-white text-xl font-semibold">S</p>
+                <div className="cursor-pointer sm:w-[44px] sm:h-[44px] w-[30px] h-[30px] flex justify-center items-center bg-blue_color rounded-full">
+                  <p className="text-white sm:text-xl text-sm sm:font-semibold font-medium">S</p>
                 </div>
               </Dropdown>
             </nav>

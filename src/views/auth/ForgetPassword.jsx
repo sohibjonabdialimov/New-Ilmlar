@@ -34,23 +34,23 @@ const ForgetPassword = () => {
     <>
       {contextHolder}
 
-      <div className="grid grid-cols-12 p-6 w-full gap-6">
-        <div className="col-span-6 mx-[50px] flex justify-center items-center">
+      <div className="grid grid-cols-12 p-6 w-full gap-6 min-h-[100dvh]">
+        <div className="sm:col-span-6 col-span-12 sm:mx-[50px] flex justify-center items-center">
           <Form
             layout="vertical"
-            className="px-24 py-16 auth_form w-full"
+            className="sm:px-24 px-10 sm:py-16 auth_form w-full"
             onSubmitCapture={(e) => {
               e.preventDefault();
               submitHandler();
             }}
           >
-            <h1 className="text-main_color text-[30px] leading-[50px] font-semibold text-center mb-5">
+            <h1 className="text-main_color text-xl sm:text-[30px] sm:leading-[50px] font-semibold text-center mb-5">
               Parolni unitdingizmi?
             </h1>
             <div className="grid grid-cols-1 gap-2">
               <Form.Item
                 label={
-                  <span className="text-secondary_color font-semibold text-base">
+                  <span className="text-secondary_color font-semibold sm:text-base text-sm">
                     Email
                   </span>
                 }
@@ -67,7 +67,7 @@ const ForgetPassword = () => {
                         <Input
                           {...field}
                           placeholder="Emailni kiriting..."
-                          className="w-full py-3 px-4 rounded-[10px]"
+                          className="w-full py-3 px-4 rounded-[10px] sm:text-base text-sm sm:placeholder:text-base placeholder:text-xs"
                         />
                       </>
                     );
@@ -77,7 +77,7 @@ const ForgetPassword = () => {
 
               <button
                 type="submit"
-                className="w-full text-base py-2 text-white rounded-2xl bg-blue_color cursor-pointer transition-opacity hover:opacity-85"
+                className="w-full sm:text-base text-sm sm:py-2 py-1.5 text-white rounded-2xl bg-blue_color cursor-pointer transition-opacity hover:opacity-85"
               >
                 Emailga kod jo'natish
               </button>
@@ -94,7 +94,7 @@ const ForgetPassword = () => {
           </Form>
         </div>
 
-        <div className="auth_img col-span-6">
+        <div className="sm:block hidden auth_img col-span-6">
           <img className="" src={auth} alt="" />
         </div>
       </div>
