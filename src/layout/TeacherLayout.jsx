@@ -9,7 +9,7 @@ const TeacherLayout = ({ children }) => {
         <div className="sm:px-6 px-3 bg-bg_color rounded-2xl mx-auto">
           {children}
         </div>
-        <nav className="sm:hidden mobile_navbar fixed bottom-3 left-0 right-0 w-full bg-white z-50 rounded-3xl py-2">
+        <nav className="sm:hidden mobile_navbar fixed bottom-1 left-0 right-0 w-full bg-white z-50 rounded-3xl py-2">
           <div className="flex justify-around items-center px-8">
             <NavLink
               to={"/student-profile"}

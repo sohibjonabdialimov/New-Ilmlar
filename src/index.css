@@ -61,6 +61,13 @@ button:focus {
   padding-top: 70px;
 }
 
+.custom-popover .ant-popover-inner {
+  padding: 10px 0; 
+}
+
+/* .custom-popover .ant-popover-inner-content {
+  padding: 0; 
+} */
 .swiper-button-prev,
 .swiper-button-next {
   color: #fff !important;

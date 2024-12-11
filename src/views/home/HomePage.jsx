@@ -49,7 +49,7 @@ const HomePage = () => {
     },
   ];
   return (
-    <div className="py-7">
+    <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
       <div className="relative">
         <h1 className="title absolute top-0">Yangi qo’shilgan kurslar</h1>
         <Swiper
@@ -133,7 +133,7 @@ const HomePage = () => {
             navigate("/courses");
             window.scrollTo(0, 0);
           }}
-          className="bg-blue_color text-white font-normal rounded-[100px] py-3 px-14 text-base"
+          className="bg-blue_color text-white font-normal rounded-[100px] sm:py-3 py-2 sm:px-14 px-10 text-base"
         >
           Hammasi ko’rish
         </button>

@@ -28,11 +28,11 @@ const PopularCourseNavbar = () => {
       spaceBetween={5}
       breakpoints={{
         640: {
-          slidesPerView: 2,
+          slidesPerView: 2.5,
           spaceBetween: 16,
         },
         768: {
-          slidesPerView: 4,
+          slidesPerView: 4.5,
           spaceBetween: 16,
         },
         1024: {
