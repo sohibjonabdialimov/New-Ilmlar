@@ -1,26 +1,27 @@
-import { Controller, useForm } from "react-hook-form";
-import { Form, Input, message } from "antd";
+import { Form } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-// import axiosT from "../../../services/axios";
 import auth from "../../assets/images/auth_img.png";
 import "./auth.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthProvider";
 import OTPInput from "react-otp-input";
+import { PostUsersVerify } from "../../services/api";
 const EmailCode = () => {
   const [otp, setOtp] = useState("");
-
-  const { control, getValues } = useForm();
+  const { email } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [messageApi, contextHolder] = message.useMessage();
 
   const handleChange = (value) => {
     setOtp(value);
   };
-  const submitHandler = async () => {};
+  const submitHandler = () => {
+    PostUsersVerify({ email: email, password: otp }).then((res) => {
+      console.log(res);
+      navigate("/", { state: { email: true } });
+    });
+  };
   return (
     <>
-      {contextHolder}
-
       <div className="grid grid-cols-12 p-6 w-full gap-6 min-h-[100dvh]">
         <div className="sm:col-span-6 col-span-12 sm:mx-[60px] flex justify-center items-center">
           <Form
@@ -41,12 +42,14 @@ const EmailCode = () => {
               <OTPInput
                 value={otp}
                 onChange={handleChange}
-                numInputs={4}
+                numInputs={6}
                 isInputNum
                 shouldAutoFocus
                 inputStyle="otp-input"
                 containerStyle="otp-input-container"
-                renderInput={(props) => <input className="select-none" {...props} />}
+                renderInput={(props) => (
+                  <input className="select-none" {...props} />
+                )}
               />
 
               <button

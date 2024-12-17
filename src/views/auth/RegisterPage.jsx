@@ -4,13 +4,26 @@ import { Link, useNavigate } from "react-router-dom";
 // import axiosT from "../../../services/axios";
 import auth from "../../assets/images/auth_img.png";
 import "./auth.css";
+import { PostUsers } from "../../services/api";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthProvider";
 const RegisterPage = () => {
   const { control, getValues } = useForm();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
+  const { setEmail } = useContext(AuthContext);
 
-  const submitHandler = async () => {
-    // const login = getValues().LOGIN;
+  const submitHandler = () => {
+    const registerData = getValues().REGISTER;
+    delete registerData.repassword;
+    console.log(registerData);
+    registerData.type = "student";
+    PostUsers(registerData).then((res) => {
+      console.log(res);
+      setEmail(res.data.data.email);
+      navigate("/verify-code");
+    });
+    //
     // axiosT
     //   .post("/accounts/Token", login)
     //   .then(({ data }) => {
@@ -61,14 +74,14 @@ const RegisterPage = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="LOGIN.firstname"
+                  name="REGISTER.first_name"
                   render={({ field }) => {
                     return (
                       <>
                         <Input
                           {...field}
                           placeholder="Ismingizni kiriting..."
-                          className="w-full py-2.5 px-4 rounded-[10px] sm:text-base text-sm sm:placeholder:text-base placeholder:text-xs "
+                          className="w-full py-2 px-4 rounded-[10px] sm:text-base text-sm sm:placeholder:text-base placeholder:text-xs "
                         />
                       </>
                     );
@@ -88,14 +101,14 @@ const RegisterPage = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="LOGIN.lastname"
+                  name="REGISTER.last_name"
                   render={({ field }) => {
                     return (
                       <>
                         <Input
                           {...field}
                           placeholder="Familiyangizni kiriting..."
-                          className="w-full py-2.5 px-4 rounded-[10px] sm:text-base text-sm"
+                          className="w-full py-2 px-4 rounded-[10px] sm:text-base text-sm"
                         />
                       </>
                     );
@@ -115,14 +128,14 @@ const RegisterPage = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="LOGIN.username"
+                  name="REGISTER.username"
                   render={({ field }) => {
                     return (
                       <>
                         <Input
                           {...field}
                           placeholder="Foydalanuvchi nomi"
-                          className="w-full py-2.5 px-4 rounded-[10px] sm:text-base text-sm"
+                          className="w-full py-2 px-4 rounded-[10px] sm:text-base text-sm"
                         />
                       </>
                     );
@@ -142,14 +155,14 @@ const RegisterPage = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="LOGIN.email"
+                  name="REGISTER.email"
                   render={({ field }) => {
                     return (
                       <Input
                         {...field}
                         type="email"
                         placeholder="user@gmail.com"
-                        className="w-full py-2.5 px-5 rounded-[10px] sm:text-base text-sm"
+                        className="w-full py-2 px-5 rounded-[10px] sm:text-base text-sm"
                       />
                     );
                   }}
@@ -168,14 +181,14 @@ const RegisterPage = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="LOGIN.password"
+                  name="REGISTER.password"
                   render={({ field }) => {
                     return (
                       <Input.Password
                         {...field}
                         type="password"
                         placeholder="********"
-                        className="w-full py-2.5 px-5 rounded-[10px] sm:text-base text-sm"
+                        className="w-full py-2 px-5 rounded-[10px] sm:text-base text-sm"
                       />
                     );
                   }}
@@ -194,14 +207,14 @@ const RegisterPage = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="LOGIN.repassword"
+                  name="REGISTER.repassword"
                   render={({ field }) => {
                     return (
                       <Input.Password
                         {...field}
                         type="password"
                         placeholder="********"
-                        className="w-full py-2.5 px-5 rounded-[10px]"
+                        className="w-full py-2 px-5 rounded-[10px]"
                       />
                     );
                   }}
@@ -210,9 +223,9 @@ const RegisterPage = () => {
 
               <button
                 type="submit"
-                className="w-full my-[10px] sm:text-base text-sm sm:py-2 py-1.5 text-white rounded-2xl bg-blue_color cursor-pointer transition-opacity hover:opacity-85"
+                className="w-full my-[10px] sm:text-base text-sm sm:py-2 py-1 text-white rounded-2xl bg-blue_color cursor-pointer transition-opacity hover:opacity-85"
               >
-                Kirish
+                Ro'yxatdan o'tish
               </button>
               <p className="text-center text-secondary_color text-sm font-normal ">
                 Shaxsiy sahifangiz bormi?{" "}

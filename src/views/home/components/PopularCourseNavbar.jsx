@@ -9,10 +9,10 @@ const navData = [
   "Dizayn",
   "Biznes",
   "Fan va texnika",
-  "Dasturlash",
-  "Dizayn",
-  "Biznes",
-  "Fan va texnika",
+  "Dasturlash 1",
+  "Dizayn 2",
+  "Biznes 3",
+  "Fan va texnika 3",
   "Shaxsiy rivojlanish"
 ];
 import "./style.css";

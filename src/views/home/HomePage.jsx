@@ -7,9 +7,18 @@ import NewCourseCard from "./components/NewCourseCard";
 import PopularCourseNavbar from "./components/PopularCourseNavbar";
 import TeachersGroupCard from "./components/TeachersGroupCard";
 import "./home.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { message } from "antd";
 const HomePage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [messageApi, contextHolder] = message.useMessage();
+  if (location.state?.email) {
+    messageApi.open({
+      type: "info",
+      content: "Tizimga muvaffaqqiyatli kirildi",
+    });
+  }
   const navData = [
     {
       id: 1,
@@ -50,6 +59,7 @@ const HomePage = () => {
   ];
   return (
     <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
+      {contextHolder}
       <div className="relative">
         <h1 className="title absolute top-0">Yangi qo’shilgan kurslar</h1>
         <Swiper
