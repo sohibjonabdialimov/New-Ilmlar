@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 import AuthProvider from "./context/AuthProvider.jsx";
+import ProfileProvider from "./context/ProfileProvider.jsx";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -21,9 +22,11 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <QueryClientProvider client={client}>
       <BrowserRouter>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+        <AuthProvider>
+          <ProfileProvider>
+            <App />
+          </ProfileProvider>
+        </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>

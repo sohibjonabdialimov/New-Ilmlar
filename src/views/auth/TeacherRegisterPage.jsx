@@ -1,13 +1,13 @@
 import { Controller, useForm } from "react-hook-form";
 import { Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-// import axiosT from "../../../services/axios";
-import auth from "../../assets/images/auth_img.png";
 import "./auth.css";
 import { PostUsers } from "../../services/api";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
-const RegisterPage = () => {
+
+const { TextArea } = Input;
+const TeacherRegisterPage = () => {
   const { control, getValues } = useForm();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
@@ -16,13 +16,18 @@ const RegisterPage = () => {
   const submitHandler = () => {
     const registerData = getValues().REGISTER;
     delete registerData.repassword;
+    delete registerData.description;
     console.log(registerData);
-    registerData.type = "student";
+    registerData.type = "teacher";
     PostUsers(registerData)
       .then((res) => {
         console.log(res);
         setEmail(res.data.data.email);
-        navigate("/verify-code");
+
+        navigate("/verify-code", {
+          state: { name: "teacher" },
+        });
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
@@ -31,33 +36,14 @@ const RegisterPage = () => {
           content: "Foydalanuvchi nomi yoki emailda xato bo'lishi mumkin",
         });
       });
-
-    //
-    // axiosT
-    //   .post("/accounts/Token", login)
-    //   .then(({ data }) => {
-    //     localStorage.setItem("accessToken", data.access_token);
-    //     localStorage.setItem("refreshToken", data.refresh_token);
-    //     messageApi.open({
-    //       type: "info",
-    //       content: "Tizimga muvaffaqqiyatli kirildi",
-    //     });
-    //     navigate("/");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     messageApi.open({
-    //       type: "error",
-    //       content: "Bunday login parol mavjud emas",
-    //     });
-    //   });
   };
+
   return (
     <>
       {contextHolder}
 
-      <div className="grid grid-cols-12 p-6 w-full gap-6 min-h-[100dvh]">
-        <div className="sm:col-span-6 col-span-12 sm:mx-[50px] mx-auto flex justify-center items-center">
+      <div className="p-6 w-full gap-6 sm:h-[100dvh] min-h-[100dvh]">
+        <div className="sm:mx-[50px] mx-auto h-full flex justify-center items-center">
           <Form
             layout="vertical"
             className="register_form sm:px-24 px-10 sm:pt-4 sm:pb-8 auth_form w-full"
@@ -69,11 +55,11 @@ const RegisterPage = () => {
             <h1 className="text-main_color sm:text-[25px] text-xl sm:leading-[30px] font-semibold text-center mb-3">
               Katta imkoniyatlar dunyosiga qadam qo'ying
             </h1>
-            <div className="grid grid-cols-1 gap-0">
+            <div className="grid grid-cols-2 grid-rows-2 gap-5">
               <Form.Item
-                className="mb-2"
+                className="mb-2 col-span-1 row-span-1"
                 label={
-                  <span className="text-secondary_color font-semibold sm:text-base text-sm">
+                  <span className="text-secondary_color  font-semibold sm:text-base text-sm">
                     Ism
                   </span>
                 }
@@ -98,7 +84,7 @@ const RegisterPage = () => {
                 />
               </Form.Item>
               <Form.Item
-                className="mb-2"
+                className="mb-2 col-span-1 row-span-1"
                 label={
                   <span className="text-secondary_color font-semibold sm:text-base text-sm">
                     Familiya
@@ -125,7 +111,7 @@ const RegisterPage = () => {
                 />
               </Form.Item>
               <Form.Item
-                className="mb-2"
+                className="mb-2 col-span-1 row-span-1"
                 label={
                   <span className="text-secondary_color font-semibold sm:text-base text-sm">
                     Foydalanuvchi nomi
@@ -152,7 +138,7 @@ const RegisterPage = () => {
                 />
               </Form.Item>
               <Form.Item
-                className="mb-2"
+                className="mb-2 col-span-1 row-span-1"
                 label={
                   <span className="text-secondary_color font-semibold sm:text-base text-sm">
                     Email
@@ -177,6 +163,36 @@ const RegisterPage = () => {
                   }}
                 />
               </Form.Item>
+
+              <Form.Item
+                className="mb-2 col-span-1 row-span-2"
+                label={
+                  <span className="text-secondary_color font-semibold sm:text-base text-sm">
+                    Izoh
+                  </span>
+                }
+              >
+                <Controller
+                  rules={{
+                    required: "Field is required",
+                  }}
+                  control={control}
+                  name="REGISTER.description"
+                  render={({ field }) => {
+                    return (
+                      <>
+                        <TextArea
+                          {...field}
+                          style={{ height: 150 }}
+                          placeholder="...."
+                          className="w-full py-2 px-4 rounded-[10px] sm:text-base text-sm"
+                        />
+                      </>
+                    );
+                  }}
+                />
+              </Form.Item>
+
               <Form.Item
                 className="mb-2"
                 label={
@@ -229,7 +245,8 @@ const RegisterPage = () => {
                   }}
                 />
               </Form.Item>
-
+            </div>
+            <div className="w-[30%] mx-auto flex justify-center items-center flex-col">
               <button
                 type="submit"
                 className="w-full my-[10px] sm:text-base text-sm sm:py-2 py-1 text-white rounded-2xl bg-blue_color cursor-pointer transition-opacity hover:opacity-85"
@@ -248,13 +265,9 @@ const RegisterPage = () => {
             </div>
           </Form>
         </div>
-
-        <div className="auth_img sm:block hidden col-span-6">
-          <img className="" src={auth} alt="" />
-        </div>
       </div>
     </>
   );
 };
 
-export default RegisterPage;
+export default TeacherRegisterPage;

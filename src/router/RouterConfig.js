@@ -9,6 +9,7 @@ const LoginPage = React.lazy(() => import("../views/auth/LoginPage"));
 const ForgetPassword = React.lazy(() => import("../views/auth/ForgetPassword"));
 const RegisterPage = React.lazy(() => import("../views/auth/RegisterPage"));
 const EmailCode = React.lazy(() => import("../views/auth/EmailCode"));
+const TeacherRegisterPage = React.lazy(() => import("../views/auth/TeacherRegisterPage"));
 const HomePage = React.lazy(() => import("../views/home/HomePage"));
 const TeacherProfileForStudents = React.lazy(() => import("../views/teacher-profile-for-students/TeacherProfileForStudents"));
 const StudentProfile = React.lazy(() => import("../views/student-profile/StudentProfile"));
@@ -21,6 +22,7 @@ const CourseStatistic = React.lazy(() => import("../views/teachers-views/course-
 const UploadCourse = React.lazy(() => import("../views/teachers-views/upload-course/UploadCourse"));
 const UploadLesson = React.lazy(() => import("../views/teachers-views/upload-lesson/UploadLesson"));
 const MainLesson = React.lazy(() => import("../views/teachers-views/main-lesson/MainLesson"));
+const NonActiveProfile = React.lazy(() => import("../views/teachers-views/non-active-profile/NonActiveProfile"));
 
 export const RoutesConfig = [{
     title: "",
@@ -37,6 +39,14 @@ export const RoutesConfig = [{
     roles: [],
     subOptions: [],
     Component: RegisterPage,
+  },
+  {
+    title: "register",
+    path: "/teacher-register",
+    Layout: AuthLayout,
+    roles: [],
+    subOptions: [],
+    Component: TeacherRegisterPage,
   },
   {
     title: "verify-code",
@@ -117,6 +127,14 @@ export const RoutesConfig = [{
     roles: [],
     subOptions: [],
     Component: TeacherProfile,
+  },
+  {
+    title: "non-active-profile",
+    path: "/non-active-profile",
+    Layout: TeacherLayout,
+    roles: [],
+    subOptions: [],
+    Component: NonActiveProfile,
   },
   {
     title: "upload-course",

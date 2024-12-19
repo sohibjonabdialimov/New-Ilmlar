@@ -1,32 +1,60 @@
 import { Controller, useForm } from "react-hook-form";
 import { Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-// import axiosT from "../../../services/axios";
 import auth from "../../assets/images/auth_img.png";
 import "./auth.css";
+import { GetUsersUserme, PostUsersLogin } from "../../services/api";
+import { useContext } from "react";
+import { ProfileContext } from "../../context/ProfileProvider";
 const LoginPage = () => {
   const { control, getValues } = useForm();
-  const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
-
+  const navigate = useNavigate();
+  const { setUserData } = useContext(ProfileContext);
   const submitHandler = async () => {
-    // const login = getValues().LOGIN;
-    // axiosT
-    //   .post("/accounts/Token", login)
-    //   .then(({ data }) => {
-    //     localStorage.setItem("accessToken", data.access_token);
-    //     localStorage.setItem("refreshToken", data.refresh_token);
-    //     messageApi.open({
-    //       type: "info",
-    //       content: "Tizimga muvaffaqqiyatli kirildi",
-    //     });
-    //     navigate("/");
+    const login = getValues().LOGIN;
+
+    try {
+      // Birinchi POST so'rovni jo'natamiz
+      const postResponse = await PostUsersLogin(login);
+      localStorage.setItem("token", postResponse.data.data.token);
+      await GetUsersUserme(postResponse?.data.data.token).then((response) => {
+        if (response.data.data.type === 1) {
+          navigate("/non-active-profile");
+        } else {
+          navigate("/");
+        }
+        console.log(response.data.data);
+        
+        setUserData(response.data.data);
+       
+      });
+    } catch (err) {
+      console.log(err);
+      messageApi.open({
+        type: "error",
+        content: "Foydalanuvchi nomi yoki email xato kiritildi!",
+      });
+    }
+
+    // PostUsersLogin(login)
+    //   .then((res) => {
+    //     console.log(res);
+
+    //     if (type === "teacher") {
+    //       navigate("/non-active-profile");
+    //     } else {
+    //       navigate("/");
+    //     }
+    //     localStorage.setItem("token", res.data.data.token);
+
+    //     window.location.reload();
     //   })
     //   .catch((error) => {
     //     console.log(error);
     //     messageApi.open({
     //       type: "error",
-    //       content: "Bunday login parol mavjud emas",
+    //       content: "Foydalanuvchi nomi yoki email xato kiritildi!",
     //     });
     //   });
   };

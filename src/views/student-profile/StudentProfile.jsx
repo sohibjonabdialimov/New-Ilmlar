@@ -7,9 +7,10 @@ import "swiper/css/navigation";
 import { Navigation, FreeMode } from "swiper/modules";
 import NewCourseCard from "../home/components/NewCourseCard";
 import { Drawer, Form, Input } from "antd";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import TeachersGroupCard from "../home/components/TeachersGroupCard";
+import { ProfileContext } from "../../context/ProfileProvider";
 const navData = [
   {
     id: 1,
@@ -51,6 +52,7 @@ const navData = [
 const StudentProfile = () => {
   const [open, setOpen] = useState(false);
   const { control, getValues } = useForm();
+  const { userData } = useContext(ProfileContext);
   const showDrawer = () => {
     setOpen(true);
   };
@@ -93,13 +95,16 @@ const StudentProfile = () => {
             />
             <div className="flex justify-between flex-col items-center sm:items-start py-1">
               <h1 className="text-main_color font-semibold text-xl mb-1">
-                Michael Wong
+                {userData?.first_name}{" "}
+                {userData?.last_name ? userData?.last_name : ""}{" "}
+                {userData?.middle_name ? userData?.middle_name : ""}
               </h1>
               <p className="text-base font-semibold">
-                Foydalanuvchi nomi: <span className="font-normal">user</span>
+                Foydalanuvchi nomi:{" "}
+                <span className="font-normal">{userData?.user_name}</span>
               </p>
               <p className="text-base font-semibold">
-                Email: <span className="font-normal">user@gmail.com</span>
+                Email: <span className="font-normal">{userData?.email}</span>
               </p>
               <p className="text-base font-semibold">
                 Sotib olgan kurslaringiz soni:{" "}
@@ -108,7 +113,10 @@ const StudentProfile = () => {
             </div>
           </div>
           <div className="sm:mt-5 mt-2 flex sm:justify-start justify-center items-center">
-            <button onClick={showDrawer} className="btn text-sm sm:p-[10px_30px] p-[8px_20px]">
+            <button
+              onClick={showDrawer}
+              className="btn text-sm sm:p-[10px_30px] p-[8px_20px]"
+            >
               Profilni tahrirlash
             </button>
           </div>
@@ -120,10 +128,12 @@ const StudentProfile = () => {
             alt="Student's Plastic card"
           />
           <p className="absolute bottom-20 left-5 font-medium text-xl text-white">
-            120 000 UZS
+            {userData?.amount?.balance ? userData?.amount?.balance : 0} UZS
           </p>
           <p className="absolute bottom-3 left-3 text-base text-white">
-            3827 4637 3103 7389
+            {userData?.payment_id
+              ? userData?.payment_id.match(/\d{4}/g).join(" ")
+              : "0"}
           </p>
         </div>
       </div>

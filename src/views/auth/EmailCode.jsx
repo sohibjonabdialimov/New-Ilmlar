@@ -1,5 +1,5 @@
 import { Form } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../assets/images/auth_img.png";
 import "./auth.css";
 import { useState, useContext } from "react";
@@ -10,14 +10,18 @@ const EmailCode = () => {
   const [otp, setOtp] = useState("");
   const { email } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const location = useLocation();
   const handleChange = (value) => {
     setOtp(value);
   };
   const submitHandler = () => {
     PostUsersVerify({ email: email, password: otp }).then((res) => {
       console.log(res);
-      navigate("/", { state: { email: true } });
+      console.log(location.state?.name);
+      
+      navigate("/login", {
+        state: { name: location.state?.name },
+      });
     });
   };
   return (

@@ -3,25 +3,13 @@ import { Drawer, Dropdown } from "antd";
 import user_card from "../assets/images/user_card.svg";
 import card from "../assets/images/card.svg";
 import teacherLogo from "../assets/images/teacher-logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./styles.css";
-const items = [
-  {
-    key: "1",
-    label: (
-      <Link
-        to="/login"
-        className="flex items-center justify-center gap-3 inter text-[0.857rem] text-[#1E1E1EB2] font-[500] leading-[1.1rem]"
-      >
-        <i className="fa-solid fa-arrow-right-from-bracket"></i>
-        Chiqish
-      </Link>
-    ),
-  },
-];
+
 const TeacherHeader = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const showDrawer = () => {
     setOpen(true);
   };
@@ -35,7 +23,28 @@ const TeacherHeader = () => {
       document.exitFullscreen();
     }
   }
+  function exitHandle() {
+    localStorage.removeItem("token");
+    navigate("/login");
+  }
 
+  const items = [
+    {
+      key: "1",
+      label: (
+        <Link
+          to="/login"
+          className="flex items-center justify-center gap-3 inter text-[0.857rem] text-[#1E1E1EB2] font-[500] leading-[1.1rem]"
+        >
+          <i
+            onClick={exitHandle}
+            className="fa-solid fa-arrow-right-from-bracket"
+          ></i>
+          Chiqish
+        </Link>
+      ),
+    },
+  ];
   return (
     <>
       <div className="py-[0.8rem]">
@@ -49,7 +58,11 @@ const TeacherHeader = () => {
               onClick={showDrawer}
               className="cursor-pointer sm:w-[44px] sm:h-[44px] w-[30px] h-[30px] bg-[#E9F2FF] rounded-full flex items-center justify-center"
             >
-              <img className="sm:w-[24px] sm:h-[24px] w-[15px] h-[15px]" src={card} alt="" />
+              <img
+                className="sm:w-[24px] sm:h-[24px] w-[15px] h-[15px]"
+                src={card}
+                alt=""
+              />
             </div>
             <div
               onClick={toggleFullScreen}
@@ -64,7 +77,9 @@ const TeacherHeader = () => {
               placement="bottom"
             >
               <div className="cursor-pointer sm:w-[44px] sm:h-[44px] w-[30px] h-[30px] flex justify-center items-center bg-blue_color rounded-full">
-                <p className="text-white sm:text-xl text-sm sm:font-semibold font-medium">S</p>
+                <p className="text-white sm:text-xl text-sm sm:font-semibold font-medium">
+                  S
+                </p>
               </div>
             </Dropdown>
           </nav>

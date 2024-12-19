@@ -7,14 +7,16 @@ import { useNavigate } from "react-router-dom";
 import uzb from "public/img/flag_uzb.png";
 import eng from "public/img/flag_eng.png";
 import rus from "public/img/flag_rus.png";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./styles.css";
+import { ProfileContext } from "../context/ProfileProvider";
 
 const { Option } = Select;
 const Header = () => {
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
-  const bool = true;
+  const { userData } = useContext(ProfileContext);
+
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
     setOpen(true);
@@ -32,28 +34,45 @@ const Header = () => {
   const handleSearchInput = (e) => {
     setSearchText(e.target.value);
   };
+
+  function exitHandle() {
+    localStorage.removeItem("token");
+    navigate("/login");
+    window.location.reload();
+  }
   const content = (
     <div className="">
       <div className="flex items-center gap-3 border-b-[1px] border-[#e4e4e4] px-4 py-3">
         <div className="cursor-pointer sm:w-[44px] sm:h-[44px] w-[30px] h-[30px] flex justify-center items-center bg-blue_color rounded-full">
           <p className="text-white sm:text-xl text-sm sm:font-semibold font-medium">
-            S
+            {userData?.first_name?.charAt(0)}
           </p>
         </div>
         <div>
-          <h2 className="text-base font-medium">Sohibjon Abdialimov</h2>
-          <p className="text-base">info@gmail.com</p>
+          <h2 className="text-base font-medium">
+            {userData?.first_name} {userData?.last_name}
+          </h2>
+          <p className="text-base">{userData?.email}</p>
         </div>
       </div>
-      <div onClick={() => navigate("/student-profile")} className="cursor-pointer hover:bg-gray-100 flex items-center gap-3 border-b-[1px] border-[#e4e4e4] px-4 py-3 text-base">
+      <div
+        onClick={() => navigate("/student-profile")}
+        className="cursor-pointer hover:bg-gray-100 flex items-center gap-3 border-b-[1px] border-[#e4e4e4] px-4 py-3 text-base"
+      >
         <i className="fa-solid fa-circle-user text-xl text-blue_color"></i>
         <p className="text-main_color">Profil</p>
       </div>
-      <div onClick={() => navigate("/courses")} className="cursor-pointer hover:bg-gray-100 flex items-center gap-3 border-b-[1px] border-[#e4e4e4] px-4 py-3 text-base">
+      <div
+        onClick={() => navigate("/courses")}
+        className="cursor-pointer hover:bg-gray-100 flex items-center gap-3 border-b-[1px] border-[#e4e4e4] px-4 py-3 text-base"
+      >
         <i className="fa-solid fa-layer-group text-xl text-blue_color"></i>
         <p className="text-main_color">Kurslar</p>
       </div>
-      <div className="cursor-pointer hover:bg-gray-100 flex items-center gap-3 px-4 py-3 text-base">
+      <div
+        onClick={exitHandle}
+        className="cursor-pointer hover:bg-gray-100 flex items-center gap-3 px-4 py-3 text-base"
+      >
         <i className="fa-solid fa-arrow-right-from-bracket text-blue_color"></i>
         <p className="text-main_color">Chiqish</p>
       </div>
@@ -79,8 +98,9 @@ const Header = () => {
               />
             </div>
           </div>
-          {bool ? (
-            <nav className="flex items-center sm:gap-6 gap-2">
+
+          <nav className="flex items-center sm:gap-6 gap-2">
+            {userData?.is_verified && (
               <div
                 onClick={showDrawer}
                 className="cursor-pointer sm:w-[44px] sm:h-[44px] w-[30px] h-[30px] bg-[#E9F2FF] rounded-full flex items-center justify-center"
@@ -91,57 +111,64 @@ const Header = () => {
                   alt=""
                 />
               </div>
-              <div
-                onClick={toggleFullScreen}
-                className="cursor-pointer w-[44px] h-[44px] bg-[#E9F2FF] rounded-full hidden sm:flex items-center justify-center"
+            )}
+
+            <div
+              onClick={toggleFullScreen}
+              className="cursor-pointer w-[44px] h-[44px] bg-[#E9F2FF] rounded-full hidden sm:flex items-center justify-center"
+            >
+              <i className="fa-solid fa-expand text-[1.2rem]"></i>
+            </div>
+            <Select
+              defaultValue={"uzb"}
+              className="sm:w-[100px] w-[70px]"
+              onChange={(value) => console.log(`Selected language ${value}`)}
+              placeholder="Select a country"
+            >
+              <Option value="uzb">
+                <div className="flex items-center sm:gap-2 gap-[2px] sm:text-base text-xs">
+                  <img src={uzb} alt="USA" className="sm:w-[16px] w-[12px]" />
+                  UZB
+                </div>
+              </Option>
+              <Option value="rus">
+                <div className="flex items-center sm:gap-2 gap-[2px] sm:text-base text-xs">
+                  <img
+                    src={rus}
+                    alt="Canada"
+                    className="sm:w-[16px] w-[12px]"
+                  />
+                  RUS
+                </div>
+              </Option>
+              <Option value="eng">
+                <div className="flex items-center sm:gap-2 gap-[2px] sm:text-base text-xs">
+                  <img src={eng} alt="UK" className="sm:w-[16px] w-[12px]" />
+                  ENG
+                </div>
+              </Option>
+            </Select>
+            {!userData?.is_verified ? (
+              <button
+                onClick={() => navigate("/login")}
+                className="btn p-[8px_25px]"
               >
-                <i className="fa-solid fa-expand text-[1.2rem]"></i>
-              </div>
-              <Select
-                defaultValue={"uzb"}
-                className="sm:w-[100px] w-[70px]"
-                onChange={(value) => console.log(`Selected language ${value}`)}
-                placeholder="Select a country"
+                Kirish
+              </button>
+            ) : (
+              <Popover
+                overlayClassName="custom-popover"
+                content={content}
+                placement="bottomRight"
               >
-                <Option value="uzb">
-                  <div className="flex items-center sm:gap-2 gap-[2px] sm:text-base text-xs">
-                    <img src={uzb} alt="USA" className="sm:w-[16px] w-[12px]" />
-                    UZB
-                  </div>
-                </Option>
-                <Option value="rus">
-                  <div className="flex items-center sm:gap-2 gap-[2px] sm:text-base text-xs">
-                    <img
-                      src={rus}
-                      alt="Canada"
-                      className="sm:w-[16px] w-[12px]"
-                    />
-                    RUS
-                  </div>
-                </Option>
-                <Option value="eng">
-                  <div className="flex items-center sm:gap-2 gap-[2px] sm:text-base text-xs">
-                    <img src={eng} alt="UK" className="sm:w-[16px] w-[12px]" />
-                    ENG
-                  </div>
-                </Option>
-              </Select>
-              <Popover overlayClassName="custom-popover" content={content} placement="bottomRight">
                 <div className="cursor-pointer sm:w-[44px] sm:h-[44px] w-[30px] h-[30px] flex justify-center items-center bg-blue_color rounded-full">
                   <p className="text-white sm:text-xl text-sm sm:font-semibold font-medium">
-                    S
+                    {userData?.first_name?.charAt(0)}
                   </p>
                 </div>
               </Popover>
-            </nav>
-          ) : (
-            <button
-              onClick={() => navigate("/login")}
-              className="btn p-[8px_25px]"
-            >
-              Kirish
-            </button>
-          )}
+            )}
+          </nav>
         </header>
         <Drawer title="Hamyon" onClose={onClose} open={open}>
           <div className="relative">
@@ -151,10 +178,12 @@ const Header = () => {
               alt="Student's Plastic card"
             />
             <p className="absolute bottom-20 left-5 font-medium text-xl text-white">
-              120 000 000 UZS
+              {userData?.amount?.balance ? userData?.amount?.balance : 0} UZS
             </p>
             <p className="absolute bottom-3 left-3 text-base text-white">
-              3827 4637 3103 7389
+              {userData?.payment_id
+                ? userData?.payment_id.match(/\d{4}/g).join(" ")
+                : "0"}
             </p>
           </div>
         </Drawer>

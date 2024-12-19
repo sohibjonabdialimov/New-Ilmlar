@@ -7,18 +7,9 @@ import NewCourseCard from "./components/NewCourseCard";
 import PopularCourseNavbar from "./components/PopularCourseNavbar";
 import TeachersGroupCard from "./components/TeachersGroupCard";
 import "./home.css";
-import { useLocation, useNavigate } from "react-router-dom";
-import { message } from "antd";
+import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [messageApi, contextHolder] = message.useMessage();
-  if (location.state?.email) {
-    messageApi.open({
-      type: "info",
-      content: "Tizimga muvaffaqqiyatli kirildi",
-    });
-  }
   const navData = [
     {
       id: 1,
@@ -57,11 +48,33 @@ const HomePage = () => {
       name: "Kurs nomi 6",
     },
   ];
+  // useEffect(() => {
+  //   const iframe = document.querySelector("iframe");
+  //   const player = new Vimeo(iframe);
+
+  //   // Play event listener
+  //   player.on("play", () => {
+  //     console.log("Played the video");
+  //   });
+
+  //   // Get video title
+  //   player.getVideoTitle().then((title) => {
+  //     console.log("title:", title);
+  //   });
+  // }, []);
   return (
     <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
-      {contextHolder}
       <div className="relative">
         <h1 className="title absolute top-0">Yangi qo’shilgan kurslar</h1>
+        {/* <iframe
+          src="https://player.vimeo.com/video/1031611684?h=2ac395a2694246448051ee01faf135ce"
+          width="500px"
+          height="400px"
+          frameBorder={0}
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+        /> */}
+
         <Swiper
           slidesPerView={1.5}
           spaceBetween={16}
