@@ -25,6 +25,8 @@ const TeacherHeader = () => {
   }
   function exitHandle() {
     localStorage.removeItem("token");
+    localStorage.removeItem("user-data");
+    localStorage.clear();
     navigate("/login");
   }
 

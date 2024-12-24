@@ -1,48 +1,21 @@
 import { Drawer, Pagination } from "antd";
 import NewCourseCard from "../home/components/NewCourseCard";
 import AllCourseAccordion from "./components/AllCourseAccordion";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./all-courses.css";
-const data = [
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-  {
-    id: 4,
-  },
-  {
-    id: 5,
-  },
-  {
-    id: 6,
-  },
-  {
-    id: 7,
-  },
-  {
-    id: 8,
-  },
-  {
-    id: 9,
-  },
-  {
-    id: 10,
-  },
-];
+import { useQuery } from "react-query";
+import { GetCourses } from "../../services/api";
+import { CoursesContext } from "../../context/CoursesProvider";
+
 const AllCourses = () => {
   const [current, setCurrent] = useState(3);
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
-
+  const { courses, setCourses } = useContext(CoursesContext);
   const handleSearchInput = (e) => {
     setSearchText(e.target.value);
   };
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -53,11 +26,16 @@ const AllCourses = () => {
     console.log(page);
     setCurrent(page);
   };
+
+  useQuery(["GetCourses"], GetCourses, {
+    onSuccess(data) {
+      console.log(data);
+      setCourses(data.data.data);
+    },
+  });
+
   return (
-    <div className="py-7 ">
-      {/* <h1 className="text-3xl font-semibold pb-5">
-        Barcha kurslar
-      </h1> */}
+    <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
       <div className="grid items-center grid-cols-6 gap-2 sm:hidden mb-4">
         <div
           onClick={showDrawer}
@@ -83,8 +61,8 @@ const AllCourses = () => {
         </div>
 
         <div className="grid sm:grid-cols-3 grid-cols-1 place-content-between sm:w-[80%] w-full gap-5">
-          {data.map((item) => {
-            return <NewCourseCard key={item.id} />;
+          {courses.map((item) => {
+            return <NewCourseCard item={item} key={item.id} />;
           })}
         </div>
       </div>

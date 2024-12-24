@@ -6,6 +6,7 @@ import "./index.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 import AuthProvider from "./context/AuthProvider.jsx";
 import ProfileProvider from "./context/ProfileProvider.jsx";
+import CoursesProvider from "./context/CoursesProvider.jsx";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -24,7 +25,9 @@ createRoot(document.getElementById("root")).render(
       <BrowserRouter>
         <AuthProvider>
           <ProfileProvider>
-            <App />
+            <CoursesProvider>
+              <App />
+            </CoursesProvider>
           </ProfileProvider>
         </AuthProvider>
       </BrowserRouter>

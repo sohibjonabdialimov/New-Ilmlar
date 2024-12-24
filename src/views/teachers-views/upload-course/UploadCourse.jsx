@@ -5,9 +5,12 @@ import {
   InputNumber,
   message,
   Select,
+  Space,
   Upload,
 } from "antd";
 import { useState } from "react";
+import { PostCourses } from "../../../services/api";
+import { useNavigate } from "react-router-dom";
 
 const UploadCourse = () => {
   const [form] = Form.useForm();
@@ -16,6 +19,19 @@ const UploadCourse = () => {
   const [previewVideoUrl, setPreviewVideoUrl] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [inputs, setInputs] = useState([{ name: "" }]);
+  const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate();
+  const addInput = () => {
+    setInputs([...inputs, { name: "" }]);
+  };
+  const deleteInput = () => {
+    if (inputs.length > 1) {
+      setInputs(inputs.slice(0, -1));
+    } else {
+      alert("Massiv bo'sh!");
+    }
+  };
 
   const beforeUpload = (file) => {
     const isVideo = file.type.startsWith("video/");
@@ -52,8 +68,38 @@ const UploadCourse = () => {
   };
 
   const onFinish = (value) => {
-    console.log(value);
-    console.log(videoFile);
+    const formData = new FormData();
+    formData.append("name", value?.name);
+    formData.append("description", value?.description);
+    formData.append("file", imageFile);
+    formData.append("trieler", videoFile);
+    formData.append("category", value?.category);
+    formData.append("price", value?.price);
+    formData.append("period", value?.period);
+    formData.append("level", value?.level);
+    formData.append("language", value?.language);
+    formData.append("study_parties", JSON.stringify(inputs));
+
+    PostCourses(formData)
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("lesson_id", res.data.data.courseId.id);
+        navigate("/upload-lesson");
+        messageApi.open({
+          type: "info",
+          content: "Kurs yaratildi",
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        messageApi.open({
+          type: "error",
+          content: "Kurs yuklashda xatolik bor",
+        });
+      })
+      .finally(() => {
+        console.log("final");
+      });
   };
   const normFile = (e) => {
     if (Array.isArray(e)) {
@@ -61,10 +107,11 @@ const UploadCourse = () => {
     }
     console.log(e);
 
-    return e?.fileList;
+    return e?.filelist;
   };
   return (
     <div className="py-7 sm:mb-0 mb-16 sm:px-10 px-0">
+      {contextHolder}
       <Form
         onFinish={onFinish}
         form={form}
@@ -82,7 +129,7 @@ const UploadCourse = () => {
               </span>
             }
             className="w-full sm:col-span-1 col-span-4 row-span-3 sm:row-span-1"
-            name="Input"
+            name="name"
             rules={[
               {
                 required: true,
@@ -101,7 +148,7 @@ const UploadCourse = () => {
                 Kategoriya tanlang
               </span>
             }
-            name="Kategoriya"
+            name="category"
             className="sm:col-span-1 sm:row-span-1 col-span-4 row-span-3"
             rules={[
               {
@@ -116,23 +163,23 @@ const UploadCourse = () => {
               placeholder="Kategoriyalar"
               options={[
                 {
-                  value: "Dasturlash",
+                  value: 1,
                   label: "Dasturlash",
                 },
                 {
-                  value: "Dizayn",
+                  value: 2,
                   label: "Dizayn",
                 },
                 {
-                  value: "Biznes",
+                  value: 3,
                   label: "Biznes",
                 },
                 {
-                  value: "Fan va texnika",
+                  value: 4,
                   label: "Fan va texnika",
                 },
                 {
-                  value: "Shaxsiy rivojlanish",
+                  value: 5,
                   label: "Shaxsiy rivojlanish",
                 },
               ]}
@@ -144,7 +191,7 @@ const UploadCourse = () => {
                 Ta'lim tili
               </span>
             }
-            name="Til"
+            name="language"
             className="sm:col-span-1 sm:row-span-1 col-span-4 row-span-3"
             rules={[
               {
@@ -159,15 +206,15 @@ const UploadCourse = () => {
               placeholder="Ta'lim tili"
               options={[
                 {
-                  value: "O'zbek tili",
+                  value: 1,
                   label: "uzb",
                 },
                 {
-                  value: "Rus tili",
+                  value: 2,
                   label: "rus",
                 },
                 {
-                  value: "Ingliz tili",
+                  value: 3,
                   label: "eng",
                 },
               ]}
@@ -180,7 +227,7 @@ const UploadCourse = () => {
                 Obuna muddati
               </span>
             }
-            name="Obuna"
+            name="period"
             className="sm:col-span-1 sm:row-span-1 col-span-4 row-span-3"
             rules={[
               {
@@ -195,23 +242,23 @@ const UploadCourse = () => {
               placeholder="Tanlang"
               options={[
                 {
-                  value: "1 oy",
+                  value: 1,
                   label: "1 oy",
                 },
                 {
-                  value: "3 oy",
+                  value: 3,
                   label: "3 oy",
                 },
                 {
-                  value: "6 oy",
+                  value: 6,
                   label: "6 oy",
                 },
                 {
-                  value: "9 oy",
+                  value: 9,
                   label: "9 oy",
                 },
                 {
-                  value: "1 yil",
+                  value: 12,
                   label: "1 yil",
                 },
               ]}
@@ -224,7 +271,7 @@ const UploadCourse = () => {
                 Kurs haqida ma’lumot
               </span>
             }
-            name="TextArea"
+            name="description"
             className="sm:col-span-2 sm:row-span-2 col-span-4 row-span-3"
             rules={[
               {
@@ -239,7 +286,36 @@ const UploadCourse = () => {
               placeholder="Kurs haqida ma’lumot"
             />
           </Form.Item>
-          <Form.Item
+          <Space
+            direction="vertical"
+            className="sm:col-span-2 sm:row-span-2 col-span-4 row-span-3"
+          >
+            <span className="text-secondary_color font-semibold text-base">
+              Kursdan nimalar o’rganiladi
+            </span>
+            {inputs.map((input, index) => (
+              <Input
+                key={index}
+                className="w-full py-2 px-3 rounded-[10px] text-base"
+                placeholder={`${index + 1} - ma'lumot`}
+                value={input.name}
+                onChange={(e) => {
+                  const newInputs = [...inputs];
+                  newInputs[index].name = e.target.value;
+                  setInputs(newInputs);
+                }}
+              />
+            ))}
+            <div className="flex gap-2">
+              <Button type="dashed" onClick={addInput}>
+                Qo'shish
+              </Button>
+              <Button type="dashed" onClick={deleteInput}>
+                O'chirish
+              </Button>
+            </div>
+          </Space>
+          {/* <Form.Item
             label={
               <span className="text-secondary_color font-semibold text-base">
                 Kursdan nimalar o’rganiladi
@@ -259,7 +335,7 @@ const UploadCourse = () => {
               style={{ height: 150 }}
               placeholder="Kursdan nimalar o’rganiladi"
             />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item
             label={
@@ -267,7 +343,7 @@ const UploadCourse = () => {
                 Murakkabligi
               </span>
             }
-            name="Murakkablik"
+            name="level"
             className="sm:col-span-1 sm:row-span-1 col-span-4 row-span-3"
             rules={[
               {
@@ -282,15 +358,15 @@ const UploadCourse = () => {
               placeholder="Tanlang"
               options={[
                 {
-                  value: "Boshlang'ich",
+                  value: 1,
                   label: "Boshlang'ich",
                 },
                 {
-                  value: "O'rta",
+                  value: 2,
                   label: "O'rta",
                 },
                 {
-                  value: "yuqori",
+                  value: 3,
                   label: "Yuqori",
                 },
               ]}
@@ -303,7 +379,7 @@ const UploadCourse = () => {
                 Kurs narxi ( so’m )
               </span>
             }
-            name="InputNumber"
+            name="price"
             rules={[
               {
                 required: true,
@@ -319,12 +395,14 @@ const UploadCourse = () => {
         </div>
         <div className="flex sm:gap-16 gap-8">
           <Form.Item
-            label={<span className="text-secondary_color font-semibold text-base">
-              Treler video
-            </span>}
+            label={
+              <span className="text-secondary_color font-semibold text-base">
+                Treler video
+              </span>
+            }
             className="col-span-1 row-span-1"
             name="Upload"
-            valuePropName="fileList"
+            valuePropName="filelist"
             getValueFromEvent={normFile}
           >
             <div>
@@ -359,12 +437,14 @@ const UploadCourse = () => {
             </div>
           </Form.Item>
           <Form.Item
-            label={<span className="text-secondary_color font-semibold text-base">
-              Muqova rasm
-            </span>}
+            label={
+              <span className="text-secondary_color font-semibold text-base">
+                Muqova rasm
+              </span>
+            }
             className="col-span-1 row-span-1"
             name="Upload"
-            valuePropName="fileList"
+            valuePropName="filelist"
             getValueFromEvent={normFile}
           >
             <div>
@@ -400,10 +480,18 @@ const UploadCourse = () => {
           </Form.Item>
         </div>
         <div className="w-full flex items-center justify-end gap-3 mt-1">
-          <Button className="sm:w-[15%] w-[50%]" type="primary" htmlType="submit">
+          <Button
+            className="sm:w-[15%] w-[50%]"
+            type="primary"
+            htmlType="submit"
+          >
             Bekor qilish
           </Button>
-          <Button className="sm:w-[15%] w-[50%]" type="primary" htmlType="submit">
+          <Button
+            className="sm:w-[15%] w-[50%]"
+            type="primary"
+            htmlType="submit"
+          >
             Kurs yaratish
           </Button>
         </div>

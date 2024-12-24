@@ -9,8 +9,8 @@ import { ProfileContext } from "../../context/ProfileProvider";
 const LoginPage = () => {
   const { control, getValues } = useForm();
   const [messageApi, contextHolder] = message.useMessage();
+  const {setUserData} = useContext(ProfileContext);
   const navigate = useNavigate();
-  const { setUserData } = useContext(ProfileContext);
   const submitHandler = async () => {
     const login = getValues().LOGIN;
 
@@ -24,10 +24,8 @@ const LoginPage = () => {
         } else {
           navigate("/");
         }
-        console.log(response.data.data);
-        
         setUserData(response.data.data);
-       
+        localStorage.setItem("user-data", JSON.stringify(response.data.data));
       });
     } catch (err) {
       console.log(err);

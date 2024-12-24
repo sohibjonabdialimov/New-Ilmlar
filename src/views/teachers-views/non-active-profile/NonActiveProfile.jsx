@@ -1,10 +1,13 @@
 import { Form, Input, Select } from "antd";
 import teacher_profile from "../../../assets/images/teacher_profile.jpg";
 import { Controller, useForm } from "react-hook-form";
+import { ProfileContext } from "../../../context/ProfileProvider";
+import { useContext } from "react";
 
 const { TextArea } = Input;
 const NonActiveProfile = () => {
   const { control, getValues } = useForm();
+   const { userData } = useContext(ProfileContext);
   const submitHandler = async () => {
     const editTeacher = getValues().EDITTEACHERPROFILE;
     console.log(editTeacher);
@@ -14,7 +17,7 @@ const NonActiveProfile = () => {
     console.log(`selected ${value}`);
   };
   return (
-    <div className="py-7">
+    <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
       <div className="flex sm:flex-row flex-col justify-between sm:mb-16 mb-10 gap-4">
         <div className="flex sm:gap-5 gap-3">
           <img
@@ -24,27 +27,18 @@ const NonActiveProfile = () => {
           />
           <div className="flex flex-col justify-center sm:gap-2 gap-1 py-0">
             <h1 className="text-main_color font-semibold sm:text-xl text-base sm:mb-1 mb-0">
-              Michael Wong
+            {userData?.first_name}{" "}
+                {userData?.last_name ? userData?.last_name : ""}{" "}
+                {userData?.middle_name ? userData?.middle_name : ""}
             </h1>
             <p className="text-[#758195] sm:text-base text-xs font-medium">
               Biznes yo'nalishi
             </p>
-            <p className="text-[#758195] sm:text-base text-xs font-semibold">
-              Kurslar soni: <span className="font-normal">2 ta</span>
-            </p>
-            <p className="text-[#758195] sm:text-base text-xs font-semibold">
-              Obunachilar soni: <span className="font-normal">159 ta</span>
-            </p>
           </div>
-        </div>
-        <div className="sm:w-auto w-full">
-          <button className="btn text-sm sm:p-[10px_30px] p-[8px_20px] w-full">
-            Kurs yuklash
-          </button>
         </div>
       </div>
 
-      <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px] sm:mb-16">
+      <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px] sm:mb-10 mb-8">
         <Form
           layout="vertical"
           className="sm:px-24 px-0 sm:pt-4 pt-2 pb-2 sm:pb-8 w-full"
@@ -276,6 +270,33 @@ const NonActiveProfile = () => {
             </div>
           </div>
         </Form>
+      </div>
+      <div className="text-[#758195] sm:px-[50px] px-[10px] sm:mb-10 text-lg font-normal">
+        <h2 className="mb-5">Xush Kelibsiz!</h2>
+        <p className="mb-5">
+          Sizning arizangiz muvaffaqiyatli qabul qilindi. Hozirda sizning
+          shaxsiy sahifangiz faol holatda emas. Arizangizni ko'rib chiqish
+          jarayoni boshlanib, platforma administratsiyasi tomonidan
+          tekshirilmoqda. Ushbu jarayon odatda 3 ish kuni davom etadi. Jarayon
+          yakunlanmaguncha shaxsiy sahifangiz orqali kurslaringizni yuklash va
+          sotishni boshlay olmaysiz.
+        </p>
+        <p className="mb-5">
+          <span className="text-[#EC0000FF]">*</span> Agar arizangiz
+          tasdiqlansa, shaxsiy sahifangiz faol holatga o‘tadi va darslaringizni
+          yuklashni boshlashingiz mumkin.
+        </p>
+        <p className="mb-5">
+          <span className="text-[#EC0000FF]">*</span> Agar ariza rad etilsa, bu
+          haqda sabablari bilan batafsil ma’lumot beramiz va qayta murojaat
+          qilish imkoniyatini taqdim etamiz.
+        </p>
+        <p className="mb-5">
+          Platformamiz orqali o‘z bilimlaringizni butun dunyo bilan
+          ulashishingizni intizorlik bilan kutyapmiz. Sizga tez orada shaxsiy
+          sahifangizni faol holatda ko‘rishdan mamnun bo‘lamiz!
+        </p>
+        <p className="mb-5">Hurmat bilan, ilmlar.com jamoasi</p>
       </div>
     </div>
   );

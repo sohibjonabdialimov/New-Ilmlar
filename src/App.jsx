@@ -5,8 +5,8 @@ import LoginLayout from "./layout/AuthLayout";
 import React, { useEffect } from "react";
 import { verifyToken } from "./services/verifyToken";
 import DesktopLayout from "./layout/DesktopLayout";
-import Lessons from "./views/lessons/Lessons";
 const CourseInfo = React.lazy(() => import("./views/course-info/CourseInfo"));
+const Lessons = React.lazy(() => import("./views/lessons/Lessons"));
 
 const App = () => {
   const navigate = useNavigate();

@@ -17,6 +17,8 @@ const Header = () => {
   const [searchText, setSearchText] = useState("");
   const { userData } = useContext(ProfileContext);
 
+  console.log(userData);
+
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
     setOpen(true);
@@ -37,8 +39,9 @@ const Header = () => {
 
   function exitHandle() {
     localStorage.removeItem("token");
+    localStorage.removeItem("user-data");
+    localStorage.clear();
     navigate("/login");
-    window.location.reload();
   }
   const content = (
     <div className="">
@@ -171,19 +174,33 @@ const Header = () => {
           </nav>
         </header>
         <Drawer title="Hamyon" onClose={onClose} open={open}>
-          <div className="relative">
-            <img
-              className="aspect-[25/16] h-full w-full"
-              src={mycard}
-              alt="Student's Plastic card"
-            />
-            <p className="absolute bottom-20 left-5 font-medium text-xl text-white">
-              {userData?.amount?.balance ? userData?.amount?.balance : 0} UZS
-            </p>
-            <p className="absolute bottom-3 left-3 text-base text-white">
-              {userData?.payment_id
-                ? userData?.payment_id.match(/\d{4}/g).join(" ")
-                : "0"}
+          <div>
+            <div className="relative">
+              <img
+                className="aspect-[25/16] h-full w-full"
+                src={mycard}
+                alt="Student's Plastic card"
+              />
+              <p className="absolute bottom-20 left-5 font-medium text-xl text-white">
+                {userData?.amount?.balance
+                  ? userData?.amount?.balance.match(/\d{3}/g).join(" ")
+                  : "0"}{" "}
+                UZS
+              </p>
+              <p className="absolute bottom-3 left-3 text-base text-white">
+                Hisob raqam:{" "}
+                <span className="font-medium">
+                  {userData?.payment_id
+                    ? userData?.payment_id.match(/\d{4}/g).join(" ")
+                    : "0"}
+                </span>
+              </p>
+            </div>
+            <p className="text-[#444] text-lg mt-5">
+              Hisob balansingizni to‘ldirish uchun Click ilovasining “To‘lov”
+              bo‘limiga o‘ting, u yerdan ilmlar.com xizmatini tanlang. Shundan
+              so‘ng, o‘z hisob raqamingizni va pul miqdorini kiriting hamda
+              jarayonni tasdiqlang.
             </p>
           </div>
         </Drawer>
