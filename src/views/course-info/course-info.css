@@ -1,9 +1,7 @@
 .course_advantage{
   width: calc(100% - 32px);
 }
-.accordion-root {
-  width: 100%;
-}
+
 
 .accordion-trigger {
   width: 100%;
@@ -16,30 +14,9 @@
   justify-content: space-between;
   align-items: center;
   background-color: #fff;
-  cursor: pointer;
   border-radius: 16px;
 }
 
-.accordion-content {
-  background: #ffffff;
-  padding: 10px 15px;
-  border-radius: 16px;
-  margin-bottom: 16px;
-}
-
-.accordion-content ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.accordion-content li {
-  margin: 5px 0;
-}
-.accordion-header button:disabled{
-  opacity: 0.6;
-  outline: none;
-}
 
 @media only screen and (max-width: 540px){
   .accordion-trigger {

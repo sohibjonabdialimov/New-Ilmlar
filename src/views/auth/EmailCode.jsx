@@ -17,7 +17,6 @@ const EmailCode = () => {
   const submitHandler = () => {
     PostUsersVerify({ email: email, password: otp }).then((res) => {
       console.log(res);
-      console.log(location.state?.name);
       
       navigate("/login", {
         state: { name: location.state?.name },

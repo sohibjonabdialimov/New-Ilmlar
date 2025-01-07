@@ -16,7 +16,6 @@ const TeacherRegisterPage = () => {
   const submitHandler = () => {
     const registerData = getValues().REGISTER;
     delete registerData.repassword;
-    delete registerData.description;
     console.log(registerData);
     registerData.type = "teacher";
     PostUsers(registerData)
@@ -24,16 +23,13 @@ const TeacherRegisterPage = () => {
         console.log(res);
         setEmail(res.data.data.email);
 
-        navigate("/verify-code", {
-          state: { name: "teacher" },
-        });
-        window.location.reload();
+        navigate("/verify-code");
       })
       .catch((error) => {
         console.log(error);
         messageApi.open({
           type: "error",
-          content: "Foydalanuvchi nomi yoki emailda xato bo'lishi mumkin",
+          content: "Formani to'ldirishda xatolik bor",
         });
       });
   };
@@ -114,6 +110,89 @@ const TeacherRegisterPage = () => {
                 className="mb-2 col-span-1 row-span-1"
                 label={
                   <span className="text-secondary_color font-semibold sm:text-base text-sm">
+                    Mutaxassislik
+                  </span>
+                }
+              >
+                <Controller
+                  rules={{
+                    required: "Field is required",
+                  }}
+                  control={control}
+                  name="REGISTER.specialization"
+                  render={({ field }) => {
+                    return (
+                      <>
+                        <Input
+                          {...field}
+                          placeholder="Mutaxassisligingizni kiriting..."
+                          className="w-full py-2 px-4 rounded-[10px] sm:text-base text-sm"
+                        />
+                      </>
+                    );
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                className="mb-2 col-span-1 row-span-2"
+                label={
+                  <span className="text-secondary_color font-semibold sm:text-base text-sm">
+                    O'zingiz haqingizda ma'lumot
+                  </span>
+                }
+              >
+                <Controller
+                  rules={{
+                    required: "Field is required",
+                  }}
+                  control={control}
+                  name="REGISTER.info"
+                  render={({ field }) => {
+                    return (
+                      <>
+                        <TextArea
+                          {...field}
+                          style={{ height: 150 }}
+                          placeholder="O'zingiz haqingizda ma'lumot kiriting..."
+                          className="w-full py-2 px-4 rounded-[10px] sm:text-base text-sm"
+                        />
+                      </>
+                    );
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                className="mb-2 col-span-1 row-span-1"
+                label={
+                  <span className="text-secondary_color font-semibold sm:text-base text-sm">
+                    Aloqa uchun telefon raqamingiz
+                  </span>
+                }
+              >
+                <Controller
+                  rules={{
+                    required: "Field is required",
+                  }}
+                  control={control}
+                  name="REGISTER.phone"
+                  render={({ field }) => {
+                    return (
+                      <>
+                        <Input
+                          {...field}
+                          type="number"
+                          placeholder="+998 90 123 45 67"
+                          className="w-full py-2 px-4 rounded-[10px] sm:text-base text-sm"
+                        />
+                      </>
+                    );
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                className="mb-2 col-span-1 row-span-1"
+                label={
+                  <span className="text-secondary_color font-semibold sm:text-base text-sm">
                     Foydalanuvchi nomi
                   </span>
                 }
@@ -164,34 +243,7 @@ const TeacherRegisterPage = () => {
                 />
               </Form.Item>
 
-              <Form.Item
-                className="mb-2 col-span-1 row-span-2"
-                label={
-                  <span className="text-secondary_color font-semibold sm:text-base text-sm">
-                    Izoh
-                  </span>
-                }
-              >
-                <Controller
-                  rules={{
-                    required: "Field is required",
-                  }}
-                  control={control}
-                  name="REGISTER.description"
-                  render={({ field }) => {
-                    return (
-                      <>
-                        <TextArea
-                          {...field}
-                          style={{ height: 150 }}
-                          placeholder="...."
-                          className="w-full py-2 px-4 rounded-[10px] sm:text-base text-sm"
-                        />
-                      </>
-                    );
-                  }}
-                />
-              </Form.Item>
+              
 
               <Form.Item
                 className="mb-2"

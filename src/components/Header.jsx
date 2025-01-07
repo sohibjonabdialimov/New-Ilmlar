@@ -10,16 +10,27 @@ import rus from "public/img/flag_rus.png";
 import { useContext, useState } from "react";
 import "./styles.css";
 import { ProfileContext } from "../context/ProfileProvider";
+import { useQuery } from "react-query";
+import { GetUsersUserme } from "../services/api";
 
 const { Option } = Select;
 const Header = () => {
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
   const { userData } = useContext(ProfileContext);
-
-  console.log(userData);
-
   const [open, setOpen] = useState(false);
+  const { setUserData } = useContext(ProfileContext);
+  useQuery(
+    ["GetTeachers"],
+    () => GetUsersUserme(localStorage.getItem("token")),
+    {
+      onSuccess: (response) => {
+        setUserData(response.data.data);
+        localStorage.setItem("user-data", JSON.stringify(response.data.data));
+      },
+    }
+  );
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -43,6 +54,7 @@ const Header = () => {
     localStorage.clear();
     navigate("/login");
   }
+
   const content = (
     <div className="">
       <div className="flex items-center gap-3 border-b-[1px] border-[#e4e4e4] px-4 py-3">
@@ -183,7 +195,7 @@ const Header = () => {
               />
               <p className="absolute bottom-20 left-5 font-medium text-xl text-white">
                 {userData?.amount?.balance
-                  ? userData?.amount?.balance.match(/\d{3}/g).join(" ")
+                  ? String(userData?.amount?.balance).match(/\d{3}/g).join(" ")
                   : "0"}{" "}
                 UZS
               </p>
@@ -191,7 +203,7 @@ const Header = () => {
                 Hisob raqam:{" "}
                 <span className="font-medium">
                   {userData?.payment_id
-                    ? userData?.payment_id.match(/\d{4}/g).join(" ")
+                    ? String(userData?.payment_id).match(/\d{3}/g).join(" ")
                     : "0"}
                 </span>
               </p>

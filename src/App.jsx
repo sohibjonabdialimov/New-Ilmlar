@@ -2,12 +2,13 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import { ComponentList } from "./router/ComponentList";
 import LoginPage from "./views//auth/LoginPage";
 import LoginLayout from "./layout/AuthLayout";
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { verifyToken } from "./services/verifyToken";
 import DesktopLayout from "./layout/DesktopLayout";
+import Loading from "./utils/Loading";
 const CourseInfo = React.lazy(() => import("./views/course-info/CourseInfo"));
 const Lessons = React.lazy(() => import("./views/lessons/Lessons"));
-
+const TeacherProfileForStudents = React.lazy(() => import("./views/teacher-profile-for-students/TeacherProfileForStudents"));
 const App = () => {
   const navigate = useNavigate();
   // console.log(import.meta.env.VITE_API_KEY);
@@ -29,18 +30,34 @@ const App = () => {
         key={"courses/:id"}
         path={"/courses/:id"}
         element={
-          <DesktopLayout>
-            <CourseInfo />
-          </DesktopLayout>
+          <Suspense fallback={<Loading />}>
+            <DesktopLayout>
+              <CourseInfo />
+            </DesktopLayout>
+          </Suspense>
         }
       />
       <Route
         key={"lessons/:id"}
         path={"/lessons/:id"}
         element={
-          <DesktopLayout>
-            <Lessons />
-          </DesktopLayout>
+          <Suspense fallback={<Loading />}>
+            <DesktopLayout>
+              <Lessons />
+            </DesktopLayout>
+          </Suspense>
+        }
+      />
+        
+      <Route
+        key={"teacher-profile/:id"}
+        path={"/teacher-profile/:id"}
+        element={
+          <Suspense fallback={<Loading />}>
+            <DesktopLayout>
+              <TeacherProfileForStudents />
+            </DesktopLayout>
+          </Suspense>
         }
       />
       {ComponentList()}

@@ -3,16 +3,41 @@ import star from "../../../assets/images/star.svg";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { formatPrice } from "../../../utils/formatPrice";
 import { useNavigate } from "react-router-dom";
+import "./style.css";
+import { GetSaveCourse } from "../../../services/api";
+import { useState } from "react";
+import { message } from "antd";
 const NewCourseCard = ({ type, role, item }) => {
   const navigate = useNavigate();
+  const [isSave, setIsSave] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+  const handleSaveCourse = (id) => {
+    GetSaveCourse(id)
+      .then((res) => {
+        console.log(res);
+        if (res.data.data.action === "saved") {
+          setIsSave(true);
+        }
+        if (res.data.data.action === "not-saved") {
+          setIsSave(false);
+        }
+      })
+      .catch(() => {
+        messageApi.open({
+          type: "error",
+          content: <h1 className="text-lg">Kursni saqlash uchun avval ro'yxatdan o'ting!</h1>,
+        });
+      });
+  };
 
   return (
     <div
       onClick={() => navigate(`/courses/${item?.id}`)}
       className="cursor-pointer"
     >
+      {contextHolder}
       <img
-        className="w-full object-fill rounded-2xl h-[220px]"
+        className="w-full object-cover rounded-2xl h-[220px]"
         src={item?.obloshka}
         alt="ilmlar image of course"
       />
@@ -31,7 +56,7 @@ const NewCourseCard = ({ type, role, item }) => {
           120 o’quvchi
         </p>
       </div>
-      <h1 className="text-lg font-semibold text-main_color mb-2">
+      <h1 className="text-lg font-semibold text-main_color mb-2 line-clamp-2">
         {item?.name}
       </h1>
       <div className="flex items-center gap-1 mb-2">
@@ -54,17 +79,24 @@ const NewCourseCard = ({ type, role, item }) => {
           <p className="text-[#00FF84] text-base font-semibold">Ommaviy</p>
         </div>
       ) : (
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mr-4">
           <p className="text-blue_color text-base font-semibold">
             {formatPrice(item?.price)} so'm
           </p>
           <div
             onClick={(e) => {
               e.stopPropagation();
+              handleSaveCourse(item?.id);
             }}
             className="flex items-center gap-2"
           >
-            <i className="fa-regular fa-bookmark text-2xl"></i>
+            {
+              isSave ? (
+                <i className="fa-solid fa-bookmark text-2xl"></i>
+              ) : (
+                <i className="fa-regular fa-bookmark text-2xl"></i>
+              )
+            }
           </div>
         </div>
       )}

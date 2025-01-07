@@ -207,15 +207,15 @@ const UploadCourse = () => {
               options={[
                 {
                   value: 1,
-                  label: "uzb",
+                  label: "O'zbek tili",
                 },
                 {
                   value: 2,
-                  label: "rus",
+                  label: "Rus tili",
                 },
                 {
                   value: 3,
-                  label: "eng",
+                  label: "Ingliz tili",
                 },
               ]}
             />

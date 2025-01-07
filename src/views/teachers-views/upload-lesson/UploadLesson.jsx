@@ -1,8 +1,12 @@
-import { Button, Form, Input, message, Radio, Upload } from "antd";
+import { Button, Form, Input, message, Radio, Spin, Upload } from "antd";
 import { useState } from "react";
-import { PostCoursesVideos } from "../../../services/api";
+import {
+  GetCourseDetailWithToken,
+  PostCoursesVideos,
+} from "../../../services/api";
 import { useNavigate } from "react-router-dom";
 import SuccessResult from "../../../components/SuccessResult";
+import { useQuery } from "react-query";
 
 const UploadLesson = () => {
   const [form] = Form.useForm();
@@ -11,9 +15,19 @@ const UploadLesson = () => {
   const [videoFile, setVideoFile] = useState(null);
   const [previewVideoUrl, setPreviewVideoUrl] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
 
+  const { data: courseDetail } = useQuery(
+    ["GetCourseDetailWithToken", success],
+    () => GetCourseDetailWithToken(localStorage.getItem("lesson_id"))
+  );
+  console.log(courseDetail);
+  function onCourseAdd() {
+    // navigate(`${link1}`);
+    setSuccess(false);
+  }
   const beforeDocumentUpload = (file) => {
     const allowedTypes = [
       "application/pdf", // PDF fayllar
@@ -44,7 +58,6 @@ const UploadLesson = () => {
     if (!isVideo) {
       message.error("You can only upload video files!");
     }
-
     return isVideo;
   };
 
@@ -58,35 +71,38 @@ const UploadLesson = () => {
   };
 
   const onFinish = (value) => {
-    console.log(value);
+    setLoading(true);
     const formData = new FormData();
     formData.append("course_id", localStorage.getItem("lesson_id"));
     formData.append("title", value?.title);
     formData.append("file", file);
-    formData.append("videos", videoFile);
+    formData.append("video", videoFile);
     formData.append("description", value?.description);
     formData.append("is_open", value?.is_open);
-    formData.forEach((value, key) => {
-      console.log(`${key}:`, value);
-    });
+
     PostCoursesVideos(formData)
       .then((res) => {
         console.log(res);
         // localStorage.setItem("lesson_id", res.data.data.courseId.id);
+        setSuccess(true);
+        form.resetFields();
+        setFile(null);
+        setVideoFile(null);
+        setPreviewVideoUrl(null);
         messageApi.open({
           type: "info",
-          content: "Kurs yaratildi",
+          content: "Video dars qo'shildi",
         });
       })
       .catch((error) => {
         console.log(error);
         messageApi.open({
           type: "error",
-          content: "Kurs yuklashda xatolik bor",
+          content: "Video dars qo'shishda xatolik bor",
         });
       })
       .finally(() => {
-        console.log("final");
+        setLoading(false);
       });
   };
   const normFile = (e) => {
@@ -96,11 +112,29 @@ const UploadLesson = () => {
 
     return e?.fileList;
   };
+  const contentStyle = {
+    padding: 100,
+    background: "rgba(0, 0, 0, 0.1)",
+    borderRadius: 4,
+  };
+  const content = <div style={contentStyle} />;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[60dvh]">
+        <Spin tip="Yuklanmoqda..." size="large">
+          {content}
+        </Spin>
+      </div>
+    );
+  }
   return (
     <>
       {!success ? (
         <div className="py-7 sm:px-10 sm:mb-0 mb-16">
           {contextHolder}
+          <h1 className="mb-6 text-2xl text-center">
+            {courseDetail?.data.data.videos.length + 1} - darsni yuklash
+          </h1>
           <Form
             onFinish={onFinish}
             form={form}
@@ -259,7 +293,7 @@ const UploadLesson = () => {
                 type="primary"
                 htmlType="submit"
               >
-                Yakunlash
+                Yuklash
               </Button>
               {/* <Button
                 className="sm:w-[15%] w-[50%]"
@@ -272,7 +306,12 @@ const UploadLesson = () => {
           </Form>
         </div>
       ) : (
-        <SuccessResult />
+        <SuccessResult
+          title={"Kurs muvaffaqqiyatli yuklandi"}
+          btn1={"Video dars qo'shish"}
+          btn2={"Saqlash"}
+          onCourseAdd={onCourseAdd}
+        />
       )}
     </>
   );

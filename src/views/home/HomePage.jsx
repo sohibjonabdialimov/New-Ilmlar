@@ -8,6 +8,8 @@ import PopularCourseNavbar from "./components/PopularCourseNavbar";
 import TeachersGroupCard from "./components/TeachersGroupCard";
 import "./home.css";
 import { useNavigate } from "react-router-dom";
+import { GetCourses, GetTeachers } from "../../services/api";
+import { useQuery } from "react-query";
 const HomePage = () => {
   const navigate = useNavigate();
   const navData = [
@@ -62,6 +64,15 @@ const HomePage = () => {
   //     console.log("title:", title);
   //   });
   // }, []);
+
+  const {data: coursesData} = useQuery(["GetCourses"], GetCourses);
+  const {data: teachersData} = useQuery(["GetTeachersInfo"], GetTeachers);
+  
+  let courses = coursesData?.data.data;
+  let teacher = teachersData?.data.data.teachers;
+  console.log(teacher);
+  
+  
   return (
     <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
       <div className="relative">
@@ -77,7 +88,7 @@ const HomePage = () => {
 
         <Swiper
           slidesPerView={1.5}
-          spaceBetween={16}
+          spaceBetween={30}
           navigation={true}
           freeMode={true}
           breakpoints={{
@@ -97,10 +108,10 @@ const HomePage = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {navData.map((item) => {
+          {courses?.map((item) => {
             return (
               <SwiperSlide key={item.id} className="">
-                <NewCourseCard />
+                <NewCourseCard item={item} />
               </SwiperSlide>
             );
           })}
@@ -134,10 +145,10 @@ const HomePage = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {navData.map((item) => {
+          {teacher?.map((item) => {
             return (
-              <SwiperSlide key={item.id} className="">
-                <TeachersGroupCard />
+              <SwiperSlide key={item.id}>
+                <TeachersGroupCard item={item} />
               </SwiperSlide>
             );
           })}
@@ -165,7 +176,7 @@ const HomePage = () => {
         <h1 className="title absolute top-0">Bepul kurslar</h1>
         <Swiper
           slidesPerView={1.5}
-          spaceBetween={16}
+          spaceBetween={30}
           navigation={true}
           breakpoints={{
             640: {

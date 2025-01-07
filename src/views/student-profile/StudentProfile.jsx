@@ -132,7 +132,7 @@ const StudentProfile = () => {
           </p>
           <p className="absolute bottom-3 left-3 text-base text-white">
             {userData?.payment_id
-              ? userData?.payment_id.match(/\d{4}/g).join(" ")
+              ? String(userData?.payment_id).match(/\d{4}/g).join(" ")
               : "0"}
           </p>
         </div>

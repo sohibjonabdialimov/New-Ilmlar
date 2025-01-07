@@ -5,59 +5,64 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import { Navigation, FreeMode } from "swiper/modules";
 import NewCourseCard from "../home/components/NewCourseCard";
+import { useParams } from "react-router-dom";
+import { GetTeacherAccount } from "../../services/api";
+import { useQueries, useQuery } from "react-query";
+import axiosT from "../../services/axios";
+import "./style.css";
 const TeacherProfileForStudents = () => {
-  const navData = [
+  const { id } = useParams();
+
+  const { data: teacherAccountData } = useQuery(
+    ["GetTeacherAccount"],
+    () => GetTeacherAccount(id),
     {
-      id: 1,
-      name: "Kurs nomi 1",
-    },
-    {
-      id: 2,
-      name: "Kurs nomi 2",
-    },
-    {
-      id: 3,
-      name: "Kurs nomi 3",
-    },
-    {
-      id: 4,
-      name: "Kurs nomi 4",
-    },
-    {
-      id: 5,
-      name: "Kurs nomi 5",
-    },
-    {
-      id: 6,
-      name: "Kurs nomi 6",
-    },
-    {
-      id: 7,
-      name: "Kurs nomi 6",
-    },
-    {
-      id: 8,
-      name: "Kurs nomi 6",
-    },
-    {
-      id: 9,
-      name: "Kurs nomi 6",
-    },
-  ];
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    }
+  );
+  const teacherAccount = teacherAccountData?.data?.data;
+  console.log(teacherAccount);
+  const fetchResource = async (id) => {
+    const { data } = await axiosT.get(`/api/courses/course/${id}/withouttoken`);
+    return data;
+  };
+  const queries = useQueries(
+    (teacherAccount?.courses || []).map(({ id }) => ({
+      queryKey: ["resource", id],
+      queryFn: () => fetchResource(id),
+      enabled: !!id,
+    }))
+  );
+
+  const allData = queries
+    ?.map((query) => query?.data?.data)
+    .filter((item) => item !== undefined);
+
+  console.log(allData);
+
   return (
     <div className="py-7">
       <div className="flex justify-between sm:flex-row flex-col gap-5 mb-16">
         <div className="flex items-center sm:gap-5 gap-3">
-          <img className="sm:w-[142px] sm:h-[146px] w-[84px] h-[102px] sm:rounded-3xl rounded-[8px] object-cover" src={teacher_profile} alt="" />
+          <img
+            className="sm:w-[142px] sm:h-[146px] w-[84px] h-[102px] sm:rounded-3xl rounded-[8px] object-cover"
+            src={teacher_profile}
+            alt=""
+          />
           <div className="flex gap-1.5 justify-between flex-col">
             <h1 className="text-main_color font-semibold sm:text-xl text-base mb-1">
-              Michael Wong
+              {teacherAccount?.first_name} {teacherAccount?.last_name}
             </h1>
             <p className="text-[#758195] sm:text-base text-xs font-medium">
               Qisqa bio Lorem, ipsum dolor.
             </p>
             <p className="text-[#758195] sm:text-base text-xs font-semibold">
-              Kurslar soni: <span className="font-normal">2 ta</span>
+              Kurslar soni:{" "}
+              <span className="font-normal">
+                {teacherAccount?.courses.length} ta
+              </span>
             </p>
             <p className="text-[#758195] sm:text-base text-xs font-semibold">
               Obunachilar soni: <span className="font-normal">159 ta</span>
@@ -65,7 +70,9 @@ const TeacherProfileForStudents = () => {
           </div>
         </div>
         <div className="sm:w-auto w-full">
-          <button className="btn text-sm sm:p-[10px_30px] p-[8px_20px] w-full">Obuna bo'ling</button>
+          <button className="btn text-sm sm:p-[10px_30px] p-[8px_20px] w-full">
+            Obuna bo'ling
+          </button>
         </div>
       </div>
 
@@ -107,10 +114,10 @@ const TeacherProfileForStudents = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {navData.map((item) => {
+          {allData.map((item) => {
             return (
               <SwiperSlide key={item.id} className="">
-                <NewCourseCard />
+                <NewCourseCard item={item} />
               </SwiperSlide>
             );
           })}

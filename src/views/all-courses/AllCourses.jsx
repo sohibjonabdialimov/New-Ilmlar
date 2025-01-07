@@ -29,7 +29,6 @@ const AllCourses = () => {
 
   useQuery(["GetCourses"], GetCourses, {
     onSuccess(data) {
-      console.log(data);
       setCourses(data.data.data);
     },
   });
@@ -60,7 +59,7 @@ const AllCourses = () => {
           <AllCourseAccordion />
         </div>
 
-        <div className="grid sm:grid-cols-3 grid-cols-1 place-content-between sm:w-[80%] w-full gap-5">
+        <div className="grid sm:grid-cols-3 grid-cols-1 place-content-between sm:w-[80%] w-full gap-x-5 gap-y-8">
           {courses.map((item) => {
             return <NewCourseCard item={item} key={item.id} />;
           })}
@@ -71,7 +70,7 @@ const AllCourses = () => {
           className="custom-pagination"
           current={current}
           onChange={onChange}
-          total={250}
+          total={courses?.length}
         />
       </div>
 

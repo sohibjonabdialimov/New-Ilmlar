@@ -2,6 +2,9 @@ import { NavLink } from "react-router-dom";
 import Header from "../components/Header";
 
 const DesktopLayout = ({ children }) => {
+ 
+    
+   
   return (
     <>
       <div className="sm:px-[1.6rem] px-[1rem] bg-layout_color min-h-[100dvh] pb-6">

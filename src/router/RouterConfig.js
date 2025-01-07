@@ -11,7 +11,6 @@ const RegisterPage = React.lazy(() => import("../views/auth/RegisterPage"));
 const EmailCode = React.lazy(() => import("../views/auth/EmailCode"));
 const TeacherRegisterPage = React.lazy(() => import("../views/auth/TeacherRegisterPage"));
 const HomePage = React.lazy(() => import("../views/home/HomePage"));
-const TeacherProfileForStudents = React.lazy(() => import("../views/teacher-profile-for-students/TeacherProfileForStudents"));
 const StudentProfile = React.lazy(() => import("../views/student-profile/StudentProfile"));
 const MyCourse = React.lazy(() => import("../views/my-course/MyCourse"));
 const AllCourses = React.lazy(() => import("../views/all-courses/AllCourses"));
@@ -88,14 +87,7 @@ export const RoutesConfig = [{
     subOptions: [],
     Component: NotFoundPage,
   },
-  {
-    title: "teacher-profile",
-    path: "/teacher-profile",
-    Layout: DesktopLayout,
-    roles: [],
-    subOptions: [],
-    Component: TeacherProfileForStudents,
-  },
+
   {
     title: "student-profile",
     path: "/student-profile",
