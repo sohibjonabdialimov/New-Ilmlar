@@ -12,6 +12,7 @@ const __dirname = path.dirname(__filename);
 // Statik fayllarni xizmat qilish
 app.use(express.static(path.join(__dirname, "dist")));
 
+
 // Barcha boshqa yo'llar uchun index.html'ni yuborish
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));

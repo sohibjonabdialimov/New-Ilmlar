@@ -64,6 +64,7 @@ const AllCourses = () => {
             return <NewCourseCard item={item} key={item.id} />;
           })}
         </div>
+        
       </div>
       <div className="flex justify-center items-center sm:mt-8 mt-5 sm:mb-0 mb-10">
         <Pagination
