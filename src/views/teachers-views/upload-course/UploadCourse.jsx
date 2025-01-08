@@ -6,11 +6,17 @@ import {
   message,
   Select,
   Space,
+  Spin,
   Upload,
 } from "antd";
 import { useState } from "react";
-import { PostCourses } from "../../../services/api";
-import { useNavigate } from "react-router-dom";
+import {
+  GetCourseDetailWithToken,
+  PatchCoursesComplete,
+  PostCourses,
+} from "../../../services/api";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
 
 const UploadCourse = () => {
   const [form] = Form.useForm();
@@ -20,8 +26,17 @@ const UploadCourse = () => {
   const [imageFile, setImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [inputs, setInputs] = useState([{ name: "" }]);
+  const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
+  const location = useLocation();
+  const text = location.state?.text;
+
+  const { data: courseDetail } = useQuery(
+    ["GetCourseDetailWithToken", localStorage.getItem("lesson_id")],
+    () => GetCourseDetailWithToken(localStorage.getItem("lesson_id"))
+  );
+
   const addInput = () => {
     setInputs([...inputs, { name: "" }]);
   };
@@ -48,6 +63,13 @@ const UploadCourse = () => {
     }
 
     return isImage;
+  };
+  const normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+
+    return e?.filelist;
   };
 
   const handleChange = (info) => {
@@ -79,10 +101,10 @@ const UploadCourse = () => {
     formData.append("level", value?.level);
     formData.append("language", value?.language);
     formData.append("study_parties", JSON.stringify(inputs));
+    setLoading(true);
 
     PostCourses(formData)
       .then((res) => {
-        console.log(res);
         localStorage.setItem("lesson_id", res.data.data.courseId.id);
         navigate("/upload-lesson");
         messageApi.open({
@@ -98,20 +120,57 @@ const UploadCourse = () => {
         });
       })
       .finally(() => {
-        console.log("final");
+        setLoading(false);
       });
   };
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    console.log(e);
-
-    return e?.filelist;
+  function onDownloadCourse() {
+    setLoading(true);
+    PatchCoursesComplete({ course_id: localStorage.getItem("lesson_id") })
+      .then((res) => {
+        console.log(res);
+        navigate('/my-profile')
+      })
+      .catch((error) => {
+        console.log(error);
+        messageApi.open({
+          type: "error",
+          content: "Kurs yuklashda xatolik bor",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+  const contentStyle = {
+    padding: 100,
+    background: "rgba(0, 0, 0, 0.1)",
+    borderRadius: 4,
   };
+  const content = <div style={contentStyle} />;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[60dvh]">
+        <Spin tip="Yuklanmoqda..." size="large">
+          {content}
+        </Spin>
+      </div>
+    );
+  }
   return (
     <div className="py-7 sm:mb-0 mb-16 sm:px-10 px-0">
       {contextHolder}
+      {text === "edit" && (
+        <div className="w-full flex items-center justify-end mb-6">
+          <Button
+            onClick={onDownloadCourse}
+            className="text-lg"
+            type="primary"
+            htmlType="button"
+          >
+            Kursni yuklash
+          </Button>
+        </div>
+      )}
       <Form
         onFinish={onFinish}
         form={form}
@@ -315,27 +374,6 @@ const UploadCourse = () => {
               </Button>
             </div>
           </Space>
-          {/* <Form.Item
-            label={
-              <span className="text-secondary_color font-semibold text-base">
-                Kursdan nimalar o’rganiladi
-              </span>
-            }
-            name="Okk"
-            className="sm:col-span-2 sm:row-span-2 col-span-4 row-span-3"
-            rules={[
-              {
-                required: true,
-                message: "Please input!",
-              },
-            ]}
-          >
-            <Input.TextArea
-              className="w-full py-1.5 px-3 rounded-[10px] text-base"
-              style={{ height: 150 }}
-              placeholder="Kursdan nimalar o’rganiladi"
-            />
-          </Form.Item> */}
 
           <Form.Item
             label={
@@ -454,7 +492,7 @@ const UploadCourse = () => {
                 beforeUpload={beforeImageUpload} // Optional: Validate file before uploading
                 showUploadList={false}
                 customRequest={({ file, onSuccess }) => {
-                  console.log(file);
+                  // console.log(file);
 
                   setTimeout(() => {
                     onSuccess("ok");
@@ -479,23 +517,58 @@ const UploadCourse = () => {
             </div>
           </Form.Item>
         </div>
-        <div className="w-full flex items-center justify-end gap-3 mt-1">
-          <Button
-            className="sm:w-[15%] w-[50%]"
-            type="primary"
-            htmlType="submit"
-          >
-            Bekor qilish
-          </Button>
-          <Button
-            className="sm:w-[15%] w-[50%]"
-            type="primary"
-            htmlType="submit"
-          >
-            Kurs yaratish
-          </Button>
-        </div>
+        {text === "edit" ? (
+          <div className="w-full flex items-center justify-end gap-3 mt-1">
+            <Button className="text-lg" type="link" htmlType="submit">
+              Tahrirlash
+            </Button>
+          </div>
+        ) : (
+          <div className="w-full flex items-center justify-end gap-3 mt-1">
+            <Button
+              className="sm:w-[15%] w-[50%]"
+              type="primary"
+              htmlType="submit"
+            >
+              Bekor qilish
+            </Button>
+            <Button
+              className="sm:w-[15%] w-[50%]"
+              type="primary"
+              htmlType="submit"
+            >
+              Kurs yaratish
+            </Button>
+          </div>
+        )}
       </Form>
+      {text === "edit" && (
+        <div className="w-full mt-4">
+          {courseDetail?.data.data.videos.map((item, index) => {
+            return (
+              <div
+                className="border border-dotted mb-3 rounded-lg p-[10px_15px] bg-[#F0F0F0FF]"
+                key={item.id}
+              >
+                <p>
+                  {index + 1}. {item.title}
+                </p>
+              </div>
+            );
+          })}
+          <div className="w-full text-center mt-5">
+            <Button
+              onClick={() => {
+                navigate("/upload-lesson");
+              }}
+              type="default"
+              htmlType="button"
+            >
+              Video dars qo’shish
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

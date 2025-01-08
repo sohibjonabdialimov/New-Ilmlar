@@ -1,11 +1,11 @@
 import { Button, Result } from "antd";
 import { useNavigate } from "react-router-dom";
 
-const SuccessResult = ({title, btn1, btn2, link1, link2, onCourseAdd}) => {
+const SuccessResult = ({title, btn1, btn2, onCourseAdd}) => {
   const navigate = useNavigate();
  
   function onSaveCourse(){
-    // navigate(`${link2}`);
+    navigate("/upload-course", { state: { text: "edit" } });
   }
   return (
     <Result

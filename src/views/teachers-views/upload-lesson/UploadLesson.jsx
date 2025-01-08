@@ -4,7 +4,6 @@ import {
   GetCourseDetailWithToken,
   PostCoursesVideos,
 } from "../../../services/api";
-import { useNavigate } from "react-router-dom";
 import SuccessResult from "../../../components/SuccessResult";
 import { useQuery } from "react-query";
 
@@ -17,15 +16,12 @@ const UploadLesson = () => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const navigate = useNavigate();
 
   const { data: courseDetail } = useQuery(
     ["GetCourseDetailWithToken", success],
     () => GetCourseDetailWithToken(localStorage.getItem("lesson_id"))
   );
-  console.log(courseDetail);
   function onCourseAdd() {
-    // navigate(`${link1}`);
     setSuccess(false);
   }
   const beforeDocumentUpload = (file) => {
@@ -49,7 +45,7 @@ const UploadLesson = () => {
   const handleDocumentChange = (info) => {
     if (info.file.status === "done" || info.file.status === "uploading") {
       const file = info.file.originFileObj;
-      setFile(file); // Yuklangan faylni saqlash
+      setFile(file); 
     }
   };
 
@@ -81,8 +77,7 @@ const UploadLesson = () => {
     formData.append("is_open", value?.is_open);
 
     PostCoursesVideos(formData)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         // localStorage.setItem("lesson_id", res.data.data.courseId.id);
         setSuccess(true);
         form.resetFields();

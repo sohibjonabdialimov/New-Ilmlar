@@ -81,3 +81,12 @@ export const GetCourseDetailWithToken = (id) => {
   });
 };
 
+export const PatchCoursesComplete = (data) => {  
+  return axiosT.patch("/api/courses/complete", data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+

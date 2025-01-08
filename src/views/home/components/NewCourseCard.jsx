@@ -11,6 +11,7 @@ const NewCourseCard = ({ type, role, item }) => {
   const navigate = useNavigate();
   const [isSave, setIsSave] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+
   const handleSaveCourse = (id) => {
     GetSaveCourse(id)
       .then((res) => {
@@ -25,7 +26,11 @@ const NewCourseCard = ({ type, role, item }) => {
       .catch(() => {
         messageApi.open({
           type: "error",
-          content: <h1 className="text-lg">Kursni saqlash uchun avval ro'yxatdan o'ting!</h1>,
+          content: (
+            <h1 className="text-lg">
+              Kursni saqlash uchun avval ro'yxatdan o'ting!
+            </h1>
+          ),
         });
       });
   };
@@ -90,13 +95,11 @@ const NewCourseCard = ({ type, role, item }) => {
             }}
             className="flex items-center gap-2"
           >
-            {
-              isSave ? (
-                <i className="fa-solid fa-bookmark text-2xl"></i>
-              ) : (
-                <i className="fa-regular fa-bookmark text-2xl"></i>
-              )
-            }
+            {isSave ? (
+              <i className="fa-solid fa-bookmark text-2xl"></i>
+            ) : (
+              <i className="fa-regular fa-bookmark text-2xl"></i>
+            )}
           </div>
         </div>
       )}
