@@ -67,9 +67,6 @@ const MyCourse = () => {
     ["GetTeacherAccountId", myCourse?.teacher_id],
     () => GetTeacherAccountId(myCourse?.teacher_id)
   );
-  console.log(teacherAccountId);
-
-  // console.log(myCourse);
 
   return (
     <>
