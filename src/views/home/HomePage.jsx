@@ -70,8 +70,6 @@ const HomePage = () => {
   
   let courses = coursesData?.data.data;
   let teacher = teachersData?.data.data.teachers;
-  console.log(teacher);
-  
   
   return (
     <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
@@ -110,7 +108,7 @@ const HomePage = () => {
         >
           {courses?.map((item) => {
             return (
-              <SwiperSlide key={item.id} className="">
+              <SwiperSlide key={item.id}>
                 <NewCourseCard item={item} />
               </SwiperSlide>
             );
@@ -198,7 +196,7 @@ const HomePage = () => {
         >
           {navData.map((item) => {
             return (
-              <SwiperSlide key={item.id} className="">
+              <SwiperSlide key={item.id}>
                 <NewCourseCard />
               </SwiperSlide>
             );

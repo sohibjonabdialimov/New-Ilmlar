@@ -202,9 +202,7 @@ const Header = () => {
               <p className="absolute bottom-3 left-3 text-base text-white">
                 Hisob raqam:{" "}
                 <span className="font-medium">
-                  {userData?.payment_id
-                    ? String(userData?.payment_id).match(/\d{3}/g).join(" ")
-                    : "0"}
+                  {userData?.payment_id}
                 </span>
               </p>
             </div>

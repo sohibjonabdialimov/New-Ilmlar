@@ -128,7 +128,7 @@ const UploadLesson = () => {
         <div className="py-7 sm:px-10 sm:mb-0 mb-16">
           {contextHolder}
           <h1 className="mb-6 text-2xl text-center">
-            {courseDetail?.data.data.videos.length + 1} - darsni yuklash
+            {courseDetail?.data.data.videos.length ? courseDetail?.data.data.videos.length + 1 : 1} - darsni yuklash
           </h1>
           <Form
             onFinish={onFinish}

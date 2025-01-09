@@ -1,17 +1,19 @@
-import avatar from "../../../assets/images/avatar.png";
+import avatar from "../../../assets/images/profile.webp";
 import star from "../../../assets/images/star.svg";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { formatPrice } from "../../../utils/formatPrice";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
-import { GetSaveCourse } from "../../../services/api";
+import { GetSaveCourse, GetTeacherAccountId } from "../../../services/api";
 import { useState } from "react";
 import { message } from "antd";
+import { useQuery } from "react-query";
 const NewCourseCard = ({ type, role, item }) => {
   const navigate = useNavigate();
   const [isSave, setIsSave] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-
+  
+  
   const handleSaveCourse = (id) => {
     GetSaveCourse(id)
       .then((res) => {
@@ -34,6 +36,9 @@ const NewCourseCard = ({ type, role, item }) => {
         });
       });
   };
+  const { data: teacherAccountId } = useQuery(["GetTeacherAccountId", item?.teacher_id], () =>
+    GetTeacherAccountId(item?.teacher_id)
+  );
 
   return (
     <div
@@ -65,13 +70,23 @@ const NewCourseCard = ({ type, role, item }) => {
         {item?.name}
       </h1>
       <div className="flex items-center gap-1 mb-2">
-        <img
-          className="w-6 h-6 object-cover rounded-full"
-          src={avatar}
-          alt="Avatar ilmlar"
-        />
+        {teacherAccountId?.data.data.profile_img ? (
+          <img
+            className="w-6 h-6 object-cover rounded-full"
+            src={teacherAccountId?.data.data.profile_img}
+            alt="Avatar ilmlar"
+          />
+        ) : (
+          <img
+            className="w-6 h-6 object-cover rounded-full"
+            src={avatar}
+            alt="Avatar ilmlar"
+          />
+        )}
+
         <p className="text-secondary_color text-sm font-normal">
-          O’qituvchi full name
+          {teacherAccountId?.data.data.first_name}{" "}
+          {teacherAccountId?.data.data.last_name}
         </p>
       </div>
       {type ? (

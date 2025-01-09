@@ -8,6 +8,7 @@ import DesktopLayout from "./layout/DesktopLayout";
 import Loading from "./utils/Loading";
 const CourseInfo = React.lazy(() => import("./views/course-info/CourseInfo"));
 const Lessons = React.lazy(() => import("./views/lessons/Lessons"));
+const MyCourse = React.lazy(() => import("./views/my-course/MyCourse"));
 const TeacherProfileForStudents = React.lazy(() => import("./views/teacher-profile-for-students/TeacherProfileForStudents"));
 const App = () => {
   const navigate = useNavigate();
@@ -56,6 +57,17 @@ const App = () => {
           <Suspense fallback={<Loading />}>
             <DesktopLayout>
               <TeacherProfileForStudents />
+            </DesktopLayout>
+          </Suspense>
+        }
+      />
+      <Route
+        key={"my-course/:id"}
+        path={"/my-course/:id"}
+        element={
+          <Suspense fallback={<Loading />}>
+            <DesktopLayout>
+              <MyCourse />
             </DesktopLayout>
           </Suspense>
         }

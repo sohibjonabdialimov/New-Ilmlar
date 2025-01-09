@@ -11,6 +11,8 @@ import { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import TeachersGroupCard from "../home/components/TeachersGroupCard";
 import { ProfileContext } from "../../context/ProfileProvider";
+import { useQuery } from "react-query";
+import { GetPurchasedCourses, GetSavedCourses } from "../../services/api";
 const navData = [
   {
     id: 1,
@@ -82,7 +84,11 @@ const StudentProfile = () => {
     //     });
     //   });
   };
-
+  const { data: myCourses } = useQuery(["GetPurchasedCourses"], GetPurchasedCourses);
+  const { data: mySavedCourses } = useQuery(["GetSavedCourses"], GetSavedCourses);
+  let courses = myCourses?.data.data;
+  let savedCourses = mySavedCourses?.data.data;
+  
   return (
     <div className="py-7">
       <div className="flex sm:flex-row flex-col justify-between sm:mb-16 mb-0">
@@ -131,9 +137,7 @@ const StudentProfile = () => {
             {userData?.amount?.balance ? userData?.amount?.balance : 0} UZS
           </p>
           <p className="absolute bottom-3 left-3 text-base text-white">
-            {userData?.payment_id
-              ? String(userData?.payment_id).match(/\d{4}/g).join(" ")
-              : "0"}
+            {userData?.payment_id}
           </p>
         </div>
       </div>
@@ -162,10 +166,11 @@ const StudentProfile = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {navData.map((item) => {
+          {courses?.map((item) => {
+            
             return (
-              <SwiperSlide key={item.id} className="">
-                <NewCourseCard type={true} />
+              <SwiperSlide key={item.id}>
+                <NewCourseCard item={item} type={true} />
               </SwiperSlide>
             );
           })}
@@ -195,10 +200,10 @@ const StudentProfile = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {navData.map((item) => {
+          {savedCourses?.map((item) => {
             return (
               <SwiperSlide key={item.id} className="">
-                <NewCourseCard />
+                <NewCourseCard item={item} />
               </SwiperSlide>
             );
           })}

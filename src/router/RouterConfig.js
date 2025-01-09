@@ -12,7 +12,7 @@ const EmailCode = React.lazy(() => import("../views/auth/EmailCode"));
 const TeacherRegisterPage = React.lazy(() => import("../views/auth/TeacherRegisterPage"));
 const HomePage = React.lazy(() => import("../views/home/HomePage"));
 const StudentProfile = React.lazy(() => import("../views/student-profile/StudentProfile"));
-const MyCourse = React.lazy(() => import("../views/my-course/MyCourse"));
+
 const AllCourses = React.lazy(() => import("../views/all-courses/AllCourses"));
 const TeacherProfile = React.lazy(() => import("../views/teachers-views/teacher-profile/TeacherProfile"));
 const AccountBalance = React.lazy(() => import("../views/teachers-views/account-balance/AccountBalance"));
@@ -95,14 +95,6 @@ export const RoutesConfig = [{
     roles: [],
     subOptions: [],
     Component: StudentProfile,
-  },
-  {
-    title: "my-course",
-    path: "/my-course",
-    Layout: DesktopLayout,
-    roles: [],
-    subOptions: [],
-    Component: MyCourse,
   },
   {
     title: "courses",

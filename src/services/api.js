@@ -15,8 +15,32 @@ export const PostUsersLogin = (data) => {
 export const GetCourses = () => {
   return axiosT.get("/api/courses/donthavetoken");
 };
-export const GetCourseDetail = (id) => {
+export const GetCourseDetailWithoutToken = (id) => {
   return axiosT.get(`/api/courses/course/${id}/withouttoken`);
+};
+export const GetCourseDetail = (id) => {
+  return axiosT.get(`/api/courses/course/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+export const GetPurchasedCourses = () => {
+  return axiosT.get("/api/courses/purchased-courses", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+export const GetSavedCourses = () => {
+  return axiosT.get("/api/courses/saved-courses", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 export const GetTeachers = () => {
   return axiosT.get("/api/users/teacheraccouts");
@@ -80,6 +104,15 @@ export const GetCourseDetailWithToken = (id) => {
     },
   });
 };
+export const GetTeacherAccountId = (id) => {
+  return axiosT.get(`/api/users/teacheraccout/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
 
 export const PatchCoursesComplete = (data) => {  
   return axiosT.patch("/api/courses/complete", data, {

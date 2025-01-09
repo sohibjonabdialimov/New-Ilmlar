@@ -11,36 +11,62 @@ import { Navigation, FreeMode } from "swiper/modules";
 import CommentCard from "../../components/comment_card/CommentCard";
 import NewCourseCard from "../home/components/NewCourseCard";
 import { useQuery } from "react-query";
-import { GetBuyCourse, GetCourseDetail } from "../../services/api";
+import { GetBuyCourse, GetCourseDetailWithoutToken } from "../../services/api";
 import { formatPrice } from "../../utils/formatPrice";
-import { message } from "antd";
+import { message, Modal } from "antd";
+import { useState } from "react";
 
 function CourseInfo() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [messageApi, contextHolder] = message.useMessage();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [course, setCourse] = useState(null);
 
-  const { data: courseDetail } = useQuery(["GetCourseDetail"], () =>
-    GetCourseDetail(id)
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    console.log("Cancel button clicked");
+    setIsModalOpen(false);
+  };
+
+  useQuery(
+    ["GetCourseDetailWithoutToken"],
+    () => GetCourseDetailWithoutToken(id),
+    {
+      onSuccess(data) {
+        console.log(data.data.data);
+        setCourse(data.data.data);
+      },
+    }
   );
-  let course = courseDetail?.data.data;
-console.log(course);
 
-  function handleBuyCourse(id) {
-    GetBuyCourse(id).then((res) => {
-      console.log(res);
-      messageApi
-        .open({
+  const handleOk = () => {
+    handleBuyCourse(course.id);
+    setIsModalOpen(false);
+  };
+
+  async function handleBuyCourse(id) {
+    GetBuyCourse(id)
+      .then((res) => {
+        messageApi.open({
           type: "info",
-          content: <h1 className="text-lg">{res.message}</h1>,
-        })
-        .catch((err) => {
-          messageApi.open({
-            type: "error",
-            content: <h1 className="text-lg">{err.message}</h1>,
-          });
+          content: <h1 className="text-lg">{res.data.message}</h1>,
         });
-    });
+        navigate(`/my-course/${id}`, {
+          state: {
+            name: "buy",
+          },
+        });
+      })
+      .catch((err) => {
+        messageApi.open({
+          type: "error",
+          content: <h1 className="text-lg">{err.response.data.message}</h1>,
+        });
+      });
   }
   const navData = [
     {
@@ -149,7 +175,9 @@ console.log(course);
             </h1>
             <div className="flex justify-between gap-3 items-start">
               <div
-                onClick={() => navigate(`/teacher-profile/${course?.teacher_id}`)}
+                onClick={() =>
+                  navigate(`/teacher-profile/${course?.teacher_id}`)
+                }
                 className="flex items-center gap-2 cursor-pointer"
               >
                 <img
@@ -329,7 +357,7 @@ console.log(course);
           <hr />
 
           <div
-            onClick={() => handleBuyCourse(id)}
+            onClick={showModal}
             className="flex justify-center items-center pt-5"
           >
             <button className="w-full py-[10px] rounded-[100px] text-white bg-blue_color text-base font-medium">
@@ -433,6 +461,17 @@ console.log(course);
           })}
         </Swiper>
       </div>
+
+      <Modal
+        title="Kursni sotib olish"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText="Sotib olish"
+        cancelText="Bekor qilish"
+      >
+        <p>Haqiqatdan bu kursni sotib olmoqchimisiz?</p>
+      </Modal>
     </div>
   );
 }

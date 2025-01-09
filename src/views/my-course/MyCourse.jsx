@@ -1,15 +1,21 @@
 import * as Accordion from "@radix-ui/react-accordion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import right from "../../assets/images/right.png";
 import time from "../../assets/images/time.png";
 import "./my-course.css";
 import ProgressBar from "@ramonak/react-progress-bar";
-import { Button, Input, Modal, Rate } from "antd";
-import { useState } from "react";
+import { Button, Input, message, Modal, Rate } from "antd";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { GetCourseDetail } from "../../services/api";
 const { TextArea } = Input;
 const MyCourse = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { id } = useParams();
+  const { name } = location.state || {};
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -19,6 +25,22 @@ const MyCourse = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  useEffect(() => {
+    if (name === "buy") {
+      messageApi.open({
+        type: "info",
+        content: (
+          <h1 className="text-lg">Kurs muvaffaqqiyatli sotib olindi!</h1>
+        ),
+      });
+    }
+  }, [name, messageApi]);
+
+  const { data: course } = useQuery(["GetCourseDetail"], () => GetCourseDetail(id));
+  const myCourse = course?.data.data; 
+  
+  
+
   const modules = [
     {
       title: "1-Modul. JavaScript asoslari",
@@ -71,6 +93,7 @@ const MyCourse = () => {
   ];
   return (
     <div className="py-7">
+      {contextHolder}
       <div
         onClick={() => navigate(-1)}
         className="btn back_btn inline-flex items-center sm:gap-3 gap-1 cursor-pointer sm:p-[4px_20px] p-[2px_10px]"
@@ -82,7 +105,7 @@ const MyCourse = () => {
         <div className="col-span-1 flex flex-col justify-between">
           <div className="">
             <h1 className="sm:text-2xl text-lg font-semibold italic text-[#758195]">
-              Fan va texnika yo'nalishi
+              {myCourse?.name}
             </h1>
             <h1 className="sm:text-5xl text-xl font-semibold sm:pb-8 pb-5">
               Memorable UI Design For Interactive Experiences.

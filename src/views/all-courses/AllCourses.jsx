@@ -29,7 +29,11 @@ const AllCourses = () => {
 
   useQuery(["GetCourses"], GetCourses, {
     onSuccess(data) {
-      setCourses(data.data.data);
+      setCourses(
+        data.data.data.filter((item) => item.status === 2 && item.is_verified)
+      );
+      console.log(data.data.data.filter((item) => item.status === 2 && item.is_verified));
+      
     },
   });
 
@@ -64,7 +68,6 @@ const AllCourses = () => {
             return <NewCourseCard item={item} key={item.id} />;
           })}
         </div>
-        
       </div>
       <div className="flex justify-center items-center sm:mt-8 mt-5 sm:mb-0 mb-10">
         <Pagination
