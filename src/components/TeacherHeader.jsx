@@ -1,15 +1,17 @@
-import { Drawer, Dropdown } from "antd";
+import { Drawer, Popover } from "antd";
 
-import user_card from "../assets/images/user_card.svg";
 import card from "../assets/images/card.svg";
 import teacherLogo from "../assets/images/teacher-logo.svg";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import mycard from "../assets/images/my_card.svg";
+import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import "./styles.css";
+import { ProfileContext } from "../context/ProfileProvider";
 
 const TeacherHeader = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { userData } = useContext(ProfileContext);
   const showDrawer = () => {
     setOpen(true);
   };
@@ -30,23 +32,51 @@ const TeacherHeader = () => {
     navigate("/login");
   }
 
-  const items = [
-    {
-      key: "1",
-      label: (
-        <Link
-          to="/login"
-          className="flex items-center justify-center gap-3 inter text-[0.857rem] text-[#1E1E1EB2] font-[500] leading-[1.1rem]"
-        >
-          <i
-            onClick={exitHandle}
-            className="fa-solid fa-arrow-right-from-bracket"
-          ></i>
-          Chiqish
-        </Link>
-      ),
-    },
-  ];
+  const content = (
+    <>
+      <div className="flex items-center gap-3 border-b-[1px] border-[#e4e4e4] px-4 py-3">
+        <div className="cursor-pointer sm:w-[44px] sm:h-[44px] w-[30px] h-[30px] flex justify-center items-center bg-blue_color rounded-full">
+          <p className="text-white sm:text-xl text-sm sm:font-semibold font-medium">
+            {userData?.first_name?.charAt(0)}
+          </p>
+        </div>
+        <div>
+          <h2 className="text-base font-medium">
+            {userData?.first_name} {userData?.last_name}
+          </h2>
+          <p className="text-base">{userData?.email}</p>
+        </div>
+      </div>
+      <div
+        onClick={() => navigate("/my-profile")}
+        className="cursor-pointer hover:bg-gray-100 flex items-center gap-3 border-b-[1px] border-[#e4e4e4] px-4 py-3 text-base"
+      >
+        <i className="fa-solid fa-circle-user text-xl text-blue_color"></i>
+        <p className="text-main_color">Profil</p>
+      </div>
+      <div
+        onClick={() => navigate("/account-balance")}
+        className="cursor-pointer hover:bg-gray-100 flex items-center gap-3 border-b-[1px] border-[#e4e4e4] px-4 py-3 text-base"
+      >
+        <i className="fa-regular fa-credit-card text-xl text-blue_color"></i>
+        <p className="text-main_color">Hisob balans</p>
+      </div>
+      <div
+        onClick={() => navigate("/upload-course")}
+        className="cursor-pointer hover:bg-gray-100 flex items-center gap-3 border-b-[1px] border-[#e4e4e4] px-4 py-3 text-base"
+      >
+        <i className="fa-solid fa-layer-group text-xl text-blue_color"></i>
+        <p className="text-main_color">Kurs yuklash</p>
+      </div>
+      <div
+        onClick={exitHandle}
+        className="cursor-pointer hover:bg-gray-100 flex items-center gap-3 px-4 py-3 text-base"
+      >
+        <i className="fa-solid fa-arrow-right-from-bracket text-blue_color"></i>
+        <p className="text-main_color">Chiqish</p>
+      </div>
+    </>
+  );
   return (
     <>
       <div className="py-[0.8rem]">
@@ -72,22 +102,37 @@ const TeacherHeader = () => {
             >
               <i className="fa-solid fa-expand text-[1.2rem]"></i>
             </div>
-            <Dropdown
-              menu={{
-                items,
-              }}
-              placement="bottom"
+            <Popover
+              overlayClassName="custom-popover"
+              content={content}
+              placement="bottomRight"
             >
               <div className="cursor-pointer sm:w-[44px] sm:h-[44px] w-[30px] h-[30px] flex justify-center items-center bg-blue_color rounded-full">
                 <p className="text-white sm:text-xl text-sm sm:font-semibold font-medium">
-                  S
+                  {userData?.first_name?.charAt(0)}
                 </p>
               </div>
-            </Dropdown>
+            </Popover>
           </nav>
         </header>
         <Drawer title="Hamyon" onClose={onClose} open={open}>
-          <img src={user_card} alt="" />
+          <div>
+            <div className="relative">
+              <img
+                className="aspect-[25/16] h-full w-full"
+                src={mycard}
+                alt="Student's Plastic card"
+              />
+              <p className="absolute bottom-20 left-5 font-medium text-xl text-white">
+                {userData?.amount?.balance ? userData?.amount?.balance : "0"}{" "}
+                UZS
+              </p>
+              <p className="absolute bottom-3 left-3 text-base text-white">
+                Hisob raqam:{" "}
+                <span className="font-medium">{userData?.payment_id}</span>
+              </p>
+            </div>
+          </div>
         </Drawer>
       </div>
     </>

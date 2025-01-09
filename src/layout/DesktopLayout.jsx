@@ -2,9 +2,6 @@ import { NavLink } from "react-router-dom";
 import Header from "../components/Header";
 
 const DesktopLayout = ({ children }) => {
- 
-    
-   
   return (
     <>
       <div className="sm:px-[1.6rem] px-[1rem] bg-layout_color min-h-[100dvh] pb-6">
@@ -28,8 +25,6 @@ const DesktopLayout = ({ children }) => {
             >
               <i className="fa-solid fa-layer-group text-xl text-[#64748B]"></i>
               <p className="text-xs text-[#64748B]">Kurslar</p>
-              {/* <i className="fa-solid fa-magnifying-glass text-xl text-[#64748B]"></i>
-              <p className="text-xs text-[#64748B]">Qidirish</p> */}
             </NavLink>
             <NavLink
               to={"/"}

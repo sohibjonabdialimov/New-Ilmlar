@@ -1,7 +1,7 @@
 export const formatDate = (date) => {
   // If 'date' is provided, use it; otherwise, use the current date
   const dateBack = date ? new Date(date) : new Date();
-
+  
   // Get local date and time parts
   const year = dateBack.getFullYear();
   const month = String(dateBack.getMonth() + 1).padStart(2, "0");

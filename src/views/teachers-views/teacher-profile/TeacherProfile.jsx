@@ -3,6 +3,7 @@ import teacher_profile from "../../../assets/images/teacher_avatar.jpg";
 import NewCourseCard from "../../home/components/NewCourseCard";
 import { Controller, useForm } from "react-hook-form";
 import { ProfileContext } from "../../../context/ProfileProvider";
+import { TeacherDataContext } from "../../../context/TeacherDataProvider";
 import { useContext } from "react";
 import axiosT from "../../../services/axios";
 import { useQueries, useQuery } from "react-query";
@@ -13,6 +14,7 @@ const { TextArea } = Input;
 const TeacherProfile = () => {
   const { control, getValues } = useForm();
   const { userData } = useContext(ProfileContext);
+  const { setMyCourse, myCourse } = useContext(TeacherDataContext);
   const navigate = useNavigate();
   const submitHandler = async () => {
     const editTeacher = getValues().EDITTEACHERPROFILE;
@@ -48,10 +50,11 @@ const TeacherProfile = () => {
     }))
   );
 
-  const allData = queries
-    ?.map((query) => query?.data?.data)
-    .filter((item) => item !== undefined);
-
+  setMyCourse(
+    queries
+      ?.map((query) => query?.data?.data)
+      .filter((item) => item !== undefined)
+  );
 
   return (
     <div className="py-7">
@@ -81,7 +84,10 @@ const TeacherProfile = () => {
           </div>
         </div>
         <div className="sm:w-auto w-full">
-          <button onClick={() => navigate("/upload-course")} className="btn text-sm sm:p-[10px_30px] p-[8px_20px] w-full">
+          <button
+            onClick={() => navigate("/upload-course")}
+            className="btn text-sm sm:p-[10px_30px] p-[8px_20px] w-full"
+          >
             Kurs yuklash
           </button>
         </div>
@@ -324,7 +330,7 @@ const TeacherProfile = () => {
       <div className="relative mt-14 sm:mb-5 mb-10">
         <h1 className="title mb-8">Kurslar</h1>
         <div className="grid sm:grid-cols-4 grid-cols-1 justify-between w-full gap-5 gap-y-7">
-          {allData?.map((item) => {
+          {myCourse?.map((item) => {
             return <NewCourseCard item={item} role={"teacher"} key={item.id} />;
           })}
         </div>

@@ -21,7 +21,7 @@ const Select = () => {
       <br />
       <Link
         className="sm:w-[480px] w-[85%] flex justify-center items-center flex-col sm:shadow-[0px_32px_48px_-16px_#00000033] shadow-[0px_2px_4px_0px_#0000001F] sm:p-[48px_64px] p-[25px_15px] rounded-[24px]"
-        to="/register"
+        to="/teacher-register"
       >
         <img
           className="sm:h-[240px] sm:w-[240px] w-[150px] h-auto"

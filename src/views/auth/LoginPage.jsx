@@ -121,7 +121,7 @@ const LoginPage = () => {
                   Shaxsiy sahifangiz yo'qmi?{" "}
                   <Link
                     className="cursor-pointer text-blue_color"
-                    to={"/register"}
+                    to={"/select"}
                   >
                     Ro'yxatdan o'ting
                   </Link>
