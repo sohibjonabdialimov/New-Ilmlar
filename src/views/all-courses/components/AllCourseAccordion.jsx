@@ -3,39 +3,9 @@ import * as Accordion from "@radix-ui/react-accordion";
 import classNames from "classnames";
 import "./style-all-course.css";
 import { Checkbox } from "antd";
-
-const options = [
-  {
-    label: "Hammasi",
-    value: "Hammasi",
-    count: 10000,
-  },
-  {
-    label: "Dasturlash",
-    value: "Dasturlash",
-    count: 10000,
-  },
-  {
-    label: "Dizayn",
-    value: "Dizayn",
-    count: 3742,
-  },
-  {
-    label: "Biznes",
-    value: "Biznes",
-    count: 705,
-  },
-  {
-    label: "Fan va texnika",
-    value: "fan",
-    count: 705,
-  },
-  {
-    label: "Shaxsiy rivojlanish",
-    value: "shaxsiy",
-    count: 705,
-  },
-];
+import { GetCategories } from "../../../services/api";
+import { useQuery } from "react-query";
+import { capitalizeFirstLetter } from "../../../utils/formatText";
 
 const languageOptions = [
   {
@@ -79,6 +49,8 @@ const AllCourseAccordion = () => {
   ]);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
 
+  const { data: category } = useQuery(["GetCategories"], GetCategories);
+
   const handleLevelChange = (checkedValues) => {
     console.log("Levels selected = ", checkedValues);
     setSelectedLevels(checkedValues);
@@ -101,13 +73,9 @@ const AllCourseAccordion = () => {
         <AccordionContent>
           <Checkbox.Group value={selectedLevels} onChange={handleLevelChange}>
             <div className="checkbox-list">
-              {options.map((item) => (
-                <Checkbox
-                  className="text-[17px]"
-                  key={item.value}
-                  value={item.value}
-                >
-                  {item.label} ({item.count})
+              {category?.data.data.map((item) => (
+                <Checkbox className="text-[17px]" key={item.id} value={item.id}>
+                  {capitalizeFirstLetter(item.name)}
                 </Checkbox>
               ))}
             </div>

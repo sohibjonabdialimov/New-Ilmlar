@@ -6,10 +6,20 @@ import React, { Suspense, useEffect } from "react";
 import { verifyToken } from "./services/verifyToken";
 import DesktopLayout from "./layout/DesktopLayout";
 import Loading from "./utils/Loading";
+import TeacherLayout from "./layout/TeacherLayout";
+
+const CourseStatistic = React.lazy(() =>
+  import("./views/teachers-views/course-statistic/CourseStatistic")
+);
+const TeacherCourseInfo = React.lazy(() =>
+  import("./views/teachers-views/teacher-course-info/TeacherCourseInfo")
+);
 const CourseInfo = React.lazy(() => import("./views/course-info/CourseInfo"));
 const Lessons = React.lazy(() => import("./views/lessons/Lessons"));
 const MyCourse = React.lazy(() => import("./views/my-course/MyCourse"));
-const TeacherProfileForStudents = React.lazy(() => import("./views/teacher-profile-for-students/TeacherProfileForStudents"));
+const TeacherProfileForStudents = React.lazy(() =>
+  import("./views/teacher-profile-for-students/TeacherProfileForStudents")
+);
 const App = () => {
   const navigate = useNavigate();
   // console.log(import.meta.env.VITE_API_KEY);
@@ -49,7 +59,7 @@ const App = () => {
           </Suspense>
         }
       />
-        
+
       <Route
         key={"teacher-profile/:id"}
         path={"/teacher-profile/:id"}
@@ -69,6 +79,28 @@ const App = () => {
             <DesktopLayout>
               <MyCourse />
             </DesktopLayout>
+          </Suspense>
+        }
+      />
+      <Route
+        key={"teacher-course-info/:id"}
+        path={"/teacher-course-info/:id"}
+        element={
+          <Suspense fallback={<Loading />}>
+            <TeacherLayout>
+              <TeacherCourseInfo />
+            </TeacherLayout>
+          </Suspense>
+        }
+      />
+      <Route
+        key={"course-statistic/:id"}
+        path={"/course-statistic/:id"}
+        element={
+          <Suspense fallback={<Loading />}>
+            <TeacherLayout>
+              <CourseStatistic />
+            </TeacherLayout>
           </Suspense>
         }
       />

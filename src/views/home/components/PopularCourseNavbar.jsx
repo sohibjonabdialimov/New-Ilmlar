@@ -3,24 +3,17 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import { FreeMode } from "swiper/modules";
 import { useState } from "react";
-const navData = [
-  "Hammasi",
-  "Dasturlash",
-  "Dizayn",
-  "Biznes",
-  "Fan va texnika",
-  "Dasturlash 1",
-  "Dizayn 2",
-  "Biznes 3",
-  "Fan va texnika 3",
-  "Shaxsiy rivojlanish"
-];
+
 import "./style.css";
+import { useQuery } from "react-query";
+import { GetCategories } from "../../../services/api";
+import { capitalizeFirstLetter } from "../../../utils/formatText";
 const PopularCourseNavbar = () => {
-  const [activeIndex, setActiveIndex] = useState(0); // Hozirgi faol element indexini saqlash
+  const [activeIndex, setActiveIndex] = useState(0);
+  const { data: category } = useQuery(["GetCategories"], GetCategories);
 
   const handleSlideClick = (index) => {
-    setActiveIndex(index); // Bosilgan elementni faol deb belgilash
+    setActiveIndex(index);
   };
   return (
     <Swiper
@@ -44,16 +37,16 @@ const PopularCourseNavbar = () => {
       modules={[FreeMode]}
       className="mySwiper popular_navbar"
     >
-      {navData.map((item, index) => {
+      {category?.data.data.map((item, index) => {
         return (
           <SwiperSlide
             onClick={() => handleSlideClick(index)}
-            key={item}
+            key={item.id}
             className={`popular_slider_item text-main_color font-normal text-base ${
               activeIndex === index ? "active" : ""
             }`}
           >
-            {item}
+            {capitalizeFirstLetter(item?.name)}
           </SwiperSlide>
         );
       })}

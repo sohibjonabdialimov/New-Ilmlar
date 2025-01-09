@@ -84,11 +84,17 @@ const StudentProfile = () => {
     //     });
     //   });
   };
-  const { data: myCourses } = useQuery(["GetPurchasedCourses"], GetPurchasedCourses);
-  const { data: mySavedCourses } = useQuery(["GetSavedCourses"], GetSavedCourses);
+  const { data: myCourses } = useQuery(
+    ["GetPurchasedCourses"],
+    GetPurchasedCourses
+  );
+  const { data: mySavedCourses } = useQuery(
+    ["GetSavedCourses"],
+    GetSavedCourses
+  );
   let courses = myCourses?.data.data;
   let savedCourses = mySavedCourses?.data.data;
-  
+
   return (
     <div className="py-7">
       <div className="flex sm:flex-row flex-col justify-between sm:mb-16 mb-0">
@@ -167,10 +173,9 @@ const StudentProfile = () => {
           className="mySwiper"
         >
           {courses?.map((item) => {
-            
             return (
               <SwiperSlide key={item.id}>
-                <NewCourseCard item={item} type={true} />
+                <NewCourseCard item={item} buy={true} type={true} />
               </SwiperSlide>
             );
           })}

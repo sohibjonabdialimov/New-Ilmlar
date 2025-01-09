@@ -1,6 +1,6 @@
 import right from "../../assets/images/right.png";
 import check_green from "../../assets/images/check_green.png";
-import teacher from "../../assets/images/teacher_profile.jpg";
+import teacher from "../../assets/images/profile.webp";
 import "./course-info.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -9,9 +9,12 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import { Navigation, FreeMode } from "swiper/modules";
 import CommentCard from "../../components/comment_card/CommentCard";
-import NewCourseCard from "../home/components/NewCourseCard";
 import { useQuery } from "react-query";
-import { GetBuyCourse, GetCourseDetailWithoutToken } from "../../services/api";
+import {
+  GetBuyCourse,
+  GetCourseDetailWithoutToken,
+  GetTeacherAccountId,
+} from "../../services/api";
 import { formatPrice } from "../../utils/formatPrice";
 import { message, Modal } from "antd";
 import { useState } from "react";
@@ -22,13 +25,13 @@ function CourseInfo() {
   const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [course, setCourse] = useState(null);
+  const [comments, setComments] = useState([]);
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleCancel = () => {
-    console.log("Cancel button clicked");
     setIsModalOpen(false);
   };
 
@@ -37,8 +40,8 @@ function CourseInfo() {
     () => GetCourseDetailWithoutToken(id),
     {
       onSuccess(data) {
-        console.log(data.data.data);
         setCourse(data.data.data);
+        setComments(data.data.data.commits);
       },
     }
   );
@@ -68,94 +71,16 @@ function CourseInfo() {
         });
       });
   }
-  const navData = [
+
+  const { data: teacherAccountId } = useQuery(
+    ["GetTeacherAccountId", course?.teacher_id],
+    () => GetTeacherAccountId(course?.teacher_id),
     {
-      id: 1,
-      name: "Kurs nomi 1",
-    },
-    {
-      id: 2,
-      name: "Kurs nomi 2",
-    },
-    {
-      id: 3,
-      name: "Kurs nomi 3",
-    },
-    {
-      id: 4,
-      name: "Kurs nomi 4",
-    },
-    {
-      id: 5,
-      name: "Kurs nomi 5",
-    },
-    {
-      id: 6,
-      name: "Kurs nomi 6",
-    },
-    {
-      id: 7,
-      name: "Kurs nomi 6",
-    },
-    {
-      id: 8,
-      name: "Kurs nomi 6",
-    },
-    {
-      id: 9,
-      name: "Kurs nomi 6",
-    },
-  ];
-  const modules = [
-    {
-      title: "1-Modul. JavaScript asoslari",
-      duration: "7.21 soat",
-      lecture: "12 ta darslik",
-      lessons: [],
-      isOpen: true,
-    },
-    {
-      title: "2-Modul. JavaScript loyiha",
-      duration: "3.23 soat",
-      lecture: "12 ta darslik",
-      lessons: [],
-      isOpen: true,
-    },
-    {
-      title: "3-Modul. Murakkab terminlar",
-      duration: "4.53 soat",
-      lecture: "12 ta darslik",
-      lessons: [
-        { title: "JSON va AJAX", time: "28:53" },
-        { title: "Promise", time: "17:51" },
-        { title: "Amaliyot. JSON Placeholder", time: "30:58" },
-        { title: "Amaliyot. Fetch Telegram BOT", time: "29:49" },
-        { title: "Array metodlar", time: "13:51" },
-        { title: "NPM, ESLint, JSON-Server", time: "29:09" },
-        { title: "Amaliyot. Slider Carousel", time: "32:20" },
-        { title: "Amaliyot. LocalStorage", time: "19:44" },
-        { title: "Regular Expression", time: "18:58" },
-        { title: "Webpack", time: "24:44" },
-        { title: "Amaliyot. Webpack", time: "31:19" },
-        { title: "Async await. Try catch", time: "15:07" },
-      ],
-      isOpen: true,
-    },
-    {
-      title: "4-Modul. Paint loyihasi",
-      duration: "1.40 soat",
-      lecture: "12 ta darslik",
-      lessons: [],
-      isOpen: false,
-    },
-    {
-      title: "5-Modul. Paint loyihasi",
-      duration: "1.40 soat",
-      lecture: "12 ta darslik",
-      lessons: [],
-      isOpen: false,
-    },
-  ];
+      enabled: !!course?.teacher_id,
+    }
+  );
+  let teacherInfo = teacherAccountId?.data.data;
+  
 
   return (
     <div className="py-7">
@@ -182,14 +107,14 @@ function CourseInfo() {
               >
                 <img
                   className="w-[70px] h-[70px] object-cover rounded-full"
-                  src={teacher}
+                  src={teacherInfo?.profile_img ? teacherInfo?.profile_img : teacher}
                   alt="O'qituvchi rasmi"
                 />
                 <div className="flex flex-col gap-1">
                   <h2 className="sm:text-xl text-sm font-medium">
-                    {"Saidjon Azamatov"}
+                    {teacherInfo?.first_name} {teacherInfo?.last_name}
                   </h2>
-                  <p className="sm:text-base text-xs font-normal">Dasturlash</p>
+                  <p className="sm:text-base text-xs font-normal">{teacherInfo?.spiceal ? teacherInfo?.spiceal : "O'qituvchi"}</p>
                 </div>
               </div>
               <button className="btn p-[5px_15px]">Obuna bo'lish</button>
@@ -306,13 +231,13 @@ function CourseInfo() {
               </div>
             </div>
             <div className="w-full">
-              {modules.map((module, index) => (
+              {course?.videos.map((module, index) => (
                 <di className="border-dotted accordion-trigger" key={index}>
                   <div className="flex items-center sm:gap-3 gap-1">
                     <img className="sm:w-[20px] w-[15px]" src={right} alt="" />
                     <p>{module.title}</p>
                   </div>
-                  {module.isOpen ? (
+                  {module.is_free ? (
                     <button className="text-blue_color font-medium sm:text-xl text-xs">
                       Ko'rish
                     </button>
@@ -419,46 +344,13 @@ function CourseInfo() {
           modules={[FreeMode, Navigation]}
           className="comments_swiper"
         >
-          {navData.map((item) => {
+          {comments?.length ? comments?.map((item) => {
             return (
               <SwiperSlide key={item.id} className="">
-                <CommentCard />
+                <CommentCard item={item} />
               </SwiperSlide>
             );
-          })}
-        </Swiper>
-      </div>
-      <div className="relative mt-14 sm:mb-5 mb-10">
-        <h1 className="title absolute top-0">O’xshash darslar</h1>
-        <Swiper
-          slidesPerView={1.5}
-          spaceBetween={16}
-          navigation={true}
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-              spaceBetween: 16,
-            },
-            768: {
-              slidesPerView: 3,
-              spaceBetween: 16,
-            },
-            1024: {
-              slidesPerView: 4,
-              spaceBetween: 16,
-            },
-          }}
-          freeMode={true}
-          modules={[FreeMode, Navigation]}
-          className="mySwiper"
-        >
-          {navData.map((item) => {
-            return (
-              <SwiperSlide key={item.id} className="">
-                <NewCourseCard />
-              </SwiperSlide>
-            );
-          })}
+          }) : <p className="text-center text-[#888]">Hozircha fikr bildirilmagan.</p>}
         </Swiper>
       </div>
 

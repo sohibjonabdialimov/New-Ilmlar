@@ -15,6 +15,9 @@ export const PostUsersLogin = (data) => {
 export const GetCourses = () => {
   return axiosT.get("/api/courses/donthavetoken");
 };
+export const GetCategories = () => {
+  return axiosT.get("/api/category");
+};
 export const GetCourseDetailWithoutToken = (id) => {
   return axiosT.get(`/api/courses/course/${id}/withouttoken`);
 };
@@ -62,7 +65,22 @@ export const PostCourses = (data) => {
     },
   });
 };
-
+export const PostCommit = (id, data) => {
+  return axiosT.post(`/api/courses/course/${id}/commit`, data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+export const PostScore = (id, data) => {
+  return axiosT.post(`/api/courses/course/${id}/score`, data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
 
 export const PostCoursesVideos = (data) => {
   return axiosT.post("/api/courses/videos", data, {
@@ -114,7 +132,7 @@ export const GetTeacherAccountId = (id) => {
 };
 
 
-export const PatchCoursesComplete = (data) => {  
+export const PatchCoursesComplete = (data) => {
   return axiosT.patch("/api/courses/complete", data, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -122,4 +140,3 @@ export const PatchCoursesComplete = (data) => {
     },
   });
 };
-

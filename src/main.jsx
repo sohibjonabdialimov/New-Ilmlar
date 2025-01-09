@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import AuthProvider from "./context/AuthProvider.jsx";
 import ProfileProvider from "./context/ProfileProvider.jsx";
 import CoursesProvider from "./context/CoursesProvider.jsx";
+import TeacherDataProvider from "./context/TeacherDataProvider.jsx";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -26,7 +27,9 @@ createRoot(document.getElementById("root")).render(
         <AuthProvider>
           <ProfileProvider>
             <CoursesProvider>
-              <App />
+              <TeacherDataProvider>
+                <App />
+              </TeacherDataProvider>
             </CoursesProvider>
           </ProfileProvider>
         </AuthProvider>

@@ -17,7 +17,6 @@ const AllCourses = React.lazy(() => import("../views/all-courses/AllCourses"));
 const TeacherProfile = React.lazy(() => import("../views/teachers-views/teacher-profile/TeacherProfile"));
 const AccountBalance = React.lazy(() => import("../views/teachers-views/account-balance/AccountBalance"));
 const TeacherCourseInfo = React.lazy(() => import("../views/teachers-views/teacher-course-info/TeacherCourseInfo"));
-const CourseStatistic = React.lazy(() => import("../views/teachers-views/course-statistic/CourseStatistic"));
 const UploadCourse = React.lazy(() => import("../views/teachers-views/upload-course/UploadCourse"));
 const UploadLesson = React.lazy(() => import("../views/teachers-views/upload-lesson/UploadLesson"));
 const MainLesson = React.lazy(() => import("../views/teachers-views/main-lesson/MainLesson"));
@@ -127,14 +126,6 @@ export const RoutesConfig = [{
     roles: [],
     subOptions: [],
     Component: UploadCourse,
-  },
-  {
-    title: "course-statistic",
-    path: "/course-statistic",
-    Layout: TeacherLayout,
-    roles: [],
-    subOptions: [],
-    Component: CourseStatistic,
   },
   {
     title: "course-info",

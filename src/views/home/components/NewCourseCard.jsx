@@ -8,12 +8,11 @@ import { GetSaveCourse, GetTeacherAccountId } from "../../../services/api";
 import { useState } from "react";
 import { message } from "antd";
 import { useQuery } from "react-query";
-const NewCourseCard = ({ type, role, item }) => {
+const NewCourseCard = ({ type, role, item, buy }) => {
   const navigate = useNavigate();
   const [isSave, setIsSave] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  
-  
+
   const handleSaveCourse = (id) => {
     GetSaveCourse(id)
       .then((res) => {
@@ -36,13 +35,23 @@ const NewCourseCard = ({ type, role, item }) => {
         });
       });
   };
-  const { data: teacherAccountId } = useQuery(["GetTeacherAccountId", item?.teacher_id], () =>
-    GetTeacherAccountId(item?.teacher_id)
+  const { data: teacherAccountId } = useQuery(
+    ["GetTeacherAccountId", item?.teacher_id],
+    () => GetTeacherAccountId(item?.teacher_id),
+    {
+      enabled: !!item?.teacher_id,
+    }
   );
 
   return (
     <div
-      onClick={() => navigate(`/courses/${item?.id}`)}
+      onClick={() =>
+        buy
+          ? navigate(`/my-course/${item?.id}`)
+          : role === "teacher"
+          ? navigate(`/teacher-course-info/${item?.id}`)
+          : navigate(`/courses/${item?.id}`)
+      }
       className="cursor-pointer"
     >
       {contextHolder}
@@ -69,26 +78,39 @@ const NewCourseCard = ({ type, role, item }) => {
       <h1 className="text-lg font-semibold text-main_color mb-2 line-clamp-2">
         {item?.name}
       </h1>
-      <div className="flex items-center gap-1 mb-2">
-        {teacherAccountId?.data.data.profile_img ? (
-          <img
-            className="w-6 h-6 object-cover rounded-full"
-            src={teacherAccountId?.data.data.profile_img}
-            alt="Avatar ilmlar"
-          />
-        ) : (
-          <img
-            className="w-6 h-6 object-cover rounded-full"
-            src={avatar}
-            alt="Avatar ilmlar"
-          />
-        )}
+      {role !== "teacher" ? (
+        <div className="flex items-center gap-1 mb-2">
+          {teacherAccountId?.data.data.profile_img ? (
+            <img
+              className="w-6 h-6 object-cover rounded-full"
+              src={teacherAccountId?.data.data.profile_img}
+              alt="Avatar ilmlar"
+            />
+          ) : (
+            <img
+              className="w-6 h-6 object-cover rounded-full"
+              src={avatar}
+              alt="Avatar ilmlar"
+            />
+          )}
 
-        <p className="text-secondary_color text-sm font-normal">
-          {teacherAccountId?.data.data.first_name}{" "}
-          {teacherAccountId?.data.data.last_name}
-        </p>
-      </div>
+          <p className="text-secondary_color text-sm font-normal">
+            {teacherAccountId?.data.data.first_name}{" "}
+            {teacherAccountId?.data.data.last_name}
+          </p>
+        </div>
+      ) : (
+        <div>
+          <p className="text-base font-medium">
+            Active foydalanuvchilar:{" "}
+            <span className="font-normal">{item?.active_users} ta</span>
+          </p>
+          <p className="text-base font-medium">
+            Sotib olganlar:{" "}
+            <span className="font-normal">{item?.purchased_count} ta</span>
+          </p>
+        </div>
+      )}
       {type ? (
         <ProgressBar height="18px" className="bar_container" completed={70} />
       ) : role === "teacher" ? (

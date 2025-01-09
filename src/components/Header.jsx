@@ -21,7 +21,7 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const { setUserData } = useContext(ProfileContext);
   useQuery(
-    ["GetTeachers"],
+    ["GetUsersUserme"],
     () => GetUsersUserme(localStorage.getItem("token")),
     {
       onSuccess: (response) => {
@@ -195,7 +195,7 @@ const Header = () => {
               />
               <p className="absolute bottom-20 left-5 font-medium text-xl text-white">
                 {userData?.amount?.balance
-                  ? String(userData?.amount?.balance).match(/\d{3}/g).join(" ")
+                  ? userData?.amount?.balance
                   : "0"}{" "}
                 UZS
               </p>

@@ -9,18 +9,22 @@ import { ProfileContext } from "../../context/ProfileProvider";
 const LoginPage = () => {
   const { control, getValues } = useForm();
   const [messageApi, contextHolder] = message.useMessage();
-  const {setUserData} = useContext(ProfileContext);
+  const { setUserData } = useContext(ProfileContext);
   const navigate = useNavigate();
   const submitHandler = async () => {
     const login = getValues().LOGIN;
 
     try {
-      // Birinchi POST so'rovni jo'natamiz
       const postResponse = await PostUsersLogin(login);
       localStorage.setItem("token", postResponse.data.data.token);
       await GetUsersUserme(postResponse?.data.data.token).then((response) => {
-        if (response.data.data.type === 1) {
+        if (response.data.data.type === 1 && !response.data.data.is_verified) {
           navigate("/non-active-profile");
+        } else if (
+          response.data.data.type === 1 &&
+          response.data.data.is_verified
+        ) {
+          navigate("/my-profile");
         } else {
           navigate("/");
         }
@@ -34,27 +38,6 @@ const LoginPage = () => {
         content: "Foydalanuvchi nomi yoki email xato kiritildi!",
       });
     }
-
-    // PostUsersLogin(login)
-    //   .then((res) => {
-    //     console.log(res);
-
-    //     if (type === "teacher") {
-    //       navigate("/non-active-profile");
-    //     } else {
-    //       navigate("/");
-    //     }
-    //     localStorage.setItem("token", res.data.data.token);
-
-    //     window.location.reload();
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     messageApi.open({
-    //       type: "error",
-    //       content: "Foydalanuvchi nomi yoki email xato kiritildi!",
-    //     });
-    //   });
   };
   return (
     <>

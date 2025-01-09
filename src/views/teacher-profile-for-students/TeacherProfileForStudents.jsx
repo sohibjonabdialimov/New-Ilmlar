@@ -1,4 +1,4 @@
-import teacher_profile from "../../assets/images/teacher_profile.jpg";
+import teacher_profile from "../../assets/images/teacher_avatar.jpg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -18,12 +18,11 @@ const TeacherProfileForStudents = () => {
     () => GetTeacherAccount(id),
     {
       onSuccess: (data) => {
-        console.log(data);
+        console.log(data.data.data);
       },
     }
   );
-  const teacherAccount = teacherAccountData?.data?.data;
-  console.log(teacherAccount);
+  const teacherAccount = teacherAccountData?.data.data;
   const fetchResource = async (id) => {
     const { data } = await axiosT.get(`/api/courses/course/${id}/withouttoken`);
     return data;
@@ -40,7 +39,7 @@ const TeacherProfileForStudents = () => {
     ?.map((query) => query?.data?.data)
     .filter((item) => item !== undefined);
 
-  console.log(allData);
+
 
   return (
     <div className="py-7">
@@ -56,7 +55,7 @@ const TeacherProfileForStudents = () => {
               {teacherAccount?.first_name} {teacherAccount?.last_name}
             </h1>
             <p className="text-[#758195] sm:text-base text-xs font-medium">
-              Qisqa bio Lorem, ipsum dolor.
+              {teacherAccount?.spiceal}
             </p>
             <p className="text-[#758195] sm:text-base text-xs font-semibold">
               Kurslar soni:{" "}

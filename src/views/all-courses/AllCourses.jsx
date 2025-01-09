@@ -27,13 +27,12 @@ const AllCourses = () => {
     setCurrent(page);
   };
 
+
   useQuery(["GetCourses"], GetCourses, {
     onSuccess(data) {
       setCourses(
         data.data.data.filter((item) => item.status === 2 && item.is_verified)
       );
-      console.log(data.data.data.filter((item) => item.status === 2 && item.is_verified));
-      
     },
   });
 

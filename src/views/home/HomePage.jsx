@@ -10,46 +10,14 @@ import "./home.css";
 import { useNavigate } from "react-router-dom";
 import { GetCourses, GetTeachers } from "../../services/api";
 import { useQuery } from "react-query";
+import { differenceDate } from "../../utils/differenceDate";
+import { useState } from "react";
 const HomePage = () => {
   const navigate = useNavigate();
-  const navData = [
-    {
-      id: 1,
-      name: "Kurs nomi 1",
-    },
-    {
-      id: 2,
-      name: "Kurs nomi 2",
-    },
-    {
-      id: 3,
-      name: "Kurs nomi 3",
-    },
-    {
-      id: 4,
-      name: "Kurs nomi 4",
-    },
-    {
-      id: 5,
-      name: "Kurs nomi 5",
-    },
-    {
-      id: 6,
-      name: "Kurs nomi 6",
-    },
-    {
-      id: 7,
-      name: "Kurs nomi 6",
-    },
-    {
-      id: 8,
-      name: "Kurs nomi 6",
-    },
-    {
-      id: 9,
-      name: "Kurs nomi 6",
-    },
-  ];
+
+  const [courses, setCourses] = useState([]);
+  const [newCourses, setNewCourses] = useState([]);
+  const [priceCourses, setPriceCourses] = useState([]);
   // useEffect(() => {
   //   const iframe = document.querySelector("iframe");
   //   const player = new Vimeo(iframe);
@@ -65,12 +33,27 @@ const HomePage = () => {
   //   });
   // }, []);
 
-  const {data: coursesData} = useQuery(["GetCourses"], GetCourses);
-  const {data: teachersData} = useQuery(["GetTeachersInfo"], GetTeachers);
-  
-  let courses = coursesData?.data.data;
+  useQuery(["GetCourses"], GetCourses, {
+    onSuccess(data) {
+      setNewCourses(
+        data.data.data
+          .filter((item) => item.status === 2 && item.is_verified)
+          .filter((item) => differenceDate(item.created_at) <= 7)
+      );
+      setCourses(
+        data.data.data.filter((item) => item.status === 2 && item.is_verified)
+      );
+      setPriceCourses(
+        data.data.data
+          .filter((item) => item.status === 2 && item.is_verified)
+          .filter((item) => item.price === 0)
+      );
+    },
+  });
+  const { data: teachersData } = useQuery(["GetTeachers"], GetTeachers);
+
   let teacher = teachersData?.data.data.teachers;
-  
+
   return (
     <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
       <div className="relative">
@@ -106,7 +89,7 @@ const HomePage = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {courses?.map((item) => {
+          {newCourses?.map((item) => {
             return (
               <SwiperSlide key={item.id}>
                 <NewCourseCard item={item} />
@@ -155,8 +138,8 @@ const HomePage = () => {
       <h1 className="title">Ommabop kurslarimiz</h1>
       <PopularCourseNavbar />
       <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 grid-cols-1 gap-x-4 gap-y-8 mb-5">
-        {navData.map((item) => {
-          return <NewCourseCard key={item.id} />;
+        {courses?.slice(0, 12).map((item) => {
+          return <NewCourseCard item={item} key={item.id} />;
         })}
       </div>
       <div className="flex justify-center">
@@ -194,10 +177,10 @@ const HomePage = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {navData.map((item) => {
+          {priceCourses?.map((item) => {
             return (
               <SwiperSlide key={item.id}>
-                <NewCourseCard />
+                <NewCourseCard item={item} />
               </SwiperSlide>
             );
           })}
