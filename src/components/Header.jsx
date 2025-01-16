@@ -28,6 +28,9 @@ const Header = () => {
         setUserData(response.data.data);
         localStorage.setItem("user-data", JSON.stringify(response.data.data));
       },
+    },
+    {
+      enable: !!localStorage.getItem("token"),
     }
   );
 
@@ -194,16 +197,12 @@ const Header = () => {
                 alt="Student's Plastic card"
               />
               <p className="absolute bottom-20 left-5 font-medium text-xl text-white">
-                {userData?.amount?.balance
-                  ? userData?.amount?.balance
-                  : "0"}{" "}
+                {userData?.amount?.balance ? userData?.amount?.balance : "0"}{" "}
                 UZS
               </p>
               <p className="absolute bottom-3 left-3 text-base text-white">
                 Hisob raqam:{" "}
-                <span className="font-medium">
-                  {userData?.payment_id}
-                </span>
+                <span className="font-medium">{userData?.payment_id}</span>
               </p>
             </div>
             <p className="text-[#444] text-lg mt-5">

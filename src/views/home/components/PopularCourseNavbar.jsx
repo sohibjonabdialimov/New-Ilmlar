@@ -15,6 +15,7 @@ const PopularCourseNavbar = () => {
   const handleSlideClick = (index) => {
     setActiveIndex(index);
   };
+
   return (
     <Swiper
       slidesPerView={3.5}
@@ -42,7 +43,7 @@ const PopularCourseNavbar = () => {
           <SwiperSlide
             onClick={() => handleSlideClick(index)}
             key={item.id}
-            className={`popular_slider_item text-main_color font-normal text-base ${
+            className={`popular_slider_item text-main_color text-center font-normal text-base ${
               activeIndex === index ? "active" : ""
             }`}
           >

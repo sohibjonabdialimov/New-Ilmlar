@@ -1,4 +1,4 @@
-import teacher_profile from "../../assets/images/teacher_profile.jpg";
+import teacher_profile from "../../assets/images/teacher_avatar.jpg";
 import mycard from "../../assets/images/my_card.svg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -6,13 +6,17 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import { Navigation, FreeMode } from "swiper/modules";
 import NewCourseCard from "../home/components/NewCourseCard";
-import { Drawer, Form, Input } from "antd";
-import { useContext, useState } from "react";
+import { Drawer, Form, Input, message } from "antd";
+import { useContext, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import TeachersGroupCard from "../home/components/TeachersGroupCard";
 import { ProfileContext } from "../../context/ProfileProvider";
 import { useQuery } from "react-query";
-import { GetPurchasedCourses, GetSavedCourses } from "../../services/api";
+import {
+  GetPurchasedCourses,
+  GetSavedCourses,
+  PostEditProfileImage,
+} from "../../services/api";
 const navData = [
   {
     id: 1,
@@ -55,9 +59,42 @@ const StudentProfile = () => {
   const [open, setOpen] = useState(false);
   const { control, getValues } = useForm();
   const { userData } = useContext(ProfileContext);
+  const [img, setImg] = useState(null);
+  const fileInputRef = useRef(null);
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      PostEditProfileImage({ file: file })
+        .then((res) => {
+          setImg(res.data.data.courseId.profile_img);
+          messageApi.open({
+            type: "info",
+            content: "Rasm o'zgartirildi",
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+
+          messageApi.open({
+            type: "error",
+            content: "Rasm yuklashda xatolik bor",
+          });
+        });
+    }
+  };
+
   const showDrawer = () => {
     setOpen(true);
   };
+
   const onClose = () => {
     setOpen(false);
   };
@@ -97,14 +134,35 @@ const StudentProfile = () => {
 
   return (
     <div className="py-7">
+      {contextHolder}
       <div className="flex sm:flex-row flex-col justify-between sm:mb-16 mb-0">
         <div className="sm:w-[78%] w-full">
           <div className="flex sm:flex-row flex-col items-center sm:gap-5 gap-2">
-            <img
-              className="sm:w-[142px] sm:h-[142px] w-[90px] h-[90px] rounded-full"
-              src={teacher_profile}
-              alt=""
-            />
+            <div className="relative">
+              <img
+                className="sm:w-[142px] sm:h-[142px] object-cover w-[90px] h-[90px] rounded-full"
+                src={
+                  img
+                    ? img
+                    : userData?.profile_img
+                    ? userData?.profile_img
+                    : teacher_profile
+                }
+                alt=""
+              />
+              <div
+                onClick={handleButtonClick}
+                className="border rounded-3xl translate-x-1/2 right-1/2 p-[4px_5px] inline-block absolute -bottom-3 text-xs text-white bg-[#262C36FF] cursor-pointer"
+              >
+                O'zgartirish
+              </div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleFileChange}
+              />
+            </div>
             <div className="flex justify-between flex-col items-center sm:items-start py-1">
               <h1 className="text-main_color font-semibold text-xl mb-1">
                 {userData?.first_name}{" "}

@@ -11,27 +11,28 @@ import { useNavigate } from "react-router-dom";
 import { GetCourses, GetTeachers } from "../../services/api";
 import { useQuery } from "react-query";
 import { differenceDate } from "../../utils/differenceDate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Vimeo from "@vimeo/player";
 const HomePage = () => {
   const navigate = useNavigate();
 
   const [courses, setCourses] = useState([]);
   const [newCourses, setNewCourses] = useState([]);
   const [priceCourses, setPriceCourses] = useState([]);
-  // useEffect(() => {
-  //   const iframe = document.querySelector("iframe");
-  //   const player = new Vimeo(iframe);
+  useEffect(() => {
+    const iframe = document.querySelector("iframe");
+    const player = new Vimeo(iframe);
 
-  //   // Play event listener
-  //   player.on("play", () => {
-  //     console.log("Played the video");
-  //   });
+    // Play event listener
+    player.on("play", () => {
+      console.log("Played the video");
+    });
 
-  //   // Get video title
-  //   player.getVideoTitle().then((title) => {
-  //     console.log("title:", title);
-  //   });
-  // }, []);
+    // Get video title
+    player.getVideoTitle().then((title) => {
+      console.log("title:", title);
+    });
+  }, []);
 
   useQuery(["GetCourses"], GetCourses, {
     onSuccess(data) {
@@ -58,14 +59,14 @@ const HomePage = () => {
     <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
       <div className="relative">
         <h1 className="title absolute top-0">Yangi qo’shilgan kurslar</h1>
-        {/* <iframe
-          src="https://player.vimeo.com/video/1031611684?h=2ac395a2694246448051ee01faf135ce"
+        <iframe
+          src="https://player.vimeo.com/video/1045989772?h=2ac395a2694246448051ee01faf135ce"
           width="500px"
           height="400px"
           frameBorder={0}
           allow="autoplay; fullscreen; picture-in-picture"
           allowFullScreen
-        /> */}
+        />
 
         <Swiper
           slidesPerView={1.5}

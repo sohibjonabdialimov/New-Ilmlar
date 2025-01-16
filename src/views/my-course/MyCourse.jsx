@@ -63,9 +63,13 @@ const MyCourse = () => {
     GetCourseDetail(id)
   );
   const myCourse = course?.data.data;
+
   const { data: teacherAccountId } = useQuery(
     ["GetTeacherAccountId", myCourse?.teacher_id],
-    () => GetTeacherAccountId(myCourse?.teacher_id)
+    () => GetTeacherAccountId(myCourse?.teacher_id),
+    {
+      enabled: !!myCourse?.teacher_id
+    }
   );
 
   return (
@@ -171,7 +175,10 @@ const MyCourse = () => {
                     <img className="sm:w-[20px] w-[15px]" src={right} alt="" />
                     <p>{module?.title}</p>
                   </div>
-                  <button className="text-blue_color font-medium sm:text-xl text-xs">
+                  <button
+                    onClick={() => navigate(`/lessons/${module?.id}`)}
+                    className="text-blue_color font-medium sm:text-xl text-xs"
+                  >
                     Ko'rish
                   </button>
                 </di>

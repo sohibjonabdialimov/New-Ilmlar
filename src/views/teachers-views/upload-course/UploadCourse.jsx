@@ -34,7 +34,9 @@ const UploadCourse = () => {
 
   const { data: courseDetail } = useQuery(
     ["GetCourseDetailWithToken", localStorage.getItem("lesson_id")],
-    () => GetCourseDetailWithToken(localStorage.getItem("lesson_id"))
+    () => GetCourseDetailWithToken(localStorage.getItem("lesson_id")),{
+      enabled: !!localStorage.getItem("lesson_id")
+    }
   );
 
   const addInput = () => {

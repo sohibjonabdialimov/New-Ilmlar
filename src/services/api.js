@@ -90,6 +90,14 @@ export const PostCoursesVideos = (data) => {
     },
   });
 };
+export const PostEditProfileImage = (data) => {
+  return axiosT.post("/api/users/editprofileimage", data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
 export const GetSaveCourse = (id) => {
   return axiosT.get(`/api/actioncourses/save-courses/${id}`, {
     headers: {
@@ -100,6 +108,14 @@ export const GetSaveCourse = (id) => {
 };
 export const GetBuyCourse = (id) => {
   return axiosT.get(`/api/actioncourses/buy-course/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+export const GetVideoInfo = (id) => {
+  return axiosT.get(`/api/courses/lesson/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "multipart/form-data",
