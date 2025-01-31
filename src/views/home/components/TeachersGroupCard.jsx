@@ -4,8 +4,13 @@ import "./style.css";
 import { GetSubscription, PutSubscription } from "../../../services/api";
 import { useQuery } from "react-query";
 import { message } from "antd";
+import { useInView } from "react-intersection-observer";
 const TeachersGroupCard = ({ item, type }) => {
   const navigate = useNavigate();
+  const { ref, inView } = useInView({
+    threshold: 0.2,
+    triggerOnce: true,
+  });
   const [messageApi, contextHolder] = message.useMessage();
   const { data: subsciptionData, refetch } = useQuery(
     ["GetSubscription", item?.id],
@@ -33,8 +38,11 @@ const TeachersGroupCard = ({ item, type }) => {
 
   return (
     <div
+      ref={ref}
       onClick={() => navigate(`/teacher-profile/${item?.id}`)}
-      className="relative rounded-2xl sm:aspect-[228/320] aspect-[173/234] cursor-pointer"
+      className={`transition-all duration-700 ease-out transform relative rounded-2xl sm:aspect-[228/320] aspect-[173/234] cursor-pointer ${
+        inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      }`}
     >
       {contextHolder}
       <div className="w-full h-full teachers_group_img">

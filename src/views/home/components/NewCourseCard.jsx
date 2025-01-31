@@ -8,9 +8,15 @@ import { GetSaveCourse, GetTeacherAccountId } from "../../../services/api";
 import { useState } from "react";
 import { message } from "antd";
 import { useQuery } from "react-query";
-const NewCourseCard = ({ type, role, item, buy }) => {
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useInView } from "react-intersection-observer";
+const NewCourseCard = ({ type, role, item, buy, save }) => {
   const navigate = useNavigate();
-  const [isSave, setIsSave] = useState(false);
+  const { ref, inView } = useInView({
+    threshold: 0.2, 
+    triggerOnce: true, 
+  });
+  const [isSave, setIsSave] = useState(save || false);
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleSaveCourse = (id) => {
@@ -44,6 +50,7 @@ const NewCourseCard = ({ type, role, item, buy }) => {
 
   return (
     <div
+      ref={ref}
       onClick={() =>
         buy
           ? navigate(`/my-course/${item?.id}`)
@@ -51,14 +58,23 @@ const NewCourseCard = ({ type, role, item, buy }) => {
           ? navigate(`/teacher-course-info/${item?.id}`)
           : navigate(`/courses/${item?.id}`)
       }
-      className="cursor-pointer"
+      className={`transition-all duration-700 ease-out transform cursor-pointer lazy_img ${
+        inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      }`}
     >
       {contextHolder}
-      <img
+      <LazyLoadImage
+        className="w-full object-cover rounded-2xl h-[220px]"
+        effect="blur"
+        src={item?.obloshka}
+        alt=""
+      />
+
+      {/* <img
         className="w-full object-cover rounded-2xl h-[220px]"
         src={item?.obloshka}
         alt="ilmlar image of course"
-      />
+      /> */}
       <div className="flex items-center justify-between mt-3 mb-2">
         <div className="flex items-center gap-1">
           <img

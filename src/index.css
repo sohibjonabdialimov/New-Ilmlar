@@ -23,7 +23,14 @@ body {
 a {
   text-decoration: none;
 }
-
+.lazy_img .lazy-load-image-loaded{
+  width: 100% !important;
+  display: block !important;
+  border-radius: 1rem !important;
+}
+.lazy_img .lazy-load-image-loaded img{
+  border-radius: 1rem !important;
+}
 button {
   outline: none;
   border: none;

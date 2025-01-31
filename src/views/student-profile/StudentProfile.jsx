@@ -255,7 +255,7 @@ const StudentProfile = () => {
           {savedCourses?.map((item) => {
             return (
               <SwiperSlide key={item?.id} className="">
-                <NewCourseCard item={item} />
+                <NewCourseCard save={true} item={item} />
               </SwiperSlide>
             );
           })}

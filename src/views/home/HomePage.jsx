@@ -16,6 +16,7 @@ import { CoursesContext } from "../../context/CoursesProvider";
 import { differenceDate } from "../../utils/differenceDate";
 const HomePage = () => {
   const navigate = useNavigate();
+
   const {
     courses,
     setCourses,
@@ -96,21 +97,21 @@ const HomePage = () => {
             modules={[FreeMode, Navigation]}
             className="mySwiper"
           >
-            {isLoading
-              ? [1, 2, 3, 4].map((item) => {
-                  return (
-                    <SwiperSlide key={item}>
-                      <CardSkeleton />
-                    </SwiperSlide>
-                  );
-                })
-              : newCourses?.map((item) => {
-                  return (
-                    <SwiperSlide key={item.id}>
-                      <NewCourseCard item={item} />
-                    </SwiperSlide>
-                  );
+            {isLoading ? (
+              <div className="grid grid-cols-4 justify-between w-full">
+                {[1, 2, 3, 4].map((item) => {
+                  return <CardSkeleton key={item} />;
                 })}
+              </div>
+            ) : (
+              newCourses?.map((item) => {
+                return (
+                  <SwiperSlide key={item.id}>
+                    <NewCourseCard item={item} />
+                  </SwiperSlide>
+                );
+              })
+            )}
           </Swiper>
         </div>
       ) : (

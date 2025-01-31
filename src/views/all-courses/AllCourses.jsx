@@ -1,4 +1,4 @@
-import { Drawer, Pagination } from "antd";
+import { Drawer } from "antd";
 import NewCourseCard from "../home/components/NewCourseCard";
 import AllCourseAccordion from "./components/AllCourseAccordion";
 import { useContext, useState } from "react";
@@ -9,7 +9,6 @@ import { CoursesContext } from "../../context/CoursesProvider";
 import CardSkeleton from "../../components/skeleton/CardSkeleton";
 
 const AllCourses = () => {
-  const [current, setCurrent] = useState(3);
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const { courses, setCourses } = useContext(CoursesContext);
@@ -22,10 +21,6 @@ const AllCourses = () => {
   };
   const onClose = () => {
     setOpen(false);
-  };
-  const onChange = (page) => {
-    console.log(page);
-    setCurrent(page);
   };
 
   const { isLoading } = useQuery(["GetCourses"], GetCourses, {
@@ -72,14 +67,14 @@ const AllCourses = () => {
               })}
         </div>
       </div>
-      <div className="flex justify-center items-center sm:mt-8 mt-5 sm:mb-0 mb-10">
+      {/* <div className="flex justify-center items-center sm:mt-8 mt-5 sm:mb-0 mb-10">
         <Pagination
           className="custom-pagination"
           current={current}
           onChange={onChange}
           total={courses?.length}
         />
-      </div>
+      </div> */}
 
       <Drawer title="Filterlar" onClose={onClose} open={open}>
         <AllCourseAccordion />

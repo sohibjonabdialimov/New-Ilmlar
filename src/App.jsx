@@ -7,7 +7,7 @@ import { verifyToken } from "./services/verifyToken";
 import DesktopLayout from "./layout/DesktopLayout";
 import Loading from "./utils/Loading";
 import TeacherLayout from "./layout/TeacherLayout";
-
+import "react-lazy-load-image-component/src/effects/blur.css";
 const CourseStatistic = React.lazy(() =>
   import("./views/teachers-views/course-statistic/CourseStatistic")
 );
