@@ -1,17 +1,42 @@
 import { useNavigate } from "react-router-dom";
 import default_teacher from "../../../assets/images/default_teacher.webp";
 import "./style.css";
-const TeachersGroupCard = ({ item }) => {
+import { GetSubscription, PutSubscription } from "../../../services/api";
+import { useQuery } from "react-query";
+import { message } from "antd";
+const TeachersGroupCard = ({ item, type }) => {
   const navigate = useNavigate();
-  function handleSubs(event, id) {
-    event.stopPropagation();
-    console.log(id);
-  }
+  const [messageApi, contextHolder] = message.useMessage();
+  const { data: subsciptionData, refetch } = useQuery(
+    ["GetSubscription", item?.id],
+    () => GetSubscription(item?.id),
+    {
+      enabled: !!item?.id,
+    }
+  );
+  const handleSubs = (id) => {
+    PutSubscription(id)
+      .then(() => {
+        refetch();
+      })
+      .catch(() => {
+        messageApi.open({
+          type: "error",
+          content: (
+            <h1 className="text-lg">
+              Xatolik yuz berdi. Keyinroq urinib ko'ring
+            </h1>
+          ),
+        });
+      });
+  };
+
   return (
     <div
-      onClick={() => navigate(`teacher-profile/${item?.id}`)}
-      className="relative rounded-2xl sm:aspect-[228/320] aspect-[173/234]"
+      onClick={() => navigate(`/teacher-profile/${item?.id}`)}
+      className="relative rounded-2xl sm:aspect-[228/320] aspect-[173/234] cursor-pointer"
     >
+      {contextHolder}
       <div className="w-full h-full teachers_group_img">
         <img
           className="w-full h-full rounded-2xl object-cover"
@@ -26,12 +51,30 @@ const TeachersGroupCard = ({ item }) => {
         <h3 className="sm:text-sm text-xs sm:font-normal mb-1 line-clamp-1">
           {item?.spiceal ? item?.spiceal : "O'qituvchi"}
         </h3>
-        <button
-          onClick={() => handleSubs(event, item?.id)}
-          className="btn w-full sm:py-[5px] py-[3px] text-xs"
-        >
-          Obuna bo’lish
-        </button>
+
+        {subsciptionData?.data.data.subscribed && !type ? (
+          <button
+            onClick={(event) => {
+              event.stopPropagation();
+              handleSubs(item.id);
+            }}
+            className="unbtn w-full sm:py-[5px] py-[3px] text-sm"
+          >
+            Obuna bo'lgansiz
+          </button>
+        ) : type ? (
+          ""
+        ) : (
+          <button
+            onClick={(event) => {
+              event.stopPropagation();
+              handleSubs(item.id);
+            }}
+            className="btn w-full sm:py-[5px] py-[3px] text-sm"
+          >
+            Obuna bo’lish
+          </button>
+        )}
       </div>
     </div>
   );

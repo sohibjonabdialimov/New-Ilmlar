@@ -37,8 +37,8 @@
 }
 
 .popular_slider_item.active {
-  background: #007bff; /* Faol element uchun rang */
-  color: white; /* Matn rangi */
+  background: #007bff; 
+  color: white; 
 }
 @media only screen and (max-width: 1024px) {
  

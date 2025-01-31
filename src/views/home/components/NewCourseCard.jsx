@@ -16,7 +16,6 @@ const NewCourseCard = ({ type, role, item, buy }) => {
   const handleSaveCourse = (id) => {
     GetSaveCourse(id)
       .then((res) => {
-        console.log(res);
         if (res.data.data.action === "saved") {
           setIsSave(true);
         }

@@ -6,13 +6,28 @@ import "swiper/css/navigation";
 import { Navigation, FreeMode } from "swiper/modules";
 import NewCourseCard from "../home/components/NewCourseCard";
 import { useParams } from "react-router-dom";
-import { GetTeacherAccount } from "../../services/api";
+import {
+  GetSubscription,
+  GetTeacherAccount,
+  PutSubscription,
+} from "../../services/api";
 import { useQueries, useQuery } from "react-query";
 import axiosT from "../../services/axios";
 import "./style.css";
+import Skeleton from "react-loading-skeleton";
+import { message } from "antd";
+import CardSkeleton from "../../components/skeleton/CardSkeleton";
 const TeacherProfileForStudents = () => {
   const { id } = useParams();
+  const [messageApi, contextHolder] = message.useMessage();
 
+  const {
+    data: subsciptionData,
+    isLoading: loading,
+    refetch,
+  } = useQuery(["GetSubscription", id], () => GetSubscription(id), {
+    enabled: !!id,
+  });
   const { data: teacherAccountData } = useQuery(
     ["GetTeacherAccount"],
     () => GetTeacherAccount(id),
@@ -22,6 +37,23 @@ const TeacherProfileForStudents = () => {
       },
     }
   );
+
+  const handleSubs = (id) => {
+    PutSubscription(id)
+      .then(() => {
+        refetch();
+      })
+      .catch(() => {
+        messageApi.open({
+          type: "error",
+          content: (
+            <h1 className="text-lg">
+              Xatolik yuz berdi. Keyinroq urinib ko'ring
+            </h1>
+          ),
+        });
+      });
+  };
   const teacherAccount = teacherAccountData?.data.data;
   const fetchResource = async (id) => {
     const { data } = await axiosT.get(`/api/courses/course/${id}/withouttoken`);
@@ -34,15 +66,15 @@ const TeacherProfileForStudents = () => {
       enabled: !!id,
     }))
   );
+  const isLoading = queries.some((query) => query.isLoading);
 
   const allData = queries
     ?.map((query) => query?.data?.data)
     .filter((item) => item !== undefined);
 
-
-
   return (
     <div className="py-7">
+      {contextHolder}
       <div className="flex justify-between sm:flex-row flex-col gap-5 mb-16">
         <div className="flex items-center sm:gap-5 gap-3">
           <img
@@ -69,15 +101,35 @@ const TeacherProfileForStudents = () => {
           </div>
         </div>
         <div className="sm:w-auto w-full">
-          <button className="btn text-sm sm:p-[10px_30px] p-[8px_20px] w-full">
-            Obuna bo'ling
-          </button>
+          {loading ? (
+            <Skeleton className="p-1 rounded-2xl" width={120} />
+          ) : subsciptionData?.data.data.subscribed ? (
+            <button
+              onClick={(event) => {
+                event.stopPropagation();
+                handleSubs(id);
+              }}
+              className="unbtn text-sm sm:p-[10px_30px] p-[8px_20px] w-full"
+            >
+              Obuna bo'lgansiz
+            </button>
+          ) : (
+            <button
+              onClick={(event) => {
+                event.stopPropagation();
+                handleSubs(id);
+              }}
+              className="btn text-sm sm:p-[10px_30px] p-[8px_20px] w-full"
+            >
+              Obuna bo’lish
+            </button>
+          )}
         </div>
       </div>
 
       <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px] sm:mb-16 mb-6">
         <h2 className="sm:text-3xl text-lg text-main_color font-semibold sm:mb-6 mb-2">
-          O’qituvchi haqida ma’lumot
+          O'qituvchi haqida ma’lumot
         </h2>
         <p className="sm:text-xl sm:leading-8 text-sm">
           Explore Auto Layout in Figma, starting with horizontal, vertical, and
@@ -113,13 +165,21 @@ const TeacherProfileForStudents = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {allData.map((item) => {
-            return (
-              <SwiperSlide key={item.id} className="">
-                <NewCourseCard item={item} />
-              </SwiperSlide>
-            );
-          })}
+          {isLoading
+            ? [1, 2, 3, 4].map((item) => {
+                return (
+                  <SwiperSlide key={item}>
+                    <CardSkeleton />
+                  </SwiperSlide>
+                );
+              })
+            : allData?.map((item) => {
+                return (
+                  <SwiperSlide key={item.id}>
+                    <NewCourseCard item={item} />
+                  </SwiperSlide>
+                );
+              })}
         </Swiper>
       </div>
     </div>

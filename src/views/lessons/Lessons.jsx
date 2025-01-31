@@ -7,7 +7,7 @@ import Vimeo from "@vimeo/player";
 const Lesson = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [url, setUrl] = useState();
+  const [url, setUrl] = useState(null);
   const { data: lessonData } = useQuery(["GetVideoInfo", id], () =>
     GetVideoInfo(id), {
       onSuccess(data){
@@ -17,7 +17,6 @@ const Lesson = () => {
       }
     }
   );
-  console.log(url);
   
   let lesson = lessonData?.data.data;
    useEffect(() => {

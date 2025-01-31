@@ -29,6 +29,7 @@ export const GetCourseDetail = (id) => {
     },
   });
 };
+
 export const GetPurchasedCourses = () => {
   return axiosT.get("/api/courses/purchased-courses", {
     headers: {
@@ -98,14 +99,7 @@ export const PostEditProfileImage = (data) => {
     },
   });
 };
-export const GetSaveCourse = (id) => {
-  return axiosT.get(`/api/actioncourses/save-courses/${id}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "multipart/form-data",
-    },
-  });
-};
+
 export const GetBuyCourse = (id) => {
   return axiosT.get(`/api/actioncourses/buy-course/${id}`, {
     headers: {
@@ -147,9 +141,41 @@ export const GetTeacherAccountId = (id) => {
   });
 };
 
-
+export const GetSaveCourse = (id) => {
+  return axiosT.get(`/api/actioncourses/save-courses/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
 export const PatchCoursesComplete = (data) => {
   return axiosT.patch("/api/courses/complete", data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+export const PutSubscription = (id) => {
+  return axiosT.put(`/api/users/subscription/${id}`, null, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+export const PutUsers = (data) => {
+  return axiosT.put("/api/users", data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+export const GetSubscription = (id) => {
+  return axiosT.get(`/api/users/subscription/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "multipart/form-data",

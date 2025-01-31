@@ -10,14 +10,18 @@ import "swiper/css/navigation";
 import { Navigation, FreeMode } from "swiper/modules";
 import CommentCard from "../../components/comment_card/CommentCard";
 import { useQuery } from "react-query";
+// import Vimeo from "@vimeo/player";
 import {
   GetBuyCourse,
   GetCourseDetailWithoutToken,
+  GetSubscription,
   GetTeacherAccountId,
+  PutSubscription,
 } from "../../services/api";
 import { formatPrice } from "../../utils/formatPrice";
 import { message, Modal } from "antd";
 import { useState } from "react";
+import Skeleton from "react-loading-skeleton";
 
 function CourseInfo() {
   const navigate = useNavigate();
@@ -25,6 +29,8 @@ function CourseInfo() {
   const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [course, setCourse] = useState(null);
+  const [url, setUrl] = useState(null);
+
   const [comments, setComments] = useState([]);
 
   const showModal = () => {
@@ -42,9 +48,56 @@ function CourseInfo() {
       onSuccess(data) {
         setCourse(data.data.data);
         setComments(data.data.data.commits);
+        setUrl(
+          data.data.data.trieler?.split("/")[
+            data.data.data.trieler?.split("/").length - 1
+          ]
+        );
       },
     }
   );
+  // useEffect(() => {
+  //   const iframe = document.querySelector("iframe");
+  //   const player = new Vimeo(iframe);
+  //   // const player = new Player(iframe);
+
+  //   // Play event listener
+  //   // player.on("play", () => {
+  //   //   console.log("Played the video");
+  //   // });
+
+  //   // player.getVideoTitle().then((title) => {
+  //   //   console.log("title:", title);
+  //   // });
+  // }, []);
+  const {
+    data: subsciptionData,
+    isLoading,
+    refetch,
+  } = useQuery(
+    ["GetSubscription", course?.teacher_id],
+    () => GetSubscription(course?.teacher_id),
+    {
+      enabled: !!course?.teacher_id,
+    }
+  );
+  
+  const handleSubs = (id) => {
+    PutSubscription(id)
+      .then(() => {
+        refetch();
+      })
+      .catch(() => {
+        messageApi.open({
+          type: "error",
+          content: (
+            <h1 className="text-lg">
+              Xatolik yuz berdi. Keyinroq urinib ko'ring
+            </h1>
+          ),
+        });
+      });
+  };
 
   const handleOk = () => {
     handleBuyCourse(course.id);
@@ -80,7 +133,6 @@ function CourseInfo() {
     }
   );
   let teacherInfo = teacherAccountId?.data.data;
-  
 
   return (
     <div className="py-7">
@@ -107,17 +159,45 @@ function CourseInfo() {
               >
                 <img
                   className="w-[70px] h-[70px] object-cover rounded-full"
-                  src={teacherInfo?.profile_img ? teacherInfo?.profile_img : teacher}
+                  src={
+                    teacherInfo?.profile_img
+                      ? teacherInfo?.profile_img
+                      : teacher
+                  }
                   alt="O'qituvchi rasmi"
                 />
                 <div className="flex flex-col gap-1">
                   <h2 className="sm:text-xl text-sm font-medium">
                     {teacherInfo?.first_name} {teacherInfo?.last_name}
                   </h2>
-                  <p className="sm:text-base text-xs font-normal">{teacherInfo?.spiceal ? teacherInfo?.spiceal : "O'qituvchi"}</p>
+                  <p className="sm:text-base text-xs font-normal">
+                    {teacherInfo?.spiceal ? teacherInfo?.spiceal : "O'qituvchi"}
+                  </p>
                 </div>
               </div>
-              <button className="btn p-[5px_15px]">Obuna bo'lish</button>
+              {isLoading || false ? (
+                <Skeleton className="p-1" width={120} />
+              ) : subsciptionData?.data.data.subscribed ? (
+                <button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleSubs(course?.teacher_id);
+                  }}
+                  className="unbtn p-[5px_15px]"
+                >
+                  Obuna bo'lgansiz
+                </button>
+              ) : (
+                <button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleSubs(course?.teacher_id);
+                  }}
+                  className="btn p-[5px_15px]"
+                >
+                  Obuna bo'lish
+                </button>
+              )}
             </div>
           </div>
 
@@ -177,11 +257,24 @@ function CourseInfo() {
           </div>
         </div>
         <div className="sm:col-span-1 col-span-2">
-          <img
-            className="w-full h-full aspect-[7/6] object-fill rounded-[16px]"
-            src={course?.obloshka}
-            alt="Kurs obloshka image"
-          />
+          {course?.trieler ? (
+            <iframe
+              // src={lesson?.video_link}
+              src={`https://player.vimeo.com/video/${url}?h=2ac395a2694246448051ee01faf135ce`}
+              // width="500px"
+              className="w-full aspect-[7/6] rounded-[16px]"
+              // height="400px"
+              frameBorder={0}
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <img
+              className="w-full h-full aspect-[7/6] object-fill rounded-[16px]"
+              src={course?.obloshka}
+              alt="Kurs obloshka image"
+            />
+          )}
         </div>
       </div>
       <div className="flex gap-8">
@@ -238,7 +331,7 @@ function CourseInfo() {
                     <p>{module.title}</p>
                   </div>
                   {module.is_free ? (
-                    <button className="text-blue_color font-medium sm:text-xl text-xs">
+                    <button onClick={() => navigate(`/lessons/${module?.id}`)} className="text-blue_color font-medium sm:text-xl text-xs">
                       Ko'rish
                     </button>
                   ) : (
@@ -344,13 +437,19 @@ function CourseInfo() {
           modules={[FreeMode, Navigation]}
           className="comments_swiper"
         >
-          {comments?.length ? comments?.map((item) => {
-            return (
-              <SwiperSlide key={item.id} className="">
-                <CommentCard item={item} />
-              </SwiperSlide>
-            );
-          }) : <p className="text-center text-[#888]">Hozircha fikr bildirilmagan.</p>}
+          {comments?.length ? (
+            comments?.map((item) => {
+              return (
+                <SwiperSlide key={item.id} className="">
+                  <CommentCard item={item} />
+                </SwiperSlide>
+              );
+            })
+          ) : (
+            <p className="text-center text-[#888]">
+              Hozircha fikr bildirilmagan.
+            </p>
+          )}
         </Swiper>
       </div>
 

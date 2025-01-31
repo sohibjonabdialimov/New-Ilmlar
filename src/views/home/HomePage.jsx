@@ -10,15 +10,20 @@ import "./home.css";
 import { useNavigate } from "react-router-dom";
 import { GetCourses, GetTeachers } from "../../services/api";
 import { useQuery } from "react-query";
+import CardSkeleton from "../../components/skeleton/CardSkeleton";
+import { useContext } from "react";
+import { CoursesContext } from "../../context/CoursesProvider";
 import { differenceDate } from "../../utils/differenceDate";
-import { useEffect, useState } from "react";
-// import Vimeo from "@vimeo/player";
 const HomePage = () => {
   const navigate = useNavigate();
-
-  const [courses, setCourses] = useState([]);
-  const [newCourses, setNewCourses] = useState([]);
-  const [priceCourses, setPriceCourses] = useState([]);
+  const {
+    courses,
+    setCourses,
+    newCourses,
+    priceCourses,
+    setNewCourses,
+    setPriceCourses,
+  } = useContext(CoursesContext);
   // useEffect(() => {
   //   const iframe = document.querySelector("iframe");
   //   const player = new Vimeo(iframe);
@@ -34,12 +39,12 @@ const HomePage = () => {
   //   });
   // }, []);
 
-  useQuery(["GetCourses"], GetCourses, {
+  const { isLoading } = useQuery(["GetCourses"], GetCourses, {
     onSuccess(data) {
       setNewCourses(
         data.data.data
           .filter((item) => item.status === 2 && item.is_verified)
-          .filter((item) => differenceDate(item.created_at) <= 7)
+          .filter((item) => differenceDate(item.created_at) <= 20)
       );
       setCourses(
         data.data.data.filter((item) => item.status === 2 && item.is_verified)
@@ -57,9 +62,10 @@ const HomePage = () => {
 
   return (
     <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
-      <div className="relative">
-        <h1 className="title absolute top-0">Yangi qo’shilgan kurslar</h1>
-        {/* <iframe
+      {newCourses.length && !isLoading ? (
+        <div className="relative mb-16">
+          <h1 className="title absolute top-0">Yangi qo’shilgan kurslar</h1>
+          {/* <iframe
           src="https://player.vimeo.com/video/1045989772?h=2ac395a2694246448051ee01faf135ce"
           width="500px"
           height="400px"
@@ -68,39 +74,52 @@ const HomePage = () => {
           allowFullScreen
         /> */}
 
-        <Swiper
-          slidesPerView={1.5}
-          spaceBetween={30}
-          navigation={true}
-          freeMode={true}
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-              spaceBetween: 16,
-            },
-            768: {
-              slidesPerView: 3,
-              spaceBetween: 16,
-            },
-            1024: {
-              slidesPerView: 4,
-              spaceBetween: 16,
-            },
-          }}
-          modules={[FreeMode, Navigation]}
-          className="mySwiper"
-        >
-          {newCourses?.map((item) => {
-            return (
-              <SwiperSlide key={item.id}>
-                <NewCourseCard item={item} />
-              </SwiperSlide>
-            );
-          })}
-        </Swiper>
-      </div>
-      <div className="relative mt-16 mb-14">
+          <Swiper
+            slidesPerView={1.5}
+            spaceBetween={30}
+            navigation={true}
+            freeMode={true}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 16,
+              },
+              768: {
+                slidesPerView: 3,
+                spaceBetween: 16,
+              },
+              1024: {
+                slidesPerView: 4,
+                spaceBetween: 16,
+              },
+            }}
+            modules={[FreeMode, Navigation]}
+            className="mySwiper"
+          >
+            {isLoading
+              ? [1, 2, 3, 4].map((item) => {
+                  return (
+                    <SwiperSlide key={item}>
+                      <CardSkeleton />
+                    </SwiperSlide>
+                  );
+                })
+              : newCourses?.map((item) => {
+                  return (
+                    <SwiperSlide key={item.id}>
+                      <NewCourseCard item={item} />
+                    </SwiperSlide>
+                  );
+                })}
+          </Swiper>
+        </div>
+      ) : (
+        ""
+      )}
+
+      <div className="relative mb-14">
         <h1 className="title absolute top-0">Obuna bo‘ling va o‘rganing</h1>
+
         <Swiper
           slidesPerView={2}
           spaceBetween={15}
@@ -127,21 +146,37 @@ const HomePage = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {teacher?.map((item) => {
-            return (
-              <SwiperSlide key={item.id}>
-                <TeachersGroupCard item={item} />
-              </SwiperSlide>
-            );
-          })}
+          {isLoading
+            ? [1, 2, 3, 4].map((item) => {
+                return (
+                  <SwiperSlide key={item}>
+                    <CardSkeleton />
+                  </SwiperSlide>
+                );
+              })
+            : teacher?.map((item) => {
+                return (
+                  <SwiperSlide key={item.id}>
+                    <TeachersGroupCard item={item} />
+                  </SwiperSlide>
+                );
+              })}
         </Swiper>
       </div>
       <h1 className="title">Ommabop kurslarimiz</h1>
       <PopularCourseNavbar />
       <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 grid-cols-1 gap-x-4 gap-y-8 mb-5">
-        {courses?.slice(0, 12).map((item) => {
-          return <NewCourseCard item={item} key={item.id} />;
-        })}
+        {isLoading
+          ? [1, 2, 3, 4].map((item) => {
+              return (
+                <SwiperSlide key={item}>
+                  <CardSkeleton />
+                </SwiperSlide>
+              );
+            })
+          : courses?.slice(0, 12).map((item) => {
+              return <NewCourseCard item={item} key={item.id} />;
+            })}
       </div>
       <div className="flex justify-center">
         <button
@@ -178,13 +213,21 @@ const HomePage = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {priceCourses?.map((item) => {
-            return (
-              <SwiperSlide key={item.id}>
-                <NewCourseCard item={item} />
-              </SwiperSlide>
-            );
-          })}
+          {isLoading
+            ? [1, 2, 3, 4].map((item) => {
+                return (
+                  <SwiperSlide key={item}>
+                    <CardSkeleton />
+                  </SwiperSlide>
+                );
+              })
+            : priceCourses?.map((item) => {
+                return (
+                  <SwiperSlide key={item.id}>
+                    <NewCourseCard item={item} />
+                  </SwiperSlide>
+                );
+              })}
         </Swiper>
       </div>
     </div>

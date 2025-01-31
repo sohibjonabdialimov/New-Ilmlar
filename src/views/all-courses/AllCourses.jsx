@@ -6,6 +6,7 @@ import "./all-courses.css";
 import { useQuery } from "react-query";
 import { GetCourses } from "../../services/api";
 import { CoursesContext } from "../../context/CoursesProvider";
+import CardSkeleton from "../../components/skeleton/CardSkeleton";
 
 const AllCourses = () => {
   const [current, setCurrent] = useState(3);
@@ -27,8 +28,7 @@ const AllCourses = () => {
     setCurrent(page);
   };
 
-
-  useQuery(["GetCourses"], GetCourses, {
+  const { isLoading } = useQuery(["GetCourses"], GetCourses, {
     onSuccess(data) {
       setCourses(
         data.data.data.filter((item) => item.status === 2 && item.is_verified)
@@ -63,9 +63,13 @@ const AllCourses = () => {
         </div>
 
         <div className="grid sm:grid-cols-3 grid-cols-1 place-content-between sm:w-[80%] w-full gap-x-5 gap-y-8">
-          {courses.map((item) => {
-            return <NewCourseCard item={item} key={item.id} />;
-          })}
+          {isLoading
+            ? [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => {
+                return <CardSkeleton key={item} />;
+              })
+            : courses.map((item) => {
+                return <NewCourseCard item={item} key={item.id} />;
+              })}
         </div>
       </div>
       <div className="flex justify-center items-center sm:mt-8 mt-5 sm:mb-0 mb-10">

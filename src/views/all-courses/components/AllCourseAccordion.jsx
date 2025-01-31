@@ -6,6 +6,8 @@ import { Checkbox } from "antd";
 import { GetCategories } from "../../../services/api";
 import { useQuery } from "react-query";
 import { capitalizeFirstLetter } from "../../../utils/formatText";
+import Skeleton from "react-loading-skeleton";
+
 
 const languageOptions = [
   {
@@ -49,7 +51,10 @@ const AllCourseAccordion = () => {
   ]);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
 
-  const { data: category } = useQuery(["GetCategories"], GetCategories);
+  const { data: category, isLoading } = useQuery(
+    ["GetCategories"],
+    GetCategories
+  );
 
   const handleLevelChange = (checkedValues) => {
     console.log("Levels selected = ", checkedValues);
@@ -73,11 +78,19 @@ const AllCourseAccordion = () => {
         <AccordionContent>
           <Checkbox.Group value={selectedLevels} onChange={handleLevelChange}>
             <div className="checkbox-list">
-              {category?.data.data.map((item) => (
-                <Checkbox className="text-[17px]" key={item.id} value={item.id}>
-                  {capitalizeFirstLetter(item.name)}
-                </Checkbox>
-              ))}
+              {isLoading ? (
+                <Skeleton count={3} width={300} />
+              ) : (
+                category?.data.data.map((item) => (
+                  <Checkbox
+                    className="text-[17px]"
+                    key={item.id}
+                    value={item.id}
+                  >
+                    {capitalizeFirstLetter(item.name)}
+                  </Checkbox>
+                ))
+              )}
             </div>
           </Checkbox.Group>
         </AccordionContent>

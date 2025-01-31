@@ -37,7 +37,16 @@ button:focus {
   background-color: #1d7afc;
   color: #fff;
   text-align: center;
-  font-weight: 400;
+  font-weight: 500;
+  transition: all 0.5s;
+  border: 1px solid transparent;
+}
+.unbtn {
+  border-radius: 100px;
+  background-color: #EFEFEFFF;
+  color: #000000FF;
+  text-align: center;
+  font-weight: 500;
   transition: all 0.5s;
   border: 1px solid transparent;
 }

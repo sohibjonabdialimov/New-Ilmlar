@@ -8,9 +8,13 @@ import "./style.css";
 import { useQuery } from "react-query";
 import { GetCategories } from "../../../services/api";
 import { capitalizeFirstLetter } from "../../../utils/formatText";
+import Skeleton from "react-loading-skeleton";
 const PopularCourseNavbar = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const { data: category } = useQuery(["GetCategories"], GetCategories);
+  const { data: category, isLoading } = useQuery(
+    ["GetCategories"],
+    GetCategories
+  );
 
   const handleSlideClick = (index) => {
     setActiveIndex(index);
@@ -38,19 +42,27 @@ const PopularCourseNavbar = () => {
       modules={[FreeMode]}
       className="mySwiper popular_navbar"
     >
-      {category?.data.data.map((item, index) => {
-        return (
-          <SwiperSlide
-            onClick={() => handleSlideClick(index)}
-            key={item.id}
-            className={`popular_slider_item text-main_color text-center font-normal text-base ${
-              activeIndex === index ? "active" : ""
-            }`}
-          >
-            {capitalizeFirstLetter(item?.name)}
-          </SwiperSlide>
-        );
-      })}
+      {isLoading ? (
+        <div className="flex items-center sm:gap-5 gap-1">
+          <Skeleton className="popular_slider_item" width={100} />
+          <Skeleton className="popular_slider_item" width={100} />
+          <Skeleton className="popular_slider_item" width={100} />
+        </div>
+      ) : (
+        category?.data.data.map((item, index) => {
+          return (
+            <SwiperSlide
+              onClick={() => handleSlideClick(index)}
+              key={item.id}
+              className={`popular_slider_item text-main_color text-center font-normal text-base ${
+                activeIndex === index ? "active" : ""
+              }`}
+            >
+              {capitalizeFirstLetter(item?.name)}
+            </SwiperSlide>
+          );
+        })
+      )}
     </Swiper>
   );
 };

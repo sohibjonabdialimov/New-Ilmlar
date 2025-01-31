@@ -7,62 +7,46 @@ import "swiper/css/navigation";
 import { Navigation, FreeMode } from "swiper/modules";
 import NewCourseCard from "../home/components/NewCourseCard";
 import { Drawer, Form, Input, message } from "antd";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import TeachersGroupCard from "../home/components/TeachersGroupCard";
 import { ProfileContext } from "../../context/ProfileProvider";
-import { useQuery } from "react-query";
+import { useQueries, useQuery } from "react-query";
 import {
   GetPurchasedCourses,
   GetSavedCourses,
+  GetUsersUserme,
   PostEditProfileImage,
+  PutUsers,
 } from "../../services/api";
-const navData = [
-  {
-    id: 1,
-    name: "Kurs nomi 1",
-  },
-  {
-    id: 2,
-    name: "Kurs nomi 2",
-  },
-  {
-    id: 3,
-    name: "Kurs nomi 3",
-  },
-  {
-    id: 4,
-    name: "Kurs nomi 4",
-  },
-  {
-    id: 5,
-    name: "Kurs nomi 5",
-  },
-  {
-    id: 6,
-    name: "Kurs nomi 6",
-  },
-  {
-    id: 7,
-    name: "Kurs nomi 6",
-  },
-  {
-    id: 8,
-    name: "Kurs nomi 6",
-  },
-  {
-    id: 9,
-    name: "Kurs nomi 6",
-  },
-];
+import axiosT from "../../services/axios";
+
 const StudentProfile = () => {
   const [open, setOpen] = useState(false);
-  const { control, getValues } = useForm();
-  const { userData } = useContext(ProfileContext);
+  const { control, getValues, setValue, reset } = useForm();
+  const { userData, setUserData } = useContext(ProfileContext);
   const [img, setImg] = useState(null);
   const fileInputRef = useRef(null);
   const [messageApi, contextHolder] = message.useMessage();
-
+  const { refetch } = useQuery(
+    ["GetUsersUserme"],
+    () => GetUsersUserme(localStorage.getItem("token")),
+    {
+      onSuccess: (response) => {
+        setUserData(response.data.data);
+        localStorage.setItem("user-data", JSON.stringify(response.data.data));
+      },
+    },
+    {
+      enable: !!localStorage.getItem("token"),
+    }
+  );
+  useEffect(() => {
+    setValue("EDITPROFILE.user_name", userData.user_name);
+    setValue("EDITPROFILE.first_name", userData.first_name);
+    setValue("EDITPROFILE.last_name", userData.last_name);
+    setValue("EDITPROFILE.email", userData.email);
+  }, [userData, setValue]);
   const handleButtonClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -91,35 +75,19 @@ const StudentProfile = () => {
     }
   };
 
-  const showDrawer = () => {
-    setOpen(true);
-  };
-
-  const onClose = () => {
-    setOpen(false);
-  };
   const submitHandler = async () => {
     const edit_data = getValues().EDITPROFILE;
     console.log(edit_data);
 
-    // axiosT
-    //   .post("/accounts/Token", login)
-    //   .then(({ data }) => {
-    //     localStorage.setItem("accessToken", data.access_token);
-    //     localStorage.setItem("refreshToken", data.refresh_token);
-    //     messageApi.open({
-    //       type: "info",
-    //       content: "Tizimga muvaffaqqiyatli kirildi",
-    //     });
-    //     navigate("/");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     messageApi.open({
-    //       type: "error",
-    //       content: "Bunday login parol mavjud emas",
-    //     });
-    //   });
+    PutUsers(edit_data)
+      .then(() => {
+        refetch();
+        reset();
+        setOpen(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const { data: myCourses } = useQuery(
     ["GetPurchasedCourses"],
@@ -131,6 +99,24 @@ const StudentProfile = () => {
   );
   let courses = myCourses?.data.data;
   let savedCourses = mySavedCourses?.data.data;
+
+  const GetTeacherAccountId = async (id) => {
+    const { data } = await axiosT.get(`/api/users/teacheraccout/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return data;
+  };
+
+  const queries = useQueries(
+    userData?.subscribedTeachers.map((id) => ({
+      queryKey: ["data", id],
+      queryFn: () => GetTeacherAccountId(id),
+      enabled: !!userData?.subscribedTeachers.length,
+    }))
+  );
 
   return (
     <div className="py-7">
@@ -184,7 +170,7 @@ const StudentProfile = () => {
           </div>
           <div className="sm:mt-5 mt-2 flex sm:justify-start justify-center items-center">
             <button
-              onClick={showDrawer}
+              onClick={() => setOpen(true)}
               className="btn text-sm sm:p-[10px_30px] p-[8px_20px]"
             >
               Profilni tahrirlash
@@ -198,7 +184,10 @@ const StudentProfile = () => {
             alt="Student's Plastic card"
           />
           <p className="absolute bottom-20 left-5 font-medium text-xl text-white">
-            {userData?.amount?.balance ? userData?.amount?.balance : 0} UZS
+            {userData?.amount?.balance
+              ? userData?.amount?.balance.toFixed(1)
+              : 0}{" "}
+            UZS
           </p>
           <p className="absolute bottom-3 left-3 text-base text-white">
             {userData?.payment_id}
@@ -232,7 +221,7 @@ const StudentProfile = () => {
         >
           {courses?.map((item) => {
             return (
-              <SwiperSlide key={item.id}>
+              <SwiperSlide key={item?.id}>
                 <NewCourseCard item={item} buy={true} type={true} />
               </SwiperSlide>
             );
@@ -265,7 +254,7 @@ const StudentProfile = () => {
         >
           {savedCourses?.map((item) => {
             return (
-              <SwiperSlide key={item.id} className="">
+              <SwiperSlide key={item?.id} className="">
                 <NewCourseCard item={item} />
               </SwiperSlide>
             );
@@ -300,17 +289,21 @@ const StudentProfile = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {navData.map((item) => {
+          {queries?.map((item) => {
             return (
-              <SwiperSlide key={item.id} className="">
-                <TeachersGroupCard />
+              <SwiperSlide key={item?.data?.data.id} className="">
+                <TeachersGroupCard item={item?.data?.data} type={true} />
               </SwiperSlide>
             );
           })}
         </Swiper>
       </div>
 
-      <Drawer title="Profilni tahrirlash" onClose={onClose} open={open}>
+      <Drawer
+        title="Profilni tahrirlash"
+        onClose={() => setOpen(false)}
+        open={open}
+      >
         <Form
           layout="vertical"
           className="w-full"
@@ -332,7 +325,7 @@ const StudentProfile = () => {
                   required: "Field is required",
                 }}
                 control={control}
-                name="EDITPROFILE.firstname"
+                name="EDITPROFILE.first_name"
                 render={({ field }) => {
                   return (
                     <>
@@ -358,7 +351,7 @@ const StudentProfile = () => {
                   required: "Field is required",
                 }}
                 control={control}
-                name="EDITPROFILE.lastname"
+                name="EDITPROFILE.last_name"
                 render={({ field }) => {
                   return (
                     <>
@@ -384,7 +377,7 @@ const StudentProfile = () => {
                   required: "Field is required",
                 }}
                 control={control}
-                name="EDITPROFILE.username"
+                name="EDITPROFILE.user_name"
                 render={({ field }) => {
                   return (
                     <>
