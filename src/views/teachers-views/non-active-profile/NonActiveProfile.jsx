@@ -1,21 +1,25 @@
-import { Form, Input, Select } from "antd";
+import { Form, Input } from "antd";
 import teacher_profile from "../../../assets/images/teacher_profile.jpg";
 import { Controller, useForm } from "react-hook-form";
 import { ProfileContext } from "../../../context/ProfileProvider";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 const { TextArea } = Input;
 const NonActiveProfile = () => {
-  const { control, getValues } = useForm();
-   const { userData } = useContext(ProfileContext);
+  const { control, getValues, setValue } = useForm();
+  const { userData } = useContext(ProfileContext);
   const submitHandler = async () => {
     const editTeacher = getValues().EDITTEACHERPROFILE;
     console.log(editTeacher);
   };
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
+  useEffect(() => {
+    // setValue("EDITTEACHERPROFILE.user_name", userData.user_name);
+    setValue("EDITTEACHERPROFILE.first_name", userData.first_name);
+    setValue("EDITTEACHERPROFILE.last_name", userData.last_name);
+    setValue("EDITTEACHERPROFILE.email", userData.email);
+  }, [userData, setValue]);
+
   return (
     <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
       <div className="flex sm:flex-row flex-col justify-between sm:mb-16 mb-10 gap-4">
@@ -27,9 +31,9 @@ const NonActiveProfile = () => {
           />
           <div className="flex flex-col justify-center sm:gap-2 gap-1 py-0">
             <h1 className="text-main_color font-semibold sm:text-xl text-base sm:mb-1 mb-0">
-            {userData?.first_name}{" "}
-                {userData?.last_name ? userData?.last_name : ""}{" "}
-                {userData?.middle_name ? userData?.middle_name : ""}
+              {userData?.first_name}{" "}
+              {userData?.last_name ? userData?.last_name : ""}{" "}
+              {userData?.middle_name ? userData?.middle_name : ""}
             </h1>
             <p className="text-[#758195] sm:text-base text-xs font-medium">
               Biznes yo'nalishi
@@ -62,7 +66,7 @@ const NonActiveProfile = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="EDITTEACHERPROFILE.firstname"
+                  name="EDITTEACHERPROFILE.first_name"
                   render={({ field }) => {
                     return (
                       <>
@@ -89,7 +93,7 @@ const NonActiveProfile = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="EDITTEACHERPROFILE.lastname"
+                  name="EDITTEACHERPROFILE.last_name"
                   render={({ field }) => {
                     return (
                       <>
@@ -169,36 +173,13 @@ const NonActiveProfile = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="EDITTEACHERPROFILE.password"
+                  name="EDITTEACHERPROFILE.specialization"
                   render={({ field }) => {
                     return (
-                      <Select
-                        defaultValue="lucy"
+                      <Input
                         {...field}
-                        className="w-full h-[40px] rounded-[10px]"
-                        onChange={handleChange}
-                        options={[
-                          {
-                            value: "Dasturlash",
-                            label: "Dasturlash",
-                          },
-                          {
-                            value: "Dizayn",
-                            label: "Dizayn",
-                          },
-                          {
-                            value: "Biznes",
-                            label: "Biznes",
-                          },
-                          {
-                            value: "Fan va texnika",
-                            label: "Fan va texnika",
-                          },
-                          {
-                            value: "Shaxsiy rivojlanish",
-                            label: "Shaxsiy rivojlanish",
-                          },
-                        ]}
+                        placeholder="Ingliz tili o'qituvchisi, grafik dizayner"
+                        className="w-full py-2.5 px-5 rounded-[10px]"
                       />
                     );
                   }}
@@ -244,7 +225,7 @@ const NonActiveProfile = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="EDITTEACHERPROFILE.firstname"
+                  name="EDITTEACHERPROFILE.info"
                   render={({ field }) => {
                     return (
                       <>
@@ -253,9 +234,37 @@ const NonActiveProfile = () => {
                           placeholder="O’zingiz haqingizda ma’lumot yozing..."
                           className="text-base"
                           style={{
-                            height: 150,
+                            height: 80,
                             resize: "none",
                           }}
+                        />
+                      </>
+                    );
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                className="sm:col-span-1 col-span-2"
+                label={
+                  <span className="text-secondary_color font-semibold text-base">
+                    Telefon raqam
+                  </span>
+                }
+              >
+                <Controller
+                  rules={{
+                    required: "Field is required",
+                  }}
+                  control={control}
+                  name="EDITTEACHERPROFILE.phone"
+                  render={({ field }) => {
+                    return (
+                      <>
+                        <Input
+                          {...field}
+                          type="number"
+                          placeholder="+998976367777"
+                          className="w-full py-2.5 px-5 rounded-[10px]"
                         />
                       </>
                     );

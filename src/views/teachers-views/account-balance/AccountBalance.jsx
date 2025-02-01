@@ -1,9 +1,11 @@
-import { Drawer, Form, Input, Table } from "antd";
+import { Drawer, Form, Input, message, Table } from "antd";
 import { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import "./account-balance.css";
 import { ProfileContext } from "../../../context/ProfileProvider";
 import { formatDate } from "../../../utils/formatDate";
+import { CardWithDrawal } from "../../../services/api";
+import TextArea from "antd/es/input/TextArea";
 
 const columns = [
   {
@@ -26,22 +28,39 @@ const columns = [
 const AccountBalance = () => {
   const [open, setOpen] = useState(false);
   const { userData } = useContext(ProfileContext);
-  const { control, getValues } = useForm();
+  const { control, getValues, refetch } = useForm();
+  const [messageApi, contextHolder] = message.useMessage();
   const showDrawer = () => {
     setOpen(true);
   };
   const onClose = () => {
     setOpen(false);
   };
-  const submitHandler = async () => {
-    const edit_data = getValues().EDITPROFILE;
-    console.log(edit_data);
+  const submitHandler = () => {
+    const data = getValues().BALANCE;
+    data.amount = +data.amount;
+    CardWithDrawal(data)
+      .then((res) => {
+        console.log(res);
+        setOpen(false);
+        messageApi.open({
+          type: "info",
+          content: "Pulni yechib oldingiz!",
+        });
+        // refetch();
+      })
+      .catch((err) => {
+        console.log(err.response.data.error);
+        messageApi.open({
+          type: "error",
+          content: `${err.response.data.error}`,
+        });
+      });
   };
-  const data = userData?.transactions_history;
-  console.log(data);
 
   return (
     <div className="py-7 sm:mb-0 mb-16">
+      {contextHolder}
       <h1 className="title sm:mb-5 mb-4">Hisob balans</h1>
       <div className="flex justify-between sm:flex-row flex-col gap-3">
         <div className="flex flex-col gap-2">
@@ -78,7 +97,7 @@ const AccountBalance = () => {
           className="account_balance_table"
           size="middle"
           columns={columns}
-          dataSource={data}
+          dataSource={userData?.transactions_history}
         />
       </div>
       <Drawer title="Pul yechib olish" onClose={onClose} open={open}>
@@ -90,7 +109,7 @@ const AccountBalance = () => {
             submitHandler();
           }}
         >
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-1">
             <Form.Item
               label={
                 <span className="text-secondary_color font-semibold text-base">
@@ -103,12 +122,13 @@ const AccountBalance = () => {
                   required: "Field is required",
                 }}
                 control={control}
-                name="EDITPROFILE.firstname"
+                name="BALANCE.amount"
                 render={({ field }) => {
                   return (
                     <>
                       <Input
                         {...field}
+                        type="number"
                         // placeholder="Ismingizni kiriting..."
                         className="w-full py-3 px-4 rounded-[10px]"
                       />
@@ -129,7 +149,7 @@ const AccountBalance = () => {
                   required: "Field is required",
                 }}
                 control={control}
-                name="EDITPROFILE.lastname"
+                name="BALANCE.cardNumber"
                 render={({ field }) => {
                   return (
                     <>
@@ -155,13 +175,40 @@ const AccountBalance = () => {
                   required: "Field is required",
                 }}
                 control={control}
-                name="EDITPROFILE.username"
+                name="BALANCE.pinfl"
                 render={({ field }) => {
                   return (
                     <>
                       <Input
                         {...field}
                         // placeholder="Foydalanuvchi nomini kiriting..."
+                        className="w-full py-3 px-4 rounded-[10px]"
+                      />
+                    </>
+                  );
+                }}
+              />
+            </Form.Item>
+            <Form.Item
+              label={
+                <span className="text-secondary_color font-semibold text-base">
+                  Qo'shimcha ma'lumot
+                </span>
+              }
+            >
+              <Controller
+                // rules={{
+                //   required: "Field is required",
+                // }}
+                control={control}
+                name="BALANCE.transactionData"
+                render={({ field }) => {
+                  return (
+                    <>
+                      <TextArea
+                        {...field}
+                        style={{ height: 80 }}
+                        // placeholder="O'zingiz haqingizda ma'lumot kiriting..."
                         className="w-full py-3 px-4 rounded-[10px]"
                       />
                     </>

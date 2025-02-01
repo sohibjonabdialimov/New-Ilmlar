@@ -4,6 +4,7 @@ export const PostUsers = (data) => {
   return axiosT.post("/api/users", data);
 };
 
+
 export const PostUsersVerify = (data) => {
   return axiosT.post("/api/users/verify", data);
 };
@@ -12,8 +13,22 @@ export const PostUsersLogin = (data) => {
   return axiosT.post("/api/users/login", data);
 };
 
-export const GetCourses = () => {
-  return axiosT.get("/api/courses/donthavetoken");
+export const GetCourses = (search,
+  languages,
+  isFree,
+  periods,
+  categories,
+  teacher_ids) => {
+  return axiosT.get("/api/courses/donthavetoken", {
+    params: {
+      search,
+      languages,
+      is_free: isFree,
+      periods,
+      categories,
+      teacher_ids
+    },
+  });
 };
 export const GetCategories = () => {
   return axiosT.get("/api/category");
@@ -58,7 +73,7 @@ export const GetUsersUserme = (token) => {
   });
 };
 
-export const PostCourses = (data) => {
+export const PostCourses = (data, ) => {
   return axiosT.post("/api/courses", data, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -66,6 +81,15 @@ export const PostCourses = (data) => {
     },
   });
 };
+// All Queries
+// export const GetCoursesWithSearch = (query) => {
+//   return axiosT.get(`/api/courses?search=${query}`, {
+//     headers: {
+//       Authorization: `Bearer ${localStorage.getItem("token")}`,
+//       "Content-Type": "multipart/form-data",
+//     },
+//   });
+// };
 export const PostCommit = (id, data) => {
   return axiosT.post(`/api/courses/course/${id}/commit`, data, {
     headers: {
@@ -176,6 +200,14 @@ export const PutUsers = (data) => {
 };
 export const GetSubscription = (id) => {
   return axiosT.get(`/api/users/subscription/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+export const CardWithDrawal = (data) => {
+  return axiosT.post("/api/outApis/payoutteacher", data, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "multipart/form-data",

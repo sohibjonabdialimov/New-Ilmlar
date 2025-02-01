@@ -1,49 +1,88 @@
-import { Form, Input, Select } from "antd";
+import { Form, Input, message } from "antd";
 import teacher_profile from "../../../assets/images/teacher_avatar.jpg";
 import NewCourseCard from "../../home/components/NewCourseCard";
 import { Controller, useForm } from "react-hook-form";
 import { ProfileContext } from "../../../context/ProfileProvider";
 // import { TeacherDataContext } from "../../../context/TeacherDataProvider";
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 import axiosT from "../../../services/axios";
 import { useQueries, useQuery } from "react-query";
-import { GetTeacherAccount } from "../../../services/api";
+import { GetTeacherAccount, PostEditProfileImage, PutUsers } from "../../../services/api";
 import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 const TeacherProfile = () => {
-  const { control, getValues } = useForm();
+  const [messageApi, contextHolder] = message.useMessage();
+  const { control, getValues, setValue } = useForm();
   const { userData } = useContext(ProfileContext);
+  const fileInputRef = useRef(null);
   // const { setMyCourse, myCourse } = useContext(TeacherDataContext);
   const navigate = useNavigate();
   const submitHandler = async () => {
     const editTeacher = getValues().EDITTEACHERPROFILE;
+        PutUsers(editTeacher)
+          .then((res) => {
+            console.log(res);
+            
+            refetch();
+            // reset();
+            // setOpen(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
     console.log(editTeacher);
   };
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
-  const { data: teacherAccountData } = useQuery(
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      PostEditProfileImage({ file: file })
+        .then(() => {
+          refetch();
+          messageApi.open({
+            type: "info",
+            content: "Rasm o'zgartirildi",
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+
+          messageApi.open({
+            type: "error",
+            content: "Rasm yuklashda xatolik bor",
+          });
+        });
+    }
+  };
+
+  useEffect(() => {
+    // setValue("EDITTEACHERPROFILE.user_name", userData.user_name);
+    setValue("EDITTEACHERPROFILE.first_name", userData.first_name);
+    setValue("EDITTEACHERPROFILE.last_name", userData.last_name);
+    setValue("EDITTEACHERPROFILE.email", userData.email);
+  }, [userData, setValue]);
+
+  const { data: teacherAccountData, refetch } = useQuery(
     ["GetTeacherAccount"],
     () => GetTeacherAccount(userData?.id),
-    {
-      onSuccess: (data) => {
-        console.log(data.data.data);
-      },
-    },
     {
       enabled: !!userData?.id,
     }
   );
-  const teacherAccount = teacherAccountData?.data.data;
+
   const fetchResource = async (id) => {
     const { data } = await axiosT.get(`/api/courses/course/${id}/withouttoken`);
     return data;
   };
   const queries = useQueries(
-    (teacherAccount?.courses || []).map(({ id }) => ({
+    (teacherAccountData?.data.data.courses || []).map(({ id }) => ({
       queryKey: ["resource", id],
       queryFn: () => fetchResource(id),
       enabled: !!id,
@@ -55,20 +94,39 @@ const TeacherProfile = () => {
   //     ?.map((query) => query?.data?.data)
   //     .filter((item) => item !== undefined)
   // );
-  const allData = queries?.map((query) => query?.data?.data)
+
+  const allData = queries
+    ?.map((query) => query?.data?.data)
     .filter((item) => item !== undefined);
   // setMyCourse(allData);
   return (
     <div className="py-7">
+      {contextHolder}
       <div className="flex sm:flex-row flex-col justify-between sm:mb-16 mb-10 gap-4">
         <div className="flex sm:gap-5 gap-3">
-          <img
-            className="sm:w-[142px] sm:h-[146px] w-[80px] h-[80px] rounded-full"
-            src={
-              userData?.profile_img ? userData?.profile_img : teacher_profile
-            }
-            alt="Ilmlar o'qituvchisi rasmi"
-          />
+          <div className="relative">
+            <img
+              className="sm:w-[142px] sm:h-[142px] object-cover w-[90px] h-[90px] rounded-full"
+              src={
+                teacherAccountData?.data.data.profile_img
+                  ? teacherAccountData?.data.data.profile_img
+                  : teacher_profile
+              }
+              alt="Ilmlar o'qituvchisining rasmi"
+            />
+            <div
+              onClick={handleButtonClick}
+              className="border rounded-3xl translate-x-1/2 right-1/2 p-[4px_5px] inline-block absolute -bottom-3 text-xs text-white bg-[#262C36FF] cursor-pointer"
+            >
+              O'zgartirish
+            </div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </div>
           <div className="flex flex-col justify-center sm:gap-1 gap-0.5 py-0">
             <h1 className="text-main_color font-semibold sm:text-xl text-base mb-0">
               {userData?.first_name} {userData?.last_name}
@@ -119,7 +177,7 @@ const TeacherProfile = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="EDITTEACHERPROFILE.firstname"
+                  name="EDITTEACHERPROFILE.first_name"
                   render={({ field }) => {
                     return (
                       <>
@@ -146,7 +204,7 @@ const TeacherProfile = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="EDITTEACHERPROFILE.lastname"
+                  name="EDITTEACHERPROFILE.last_name"
                   render={({ field }) => {
                     return (
                       <>
@@ -173,7 +231,7 @@ const TeacherProfile = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="EDITTEACHERPROFILE.username"
+                  name="EDITTEACHERPROFILE.user_name"
                   render={({ field }) => {
                     return (
                       <>
@@ -226,36 +284,13 @@ const TeacherProfile = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="EDITTEACHERPROFILE.password"
+                  name="EDITTEACHERPROFILE.specialization"
                   render={({ field }) => {
                     return (
-                      <Select
-                        defaultValue="lucy"
+                      <Input
                         {...field}
-                        className="w-full h-[40px] rounded-[10px]"
-                        onChange={handleChange}
-                        options={[
-                          {
-                            value: "Dasturlash",
-                            label: "Dasturlash",
-                          },
-                          {
-                            value: "Dizayn",
-                            label: "Dizayn",
-                          },
-                          {
-                            value: "Biznes",
-                            label: "Biznes",
-                          },
-                          {
-                            value: "Fan va texnika",
-                            label: "Fan va texnika",
-                          },
-                          {
-                            value: "Shaxsiy rivojlanish",
-                            label: "Shaxsiy rivojlanish",
-                          },
-                        ]}
+                        placeholder="Ingliz tili o'qituvchisi, grafik dizayner"
+                        className="w-full py-2.5 px-5 rounded-[10px]"
                       />
                     );
                   }}
@@ -301,7 +336,7 @@ const TeacherProfile = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="EDITTEACHERPROFILE.firstname"
+                  name="EDITTEACHERPROFILE.info"
                   render={({ field }) => {
                     return (
                       <>
@@ -310,9 +345,37 @@ const TeacherProfile = () => {
                           placeholder="O’zingiz haqingizda ma’lumot yozing..."
                           className="text-base"
                           style={{
-                            height: 150,
+                            height: 80,
                             resize: "none",
                           }}
+                        />
+                      </>
+                    );
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                className="sm:col-span-1 col-span-2"
+                label={
+                  <span className="text-secondary_color font-semibold text-base">
+                    Telefon raqam
+                  </span>
+                }
+              >
+                <Controller
+                  rules={{
+                    required: "Field is required",
+                  }}
+                  control={control}
+                  name="EDITTEACHERPROFILE.phone"
+                  render={({ field }) => {
+                    return (
+                      <>
+                        <Input
+                          {...field}
+                          type="number"
+                          placeholder="+998976367777"
+                          className="w-full py-2.5 px-5 rounded-[10px]"
                         />
                       </>
                     );

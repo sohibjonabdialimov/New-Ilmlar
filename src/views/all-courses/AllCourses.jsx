@@ -7,11 +7,12 @@ import { useQuery } from "react-query";
 import { GetCourses } from "../../services/api";
 import { CoursesContext } from "../../context/CoursesProvider";
 import CardSkeleton from "../../components/skeleton/CardSkeleton";
+import { debounce } from "../../utils/debounce";
 
 const AllCourses = () => {
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const { courses, setCourses } = useContext(CoursesContext);
+  const { courses, setCourses, text, categoryF, prise, language, teacher } = useContext(CoursesContext);
   const handleSearchInput = (e) => {
     setSearchText(e.target.value);
   };
@@ -23,13 +24,17 @@ const AllCourses = () => {
     setOpen(false);
   };
 
-  const { isLoading } = useQuery(["GetCourses"], GetCourses, {
-    onSuccess(data) {
-      setCourses(
-        data.data.data.filter((item) => item.status === 2 && item.is_verified)
-      );
-    },
-  });
+  const { isLoading } = useQuery(
+    ["GetCourses", prise, text, categoryF, language, teacher],
+    () => GetCourses(text, language?.join(","), prise, null, categoryF?.join(","), teacher?.join(",")),
+    {
+      onSuccess(data) {
+        setCourses(
+          data.data.data.filter((item) => item.status === 2 && item.is_verified)
+        );
+      },
+    }
+  );
 
   return (
     <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
@@ -47,7 +52,7 @@ const AllCourses = () => {
             type="text"
             value={searchText}
             placeholder={"Qidirish..."}
-            onChange={(e) => handleSearchInput(e)}
+            onChange={(e) => debounce(handleSearchInput(e))}
             className="header_search bg-[#F1F2F4] w-full outline-none border-none text-[#64748BFF] text-sm placeholder:text-[#1E1E1E99]"
           />
         </div>

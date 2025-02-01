@@ -40,23 +40,27 @@ const HomePage = () => {
   //   });
   // }, []);
 
-  const { isLoading } = useQuery(["GetCourses"], GetCourses, {
-    onSuccess(data) {
-      setNewCourses(
-        data.data.data
-          .filter((item) => item.status === 2 && item.is_verified)
-          .filter((item) => differenceDate(item.created_at) <= 20)
-      );
-      setCourses(
-        data.data.data.filter((item) => item.status === 2 && item.is_verified)
-      );
-      setPriceCourses(
-        data.data.data
-          .filter((item) => item.status === 2 && item.is_verified)
-          .filter((item) => item.price === 0)
-      );
-    },
-  });
+  const { isLoading } = useQuery(
+    ["GetCourses"],
+    () => GetCourses(null, null, null, null, null, null),
+    {
+      onSuccess(data) {
+        setNewCourses(
+          data.data.data
+            .filter((item) => item.status === 2 && item.is_verified)
+            .filter((item) => differenceDate(item.created_at) <= 20)
+        );
+        setCourses(
+          data.data.data.filter((item) => item.status === 2 && item.is_verified)
+        );
+        setPriceCourses(
+          data.data.data
+            .filter((item) => item.status === 2 && item.is_verified)
+            .filter((item) => item.price === 0)
+        );
+      },
+    }
+  );
   const { data: teachersData } = useQuery(["GetTeachers"], GetTeachers);
 
   let teacher = teachersData?.data.data.teachers;

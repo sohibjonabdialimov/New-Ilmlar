@@ -12,6 +12,8 @@ const TeacherHeader = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { userData } = useContext(ProfileContext);
+  console.log(userData);
+  
   const showDrawer = () => {
     setOpen(true);
   };
@@ -81,7 +83,7 @@ const TeacherHeader = () => {
     <>
       <div className="py-[0.8rem]">
         <header className="w-full sm:px-6 px-3 py-2 flex flex-wrap items-center justify-between rounded-2xl mx-auto gap-4 bg-bg_color">
-          <div className="flex gap-4 items-center">
+          <div onClick={() => navigate("/my-profile")} className="flex gap-4 items-center cursor-pointer">
             <img className="sm:h-[35px] h-[24px]" src={teacherLogo} alt="" />
           </div>
 

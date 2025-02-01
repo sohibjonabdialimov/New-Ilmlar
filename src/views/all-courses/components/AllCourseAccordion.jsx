@@ -1,82 +1,105 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import * as Accordion from "@radix-ui/react-accordion";
 import classNames from "classnames";
 import "./style-all-course.css";
-import { Checkbox } from "antd";
-import { GetCategories } from "../../../services/api";
+import { Checkbox, Radio } from "antd";
+import { GetCategories, GetTeachers } from "../../../services/api";
 import { useQuery } from "react-query";
 import { capitalizeFirstLetter } from "../../../utils/formatText";
 import Skeleton from "react-loading-skeleton";
+import { CoursesContext } from "../../../context/CoursesProvider";
 
-
-const languageOptions = [
+const priseOptions = [
+  {
+    label: "Barchasi",
+    value: "",
+  },
   {
     label: "Pullik",
-    value: "pullik",
-    count: 10000,
+    value: "false",
   },
   {
     label: "Bepul",
-    value: "bepul",
-    count: 2294,
+    value: "true",
   },
 ];
-const levelOption = [
+// const levelOption = [
+//   {
+//     label: "Barcha darajalar",
+//     value: "old",
+//   },
+//   {
+//     label: "Boshlang'ich",
+//     value: "old",
+//   },
+//   {
+//     label: "O'rta",
+//     value: "bepul",
+//   },
+//   {
+//     label: "Yuqori",
+//     value: "yuqori",
+//   },
+// ];
+const languageOption = [
   {
-    label: "Barcha darajalar",
-    value: "old",
-    count: 10000,
+    label: "O'zbek tili",
+    value: 1,
   },
   {
-    label: "Boshlang'ich",
-    value: "old",
-    count: 10000,
+    label: "Rus tili",
+    value: 2,
   },
   {
-    label: "O'rta",
-    value: "bepul",
-    count: 2294,
-  },
-  {
-    label: "Yuqori",
-    value: "yuqori",
-    count: 2294,
+    label: "Ingliz tili",
+    value: 3,
   },
 ];
 
 const AllCourseAccordion = () => {
-  const [selectedLevels, setSelectedLevels] = useState([
-    "All Levels",
-    "Beginner",
-  ]);
-  const [selectedLanguages, setSelectedLanguages] = useState([]);
+  const {
+    categoryF,
+    setCategoryF,
+    prise,
+    setPrise,
+    setLanguage,
+    language,
+    teacher,
+    setTeacher,
+  } = useContext(CoursesContext);
 
   const { data: category, isLoading } = useQuery(
     ["GetCategories"],
     GetCategories
   );
 
-  const handleLevelChange = (checkedValues) => {
-    console.log("Levels selected = ", checkedValues);
-    setSelectedLevels(checkedValues);
+  const handleCategoryChange = (checkedValues) => {
+    setCategoryF(checkedValues);
   };
 
-  const handleLanguageChange = (checkedValues) => {
-    console.log("Languages selected = ", checkedValues);
-    setSelectedLanguages(checkedValues);
+  const handlePriseChange = (e) => {
+    setPrise(e.target.value);
   };
+  const handleLanguageChange = (checkedValues) => {
+    setLanguage(checkedValues);
+  };
+  const handleTeacherChange = (checkedValues) => {
+    setTeacher(checkedValues);
+  };
+
+  const { data: teachersData } = useQuery(["GetTeachers"], GetTeachers);
 
   return (
     <Accordion.Root
       className="AccordionRoot"
       type="multiple"
-      defaultValue={["item-1", "item-2"]}
+      defaultValue={["item-1"]}//["item-1", "item-2"]
       collapsible
     >
       <Accordion.Item className="AccordionItem" value="item-1">
         <AccordionTrigger>Kategoriya</AccordionTrigger>
         <AccordionContent>
-          <Checkbox.Group value={selectedLevels} onChange={handleLevelChange}>
+          <Checkbox.Group value={categoryF} onChange={handleCategoryChange}>
             <div className="checkbox-list">
               {isLoading ? (
                 <Skeleton count={3} width={300} />
@@ -99,18 +122,34 @@ const AllCourseAccordion = () => {
       <Accordion.Item className="AccordionItem" value="item-2">
         <AccordionTrigger>Narx</AccordionTrigger>
         <AccordionContent>
-          <Checkbox.Group
-            value={selectedLanguages}
-            onChange={handleLanguageChange}
-          >
+          <Radio.Group value={prise} onChange={handlePriseChange}>
             <div className="checkbox-list">
-              {languageOptions.map((item) => (
+              {priseOptions.map((item) => (
+                <Radio
+                  className="text-[17px]"
+                  key={item.value}
+                  value={item.value}
+                >
+                  {item.label}
+                </Radio>
+              ))}
+            </div>
+          </Radio.Group>
+        </AccordionContent>
+      </Accordion.Item>
+
+      <Accordion.Item className="AccordionItem" value="item-3">
+        <AccordionTrigger>Til bo'yicha</AccordionTrigger>
+        <AccordionContent>
+          <Checkbox.Group value={language} onChange={handleLanguageChange}>
+            <div className="checkbox-list">
+              {languageOption.map((item) => (
                 <Checkbox
                   className="text-[17px]"
                   key={item.value}
                   value={item.value}
                 >
-                  {item.label} ({item.count})
+                  {item.label}
                 </Checkbox>
               ))}
             </div>
@@ -118,21 +157,14 @@ const AllCourseAccordion = () => {
         </AccordionContent>
       </Accordion.Item>
 
-      <Accordion.Item className="AccordionItem" value="item-3">
-        <AccordionTrigger>Daraja</AccordionTrigger>
+      <Accordion.Item className="AccordionItem" value="item-4">
+        <AccordionTrigger>O'qituvchilar</AccordionTrigger>
         <AccordionContent>
-          <Checkbox.Group
-            value={selectedLanguages}
-            onChange={handleLanguageChange}
-          >
+          <Checkbox.Group value={teacher} onChange={handleTeacherChange}>
             <div className="checkbox-list">
-              {levelOption.map((item) => (
-                <Checkbox
-                  className="text-[17px]"
-                  key={item.value}
-                  value={item.value}
-                >
-                  {item.label} ({item.count})
+              {teachersData?.data.data.teachers?.map((item) => (
+                <Checkbox className="text-[17px]" key={item.id} value={item.id}>
+                  {item?.first_name} {item?.last_name}
                 </Checkbox>
               ))}
             </div>

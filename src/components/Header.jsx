@@ -12,14 +12,16 @@ import "./styles.css";
 import { ProfileContext } from "../context/ProfileProvider";
 import { useQuery } from "react-query";
 import { GetUsersUserme } from "../services/api";
+import { CoursesContext } from "../context/CoursesProvider";
+import { debounce } from "../utils/debounce";
 
 const { Option } = Select;
 const Header = () => {
   const navigate = useNavigate();
-  const [searchText, setSearchText] = useState("");
-  const { userData } = useContext(ProfileContext);
   const [open, setOpen] = useState(false);
-  const { setUserData } = useContext(ProfileContext);
+  const { userData, setUserData } = useContext(ProfileContext);
+  const { text, setText } = useContext(CoursesContext);
+
   useQuery(
     ["GetUsersUserme"],
     () => GetUsersUserme(localStorage.getItem("token")),
@@ -48,7 +50,8 @@ const Header = () => {
     }
   }
   const handleSearchInput = (e) => {
-    setSearchText(e.target.value);
+    setText(e.target.value);
+    navigate("/courses");
   };
 
   function exitHandle() {
@@ -109,9 +112,9 @@ const Header = () => {
               <i className="fa-solid fa-magnifying-glass w-[1.125rem] h-[1.125rem]"></i>
               <input
                 type="text"
-                value={searchText}
+                value={text}
                 placeholder={"Qidirish..."}
-                onChange={(e) => handleSearchInput(e)}
+                onChange={(e) => debounce(handleSearchInput(e))}
                 className="bg-[#F1F2F4] w-full outline-none border-none text-[#758195] text-sm placeholder:text-[#1E1E1E99]"
               />
             </div>

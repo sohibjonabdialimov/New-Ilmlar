@@ -25,7 +25,6 @@ const StudentProfile = () => {
   const [open, setOpen] = useState(false);
   const { control, getValues, setValue, reset } = useForm();
   const { userData, setUserData } = useContext(ProfileContext);
-  const [img, setImg] = useState(null);
   const fileInputRef = useRef(null);
   const [messageApi, contextHolder] = message.useMessage();
   const { refetch } = useQuery(
@@ -57,8 +56,8 @@ const StudentProfile = () => {
     const file = event.target.files[0];
     if (file) {
       PostEditProfileImage({ file: file })
-        .then((res) => {
-          setImg(res.data.data.courseId.profile_img);
+        .then(() => {
+          refetch();
           messageApi.open({
             type: "info",
             content: "Rasm o'zgartirildi",
@@ -128,13 +127,11 @@ const StudentProfile = () => {
               <img
                 className="sm:w-[142px] sm:h-[142px] object-cover w-[90px] h-[90px] rounded-full"
                 src={
-                  img
-                    ? img
-                    : userData?.profile_img
+                  userData?.profile_img
                     ? userData?.profile_img
                     : teacher_profile
                 }
-                alt=""
+                alt="Ilmlar o'qituvchisining rasmi"
               />
               <div
                 onClick={handleButtonClick}

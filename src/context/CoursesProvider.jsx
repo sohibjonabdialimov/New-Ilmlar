@@ -7,6 +7,12 @@ export default function CoursesProvider({ children }) {
   const [newCourses, setNewCourses] = useState([]);
   const [priceCourses, setPriceCourses] = useState([]);
   const [teacherCourse, setTeacherCourse] = useState([]);
+  const [text, setText] = useState("");
+  const [level, setLevel] = useState(null);
+  const [language, setLanguage] = useState(null);
+  const [teacher, setTeacher] = useState(null);
+  const [categoryF, setCategoryF] = useState(null);
+  const [prise, setPrise] = useState(null);
 
   return (
     <CoursesContext.Provider
@@ -18,7 +24,14 @@ export default function CoursesProvider({ children }) {
         setPriceCourses,
         setNewCourses,
         setTeacherCourse,
-        teacherCourse
+        teacherCourse,
+        setText,
+        text,
+        level, setLevel,
+        language, setLanguage,
+        teacher, setTeacher,
+        categoryF, setCategoryF,
+        prise, setPrise
       }}
     >
       {children}

@@ -39,7 +39,7 @@ export const RoutesConfig = [{
     Component: RegisterPage,
   },
   {
-    title: "register",
+    title: "teacher-register",
     path: "/teacher-register",
     Layout: AuthLayout,
     roles: [],
