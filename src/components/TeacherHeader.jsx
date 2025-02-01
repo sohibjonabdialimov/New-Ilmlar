@@ -12,7 +12,6 @@ const TeacherHeader = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { userData } = useContext(ProfileContext);
-  console.log(userData);
   
   const showDrawer = () => {
     setOpen(true);
