@@ -8,6 +8,8 @@ export default function CoursesProvider({ children }) {
   const [priceCourses, setPriceCourses] = useState([]);
   const [popularCourses, setPopularCourses] = useState([]);
   const [teacherCourse, setTeacherCourse] = useState([]);
+  const [savedCourses, setSavedCourses] = useState([]);
+  const [purchasedCourses, setPurchasedCourses] = useState([]);
   const [text, setText] = useState("");
   const [level, setLevel] = useState(null);
   const [language, setLanguage] = useState(null);
@@ -18,6 +20,10 @@ export default function CoursesProvider({ children }) {
   return (
     <CoursesContext.Provider
       value={{
+        setSavedCourses,
+        savedCourses,
+        setPurchasedCourses,
+        purchasedCourses,
         courses,
         setCourses,
         newCourses,

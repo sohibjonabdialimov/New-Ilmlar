@@ -1,7 +1,25 @@
 import { NavLink } from "react-router-dom";
 import Header from "../components/Header";
+import { useContext } from "react";
+import { CoursesContext } from "../context/CoursesProvider";
+import { useQuery } from "react-query";
+import { GetPurchasedCourses, GetSavedCourses } from "../services/api";
 
 const DesktopLayout = ({ children }) => {
+  const { setSavedCourses, setPurchasedCourses } = useContext(CoursesContext);
+
+  useQuery(["GetSavedCourses"], GetSavedCourses, {
+    onSuccess(data) {
+      setSavedCourses(data.data.data);
+    },
+  });
+  useQuery(["GetPurchasedCourses"], GetPurchasedCourses, {
+    onSuccess(data) {
+      setPurchasedCourses(data.data.data);
+    },
+  });
+   
+
   return (
     <>
       <div className="sm:px-[1.6rem] px-[1rem] bg-layout_color min-h-[100dvh] pb-6">

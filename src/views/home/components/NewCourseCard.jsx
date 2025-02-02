@@ -5,19 +5,34 @@ import { formatPrice } from "../../../utils/formatPrice";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
 import { GetSaveCourse, GetTeacherAccountId } from "../../../services/api";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { message } from "antd";
 import { useQuery } from "react-query";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useInView } from "react-intersection-observer";
+import { CoursesContext } from "../../../context/CoursesProvider";
 const NewCourseCard = ({ type, role, item, buy, save }) => {
   const navigate = useNavigate();
   const { ref, inView } = useInView({
-    threshold: 0.2, 
-    triggerOnce: true, 
+    threshold: 0.2,
+    triggerOnce: true,
   });
   const [isSave, setIsSave] = useState(save || false);
+  const [isBuy, setIsBuy] = useState(buy || false);
   const [messageApi, contextHolder] = message.useMessage();
+  const { savedCourses, purchasedCourses } = useContext(CoursesContext);
+
+  useEffect(() => {
+    if (savedCourses.some((element) => element.id === item?.id)) {
+      setIsSave(true);
+    }
+  }, [item?.id, savedCourses]);
+
+  useEffect(() => {
+    if (purchasedCourses.some((element) => element.id === item?.id)) {
+      setIsBuy(true);
+    }
+  }, [item?.id, purchasedCourses]);
 
   const handleSaveCourse = (id) => {
     GetSaveCourse(id)
@@ -52,13 +67,13 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
     <div
       ref={ref}
       onClick={() =>
-        buy
+        isBuy
           ? navigate(`/my-course/${item?.id}`)
           : role === "teacher"
           ? navigate(`/teacher-course-info/${item?.id}`)
           : navigate(`/courses/${item?.id}`)
       }
-      className={`transition-all duration-700 ease-out transform cursor-pointer lazy_img ${
+      className={`pb-8 transition-all duration-700 ease-out transform cursor-pointer lazy_img ${
         inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
     >
@@ -83,11 +98,12 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
             alt="Ilmlar yulduz"
           />
           <p className="font-normal text-[11px] leading-5 text-secondary_color">
-            {Number(item?.average_score).toFixed(1)} (30 sharhlar)
+            {Number(item?.average_score).toFixed(1)} ({item?.comments_count}{" "}
+            sharhlar)
           </p>
         </div>
         <p className="font-normal text-[11px] leading-5 text-secondary_color">
-          120 o’quvchi
+          {item?.purchased_count} o'quvchi
         </p>
       </div>
       <h1 className="text-lg font-semibold text-main_color mb-2 line-clamp-2">
@@ -109,7 +125,7 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
             />
           )}
 
-          <p className="text-secondary_color text-sm font-normal">
+          <p className="text-secondary_color text-sm font-normal line-clamp-1">
             {teacherAccountId?.data.data.first_name}{" "}
             {teacherAccountId?.data.data.last_name}
           </p>
@@ -136,23 +152,29 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
           <p className="text-[#00FF84] text-base font-semibold">Ommaviy</p>
         </div>
       ) : (
-        <div className="flex items-center justify-between mr-4">
-          <p className="text-blue_color text-base font-semibold">
-            {formatPrice(item?.price)} so'm
-          </p>
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              handleSaveCourse(item?.id);
-            }}
-            className="flex items-center gap-2"
-          >
-            {isSave ? (
-              <i className="fa-solid fa-bookmark text-2xl"></i>
+        <div className="absolute bottom-0 flex justify-between w-full">
+            {isBuy ? (
+              <p className="text-blue_color text-lg font-semibold">
+                Sotib olingan
+              </p>
             ) : (
-              <i className="fa-regular fa-bookmark text-2xl"></i>
+              <p className="text-blue_color text-lg font-semibold">
+                {formatPrice(item?.price)} so'm
+              </p>
             )}
-          </div>
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSaveCourse(item?.id);
+              }}
+              className="flex items-center gap-2 mr-3"
+            >
+              {isSave ? (
+                <i className="fa-solid fa-bookmark text-2xl"></i>
+              ) : (
+                <i className="fa-regular fa-bookmark text-2xl"></i>
+              )}
+            </div>
         </div>
       )}
     </div>

@@ -96,8 +96,6 @@ const StudentProfile = () => {
     ["GetSavedCourses"],
     GetSavedCourses
   );
-  let courses = myCourses?.data.data;
-  let savedCourses = mySavedCourses?.data.data;
 
   const GetTeacherAccountId = async (id) => {
     const { data } = await axiosT.get(`/api/users/teacheraccout/${id}`, {
@@ -216,7 +214,7 @@ const StudentProfile = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {courses?.map((item) => {
+          {myCourses?.data.data?.map((item) => {
             return (
               <SwiperSlide key={item?.id}>
                 <NewCourseCard item={item} buy={true} type={true} />
@@ -249,7 +247,7 @@ const StudentProfile = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {savedCourses?.map((item) => {
+          {mySavedCourses?.data.data?.map((item) => {
             return (
               <SwiperSlide key={item?.id} className="">
                 <NewCourseCard save={true} item={item} />

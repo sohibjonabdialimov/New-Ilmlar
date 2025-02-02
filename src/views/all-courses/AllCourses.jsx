@@ -12,7 +12,8 @@ import { debounce } from "../../utils/debounce";
 const AllCourses = () => {
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const { courses, setCourses, text, categoryF, prise, language, teacher } = useContext(CoursesContext);
+  const { courses, setCourses, text, categoryF, prise, language, teacher } =
+    useContext(CoursesContext);
   const handleSearchInput = (e) => {
     setSearchText(e.target.value);
   };
@@ -23,10 +24,19 @@ const AllCourses = () => {
   const onClose = () => {
     setOpen(false);
   };
+  console.log(prise);
 
   const { isLoading } = useQuery(
     ["GetCourses", prise, text, categoryF, language, teacher],
-    () => GetCourses(text, language?.join(","), prise, null, categoryF?.join(","), teacher?.join(",")),
+    () =>
+      GetCourses(
+        text,
+        language?.join(","),
+        prise,
+        null,
+        categoryF?.join(","),
+        teacher?.join(",")
+      ),
     {
       onSuccess(data) {
         setCourses(
@@ -37,7 +47,7 @@ const AllCourses = () => {
   );
 
   return (
-    <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
+    <div className="pt-7 sm:pb-16 pb-2 sm:mb-0 mb-16">
       <div className="grid items-center grid-cols-6 gap-2 sm:hidden mb-4">
         <div
           onClick={showDrawer}
@@ -72,14 +82,6 @@ const AllCourses = () => {
               })}
         </div>
       </div>
-      {/* <div className="flex justify-center items-center sm:mt-8 mt-5 sm:mb-0 mb-10">
-        <Pagination
-          className="custom-pagination"
-          current={current}
-          onChange={onChange}
-          total={courses?.length}
-        />
-      </div> */}
 
       <Drawer title="Filterlar" onClose={onClose} open={open}>
         <AllCourseAccordion />
