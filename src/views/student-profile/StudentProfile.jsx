@@ -88,10 +88,12 @@ const StudentProfile = () => {
         console.log(err);
       });
   };
+
   const { data: myCourses } = useQuery(
     ["GetPurchasedCourses"],
     GetPurchasedCourses
   );
+
   const { data: mySavedCourses } = useQuery(
     ["GetSavedCourses"],
     GetSavedCourses
