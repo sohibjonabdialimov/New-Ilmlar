@@ -6,6 +6,7 @@ export default function CoursesProvider({ children }) {
   const [courses, setCourses] = useState([]);
   const [newCourses, setNewCourses] = useState([]);
   const [priceCourses, setPriceCourses] = useState([]);
+  const [popularCourses, setPopularCourses] = useState([]);
   const [teacherCourse, setTeacherCourse] = useState([]);
   const [text, setText] = useState("");
   const [level, setLevel] = useState(null);
@@ -20,6 +21,8 @@ export default function CoursesProvider({ children }) {
         courses,
         setCourses,
         newCourses,
+        setPopularCourses,
+        popularCourses,
         priceCourses,
         setPriceCourses,
         setNewCourses,

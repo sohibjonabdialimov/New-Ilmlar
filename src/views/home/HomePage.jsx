@@ -4,7 +4,7 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import { Navigation, FreeMode } from "swiper/modules";
 import NewCourseCard from "./components/NewCourseCard";
-import PopularCourseNavbar from "./components/PopularCourseNavbar";
+// import PopularCourseNavbar from "./components/PopularCourseNavbar";
 import TeachersGroupCard from "./components/TeachersGroupCard";
 import "./home.css";
 import { useNavigate } from "react-router-dom";
@@ -18,11 +18,11 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   const {
-    courses,
-    setCourses,
     newCourses,
     priceCourses,
     setNewCourses,
+    popularCourses,
+    setPopularCourses,
     setPriceCourses,
   } = useContext(CoursesContext);
   // useEffect(() => {
@@ -45,13 +45,17 @@ const HomePage = () => {
     () => GetCourses(null, null, null, null, null, null),
     {
       onSuccess(data) {
+        console.log(data.data.data);
+
         setNewCourses(
           data.data.data
             .filter((item) => item.status === 2 && item.is_verified)
             .filter((item) => differenceDate(item.created_at) <= 20)
         );
-        setCourses(
-          data.data.data.filter((item) => item.status === 2 && item.is_verified)
+        setPopularCourses(
+          data.data.data
+            .filter((item) => item.status === 2 && item.is_verified)
+            .filter((item) => item.average_score >= 4)
         );
         setPriceCourses(
           data.data.data
@@ -63,12 +67,10 @@ const HomePage = () => {
   );
   const { data: teachersData } = useQuery(["GetTeachers"], GetTeachers);
 
-  let teacher = teachersData?.data.data.teachers;
-
   return (
     <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
       {newCourses.length && !isLoading ? (
-        <div className="relative mb-16">
+        <div className="relative mb-20">
           <h1 className="title absolute top-0">Yangi qo’shilgan kurslar</h1>
           {/* <iframe
           src="https://player.vimeo.com/video/1045989772?h=2ac395a2694246448051ee01faf135ce"
@@ -122,7 +124,7 @@ const HomePage = () => {
         ""
       )}
 
-      <div className="relative mb-14">
+      <div className="relative mb-20">
         <h1 className="title absolute top-0">Obuna bo‘ling va o‘rganing</h1>
 
         <Swiper
@@ -159,7 +161,7 @@ const HomePage = () => {
                   </SwiperSlide>
                 );
               })
-            : teacher?.map((item) => {
+            : teachersData?.data.data.teachers?.map((item) => {
                 return (
                   <SwiperSlide key={item.id}>
                     <TeachersGroupCard item={item} />
@@ -168,9 +170,9 @@ const HomePage = () => {
               })}
         </Swiper>
       </div>
-      <h1 className="title">Ommabop kurslarimiz</h1>
-      <PopularCourseNavbar />
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 grid-cols-1 gap-x-4 gap-y-8 mb-5">
+      <h1 className="title mb-8">Ommabop kurslarimiz</h1>
+      {/* <PopularCourseNavbar /> */}
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 grid-cols-1 gap-x-4 gap-y-8 mb-8">
         {isLoading
           ? [1, 2, 3, 4].map((item) => {
               return (
@@ -179,11 +181,11 @@ const HomePage = () => {
                 </SwiperSlide>
               );
             })
-          : courses?.slice(0, 12).map((item) => {
+          : popularCourses.map((item) => {
               return <NewCourseCard item={item} key={item.id} />;
             })}
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center mb-20">
         <button
           onClick={() => {
             navigate("/courses");

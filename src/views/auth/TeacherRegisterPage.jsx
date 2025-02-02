@@ -125,7 +125,7 @@ const TeacherRegisterPage = () => {
                       <>
                         <Input
                           {...field}
-                          placeholder="Mutaxassisligingizni kiriting..."
+                          placeholder="Ingliz tili o'qituvchisi, grafik dizayner"
                           className="w-full py-2 px-4 rounded-[10px] sm:text-base text-sm"
                         />
                       </>
@@ -181,7 +181,7 @@ const TeacherRegisterPage = () => {
                         <Input
                           {...field}
                           type="number"
-                          placeholder="+998 90 123 45 67"
+                          placeholder="+998(90)-123-45-67"
                           className="w-full py-2 px-4 rounded-[10px] sm:text-base text-sm"
                         />
                       </>

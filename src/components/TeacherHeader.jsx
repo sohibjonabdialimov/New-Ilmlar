@@ -1,5 +1,4 @@
 import { Drawer, Popover } from "antd";
-
 import card from "../assets/images/card.svg";
 import teacherLogo from "../assets/images/teacher-logo.svg";
 import mycard from "../assets/images/my_card.svg";
@@ -12,7 +11,7 @@ const TeacherHeader = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { userData } = useContext(ProfileContext);
-  
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -82,7 +81,10 @@ const TeacherHeader = () => {
     <>
       <div className="py-[0.8rem]">
         <header className="w-full sm:px-6 px-3 py-2 flex flex-wrap items-center justify-between rounded-2xl mx-auto gap-4 bg-bg_color">
-          <div onClick={() => navigate("/my-profile")} className="flex gap-4 items-center cursor-pointer">
+          <div
+            onClick={() => navigate("/my-profile")}
+            className="flex gap-4 items-center cursor-pointer"
+          >
             <img className="sm:h-[35px] h-[24px]" src={teacherLogo} alt="" />
           </div>
 
@@ -105,7 +107,13 @@ const TeacherHeader = () => {
             </div>
             <Popover
               overlayClassName="custom-popover"
-              content={content}
+              content={userData?.is_verified ? content : <div
+                onClick={exitHandle}
+                className="cursor-pointer hover:bg-gray-100 flex items-center gap-3 px-4 py-3 text-base"
+              >
+                <i className="fa-solid fa-arrow-right-from-bracket text-blue_color"></i>
+                <p className="text-main_color">Chiqish</p>
+              </div>}
               placement="bottomRight"
             >
               <div className="cursor-pointer sm:w-[44px] sm:h-[44px] w-[30px] h-[30px] flex justify-center items-center bg-blue_color rounded-full">
@@ -116,7 +124,8 @@ const TeacherHeader = () => {
             </Popover>
           </nav>
         </header>
-        <Drawer title="Hamyon" onClose={onClose} open={open}>
+        {
+          userData?.is_verified ?  <Drawer title="Hamyon" onClose={onClose} open={open}>
           <div>
             <div className="relative">
               <img
@@ -134,7 +143,9 @@ const TeacherHeader = () => {
               </p>
             </div>
           </div>
-        </Drawer>
+        </Drawer> : <></>
+        }
+       
       </div>
     </>
   );

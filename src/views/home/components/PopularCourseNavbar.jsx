@@ -2,21 +2,26 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
 import { FreeMode } from "swiper/modules";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import "./style.css";
 import { useQuery } from "react-query";
 import { GetCategories } from "../../../services/api";
 import { capitalizeFirstLetter } from "../../../utils/formatText";
 import Skeleton from "react-loading-skeleton";
+import { CoursesContext } from "../../../context/CoursesProvider";
 const PopularCourseNavbar = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+   const {
+      setCategoryF,
+    } = useContext(CoursesContext);
   const { data: category, isLoading } = useQuery(
     ["GetCategories"],
     GetCategories
   );
 
-  const handleSlideClick = (index) => {
+  const handleSlideClick = (id, index) => {
+    setCategoryF(id);
     setActiveIndex(index);
   };
 
@@ -52,7 +57,7 @@ const PopularCourseNavbar = () => {
         category?.data.data.map((item, index) => {
           return (
             <SwiperSlide
-              onClick={() => handleSlideClick(index)}
+              onClick={() => handleSlideClick(item?.id, index)}
               key={item.id}
               className={`popular_slider_item text-main_color text-center font-normal text-base ${
                 activeIndex === index ? "active" : ""

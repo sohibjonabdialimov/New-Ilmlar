@@ -72,6 +72,13 @@ export const GetUsersUserme = (token) => {
     },
   });
 };
+export const GetUsersUsermeWithoutLocalStorage = () => {
+  return axiosT.get("/api/users/userme", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
 
 export const PostCourses = (data, ) => {
   return axiosT.post("/api/courses", data, {

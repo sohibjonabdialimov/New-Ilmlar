@@ -3,36 +3,52 @@ import teacher_profile from "../../../assets/images/teacher_avatar.jpg";
 import NewCourseCard from "../../home/components/NewCourseCard";
 import { Controller, useForm } from "react-hook-form";
 import { ProfileContext } from "../../../context/ProfileProvider";
-// import { TeacherDataContext } from "../../../context/TeacherDataProvider";
 import { useContext, useEffect, useRef } from "react";
 import axiosT from "../../../services/axios";
 import { useQueries, useQuery } from "react-query";
-import { GetTeacherAccount, PostEditProfileImage, PutUsers } from "../../../services/api";
+import {
+  GetTeacherAccount,
+  GetUsersUsermeWithoutLocalStorage,
+  PostEditProfileImage,
+  PutUsers,
+} from "../../../services/api";
 import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 const TeacherProfile = () => {
   const [messageApi, contextHolder] = message.useMessage();
-  const { control, getValues, setValue } = useForm();
-  const { userData } = useContext(ProfileContext);
+  const { control, getValues, setValue, reset } = useForm();
+  const { userData, setUserData } = useContext(ProfileContext);
   const fileInputRef = useRef(null);
-  // const { setMyCourse, myCourse } = useContext(TeacherDataContext);
   const navigate = useNavigate();
   const submitHandler = async () => {
     const editTeacher = getValues().EDITTEACHERPROFILE;
-        PutUsers(editTeacher)
-          .then((res) => {
-            console.log(res);
-            
-            refetch();
-            // reset();
-            // setOpen(false);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-    console.log(editTeacher);
+    PutUsers(editTeacher)
+      .then(() => {
+        teacherRefetch();
+        reset();
+        messageApi.open({
+          type: "info",
+          content: "Ma'lumotlar o'zgartirildi!",
+        });
+      })
+      .catch(() => {
+        messageApi.open({
+          type: "error",
+          content: "Xatolik kuzatildi!",
+        });
+      });
   };
+
+  const { refetch: teacherRefetch } = useQuery(
+    ["GetUsersUsermeWithoutLocalStorage"],
+    GetUsersUsermeWithoutLocalStorage,
+    {
+      onSuccess(data) {
+        setUserData(data.data.data);
+      },
+    }
+  );
 
   const handleButtonClick = () => {
     if (fileInputRef.current) {
@@ -46,6 +62,7 @@ const TeacherProfile = () => {
       PostEditProfileImage({ file: file })
         .then(() => {
           refetch();
+          teacherRefetch();
           messageApi.open({
             type: "info",
             content: "Rasm o'zgartirildi",
@@ -63,11 +80,18 @@ const TeacherProfile = () => {
   };
 
   useEffect(() => {
-    // setValue("EDITTEACHERPROFILE.user_name", userData.user_name);
     setValue("EDITTEACHERPROFILE.first_name", userData.first_name);
     setValue("EDITTEACHERPROFILE.last_name", userData.last_name);
+    setValue("EDITTEACHERPROFILE.user_name", userData.user_name);
     setValue("EDITTEACHERPROFILE.email", userData.email);
-  }, [userData, setValue]);
+    setValue("EDITTEACHERPROFILE.info", userData.teacherMoreData.info);
+    setValue("EDITTEACHERPROFILE.link", userData.teacherMoreData.link);
+    setValue("EDITTEACHERPROFILE.phone", userData.teacherMoreData.phone);
+    setValue(
+      "EDITTEACHERPROFILE.specialization",
+      userData.teacherMoreData.spiceal
+    );
+  }, [userData, setValue, teacherRefetch]);
 
   const { data: teacherAccountData, refetch } = useQuery(
     ["GetTeacherAccount"],
@@ -89,16 +113,9 @@ const TeacherProfile = () => {
     }))
   );
 
-  // setMyCourse(
-  //   queries
-  //     ?.map((query) => query?.data?.data)
-  //     .filter((item) => item !== undefined)
-  // );
-
   const allData = queries
     ?.map((query) => query?.data?.data)
     .filter((item) => item !== undefined);
-  // setMyCourse(allData);
   return (
     <div className="py-7">
       {contextHolder}

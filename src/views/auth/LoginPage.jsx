@@ -18,6 +18,8 @@ const LoginPage = () => {
       const postResponse = await PostUsersLogin(login);
       localStorage.setItem("token", postResponse.data.data.token);
       await GetUsersUserme(postResponse?.data.data.token).then((response) => {
+        console.log(response);
+        
         if (response.data.data.type === 1 && !response.data.data.is_verified) {
           navigate("/non-active-profile");
         } else if (

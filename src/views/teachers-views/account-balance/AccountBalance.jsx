@@ -4,8 +4,12 @@ import { Controller, useForm } from "react-hook-form";
 import "./account-balance.css";
 import { ProfileContext } from "../../../context/ProfileProvider";
 import { formatDate } from "../../../utils/formatDate";
-import { CardWithDrawal } from "../../../services/api";
+import {
+  CardWithDrawal,
+  GetUsersUsermeWithoutLocalStorage,
+} from "../../../services/api";
 import TextArea from "antd/es/input/TextArea";
+import { useQuery } from "react-query";
 
 const columns = [
   {
@@ -27,27 +31,31 @@ const columns = [
 ];
 const AccountBalance = () => {
   const [open, setOpen] = useState(false);
-  const { userData } = useContext(ProfileContext);
-  const { control, getValues, refetch } = useForm();
+  const { userData, setUserData } = useContext(ProfileContext);
+  const { control, getValues, reset } = useForm();
   const [messageApi, contextHolder] = message.useMessage();
-  const showDrawer = () => {
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
+
+  const { refetch: teacherRefetch } = useQuery(
+    ["GetUsersUsermeWithoutLocalStorage"],
+    GetUsersUsermeWithoutLocalStorage,
+    {
+      onSuccess(data) {
+        setUserData(data.data.data);
+      },
+    }
+  );
   const submitHandler = () => {
     const data = getValues().BALANCE;
     data.amount = +data.amount;
     CardWithDrawal(data)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         setOpen(false);
+        reset();
         messageApi.open({
           type: "info",
           content: "Pulni yechib oldingiz!",
         });
-        // refetch();
+        teacherRefetch();
       })
       .catch((err) => {
         console.log(err.response.data.error);
@@ -83,7 +91,7 @@ const AccountBalance = () => {
         </div>
         <div>
           <button
-            onClick={showDrawer}
+            onClick={() => setOpen(true)}
             className="btn sm:text-base sm:p-[10px_20px] p-[8px_15px] text-sm"
           >
             Pul yechib olish
@@ -100,7 +108,11 @@ const AccountBalance = () => {
           dataSource={userData?.transactions_history}
         />
       </div>
-      <Drawer title="Pul yechib olish" onClose={onClose} open={open}>
+      <Drawer
+        title="Pul yechib olish"
+        onClose={() => setOpen(false)}
+        open={open}
+      >
         <Form
           layout="vertical"
           className="w-full"
@@ -113,7 +125,7 @@ const AccountBalance = () => {
             <Form.Item
               label={
                 <span className="text-secondary_color font-semibold text-base">
-                  Pul miqdori ( so’m )
+                  Pul miqdori ( so'm )
                 </span>
               }
             >
@@ -129,7 +141,6 @@ const AccountBalance = () => {
                       <Input
                         {...field}
                         type="number"
-                        // placeholder="Ismingizni kiriting..."
                         className="w-full py-3 px-4 rounded-[10px]"
                       />
                     </>
@@ -155,7 +166,6 @@ const AccountBalance = () => {
                     <>
                       <Input
                         {...field}
-                        // placeholder="Familiyangizni kiriting..."
                         className="w-full py-3 px-4 rounded-[10px]"
                       />
                     </>
@@ -181,7 +191,6 @@ const AccountBalance = () => {
                     <>
                       <Input
                         {...field}
-                        // placeholder="Foydalanuvchi nomini kiriting..."
                         className="w-full py-3 px-4 rounded-[10px]"
                       />
                     </>
@@ -197,9 +206,9 @@ const AccountBalance = () => {
               }
             >
               <Controller
-                // rules={{
-                //   required: "Field is required",
-                // }}
+                rules={{
+                  required: "Field is required",
+                }}
                 control={control}
                 name="BALANCE.transactionData"
                 render={({ field }) => {
@@ -207,8 +216,8 @@ const AccountBalance = () => {
                     <>
                       <TextArea
                         {...field}
+                        placeholder="Izoh..."
                         style={{ height: 80 }}
-                        // placeholder="O'zingiz haqingizda ma'lumot kiriting..."
                         className="w-full py-3 px-4 rounded-[10px]"
                       />
                     </>

@@ -1,34 +1,131 @@
-import { Form, Input } from "antd";
-import teacher_profile from "../../../assets/images/teacher_profile.jpg";
+import { Form, Input, message } from "antd";
+import teacher_profile from "../../../assets/images/teacher_avatar.jpg";
 import { Controller, useForm } from "react-hook-form";
 import { ProfileContext } from "../../../context/ProfileProvider";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
+import {
+  GetUsersUsermeWithoutLocalStorage,
+  PostEditProfileImage,
+  PutUsers,
+} from "../../../services/api";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 const NonActiveProfile = () => {
-  const { control, getValues, setValue } = useForm();
-  const { userData } = useContext(ProfileContext);
+  const [messageApi, contextHolder] = message.useMessage();
+  const { control, getValues, setValue, reset } = useForm();
+  const { userData, setUserData } = useContext(ProfileContext);
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null);
   const submitHandler = async () => {
     const editTeacher = getValues().EDITTEACHERPROFILE;
-    console.log(editTeacher);
+    PutUsers(editTeacher)
+      .then(() => {
+        teacherRefetch();
+        reset();
+        messageApi.open({
+          type: "info",
+          content: "Ma'lumotlar o'zgartirildi!",
+        });
+      })
+      .catch(() => {
+        messageApi.open({
+          type: "error",
+          content: "Xatolik kuzatildi!",
+        });
+      });
+  };
+
+  const { refetch: teacherRefetch } = useQuery(
+    ["GetUsersUsermeWithoutLocalStorage"],
+    GetUsersUsermeWithoutLocalStorage,
+    {
+      onSuccess(data) {
+        setUserData(data.data.data);
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (userData.type === 1 && !userData.is_verified) {
+      navigate("/non-active-profile");
+    } else if (userData.type === 1 && userData.is_verified) {
+      navigate("/my-profile");
+    } else {
+      navigate("/");
+    }
+  }, [userData, navigate]);
+
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      PostEditProfileImage({ file: file })
+        .then(() => {
+          teacherRefetch();
+          messageApi.open({
+            type: "info",
+            content: "Rasm o'zgartirildi",
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+
+          messageApi.open({
+            type: "error",
+            content: "Rasm yuklashda xatolik bor",
+          });
+        });
+    }
   };
 
   useEffect(() => {
-    // setValue("EDITTEACHERPROFILE.user_name", userData.user_name);
     setValue("EDITTEACHERPROFILE.first_name", userData.first_name);
     setValue("EDITTEACHERPROFILE.last_name", userData.last_name);
+    setValue("EDITTEACHERPROFILE.user_name", userData.user_name);
     setValue("EDITTEACHERPROFILE.email", userData.email);
-  }, [userData, setValue]);
+    setValue("EDITTEACHERPROFILE.info", userData.teacherMoreData.info);
+    setValue("EDITTEACHERPROFILE.link", userData.teacherMoreData.link);
+    setValue("EDITTEACHERPROFILE.phone", userData.teacherMoreData.phone);
+    setValue(
+      "EDITTEACHERPROFILE.specialization",
+      userData.teacherMoreData.spiceal
+    );
+  }, [userData, setValue, teacherRefetch]);
+  console.log(userData);
 
   return (
     <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
+      {contextHolder}
       <div className="flex sm:flex-row flex-col justify-between sm:mb-16 mb-10 gap-4">
         <div className="flex sm:gap-5 gap-3">
-          <img
-            className="sm:w-[142px] sm:h-[146px] w-[80px] h-[80px] rounded-full"
-            src={teacher_profile}
-            alt=""
-          />
+          <div className="relative">
+            <img
+              className="sm:w-[142px] sm:h-[142px] object-cover w-[90px] h-[90px] rounded-full"
+              src={
+                userData?.profile_img ? userData?.profile_img : teacher_profile
+              }
+              alt="Ilmlar o'qituvchisining rasmi"
+            />
+            <div
+              onClick={handleButtonClick}
+              className="border rounded-3xl translate-x-1/2 right-1/2 p-[4px_5px] inline-block absolute -bottom-3 text-xs text-white bg-[#262C36FF] cursor-pointer"
+            >
+              O'zgartirish
+            </div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </div>
           <div className="flex flex-col justify-center sm:gap-2 gap-1 py-0">
             <h1 className="text-main_color font-semibold sm:text-xl text-base sm:mb-1 mb-0">
               {userData?.first_name}{" "}
@@ -36,7 +133,16 @@ const NonActiveProfile = () => {
               {userData?.middle_name ? userData?.middle_name : ""}
             </h1>
             <p className="text-[#758195] sm:text-base text-xs font-medium">
-              Biznes yo'nalishi
+              {userData?.teacherMoreData?.spiceal}
+            </p>
+            <p className="text-[#758195] sm:text-base text-xs font-semibold">
+              Tel raqam:{" "}
+              <span className="font-normal">
+                {userData?.teacherMoreData?.phone}
+              </span>
+            </p>
+            <p className="text-[#758195] sm:text-base text-xs font-semibold">
+              Status: <span className="font-normal">Aktiv emas</span>
             </p>
           </div>
         </div>
@@ -120,7 +226,7 @@ const NonActiveProfile = () => {
                     required: "Field is required",
                   }}
                   control={control}
-                  name="EDITTEACHERPROFILE.username"
+                  name="EDITTEACHERPROFILE.user_name"
                   render={({ field }) => {
                     return (
                       <>
