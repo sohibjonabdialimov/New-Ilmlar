@@ -18,19 +18,22 @@ const LoginPage = () => {
       const postResponse = await PostUsersLogin(login);
       localStorage.setItem("token", postResponse.data.data.token);
       await GetUsersUserme(postResponse?.data.data.token).then((response) => {
-        console.log(response);
-        
-        if (response.data.data.type === 1 && !response.data.data.is_verified) {
-          navigate("/non-active-profile");
-        } else if (
+        if (
           response.data.data.type === 1 &&
-          response.data.data.is_verified
+          response.data.data.teacherMoreData.status === 1
+        ) {
+          navigate("/non-active-profile");
+        }
+        if (
+          response.data.data.type === 1 &&
+          response.data.data.teacherMoreData.status === 2
         ) {
           navigate("/my-profile");
-        } else {
+        }
+        if (response.data.data.type === 2) {
           navigate("/");
         }
-        
+
         setUserData(response.data.data);
         localStorage.setItem("user-data", JSON.stringify(response.data.data));
       });

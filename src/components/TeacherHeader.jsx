@@ -107,13 +107,19 @@ const TeacherHeader = () => {
             </div>
             <Popover
               overlayClassName="custom-popover"
-              content={userData?.is_verified ? content : <div
-                onClick={exitHandle}
-                className="cursor-pointer hover:bg-gray-100 flex items-center gap-3 px-4 py-3 text-base"
-              >
-                <i className="fa-solid fa-arrow-right-from-bracket text-blue_color"></i>
-                <p className="text-main_color">Chiqish</p>
-              </div>}
+              content={
+                userData?.teacherMoreData?.status === 2 ? (
+                  content
+                ) : (
+                  <div
+                    onClick={exitHandle}
+                    className="cursor-pointer hover:bg-gray-100 flex items-center gap-3 px-4 py-3 text-base"
+                  >
+                    <i className="fa-solid fa-arrow-right-from-bracket text-blue_color"></i>
+                    <p className="text-main_color">Chiqish</p>
+                  </div>
+                )
+              }
               placement="bottomRight"
             >
               <div className="cursor-pointer sm:w-[44px] sm:h-[44px] w-[30px] h-[30px] flex justify-center items-center bg-blue_color rounded-full">
@@ -124,28 +130,29 @@ const TeacherHeader = () => {
             </Popover>
           </nav>
         </header>
-        {
-          userData?.is_verified ?  <Drawer title="Hamyon" onClose={onClose} open={open}>
-          <div>
-            <div className="relative">
-              <img
-                className="aspect-[25/16] h-full w-full"
-                src={mycard}
-                alt="Student's Plastic card"
-              />
-              <p className="absolute bottom-20 left-5 font-medium text-xl text-white">
-                {userData?.amount?.balance ? userData?.amount?.balance : "0"}{" "}
-                UZS
-              </p>
-              <p className="absolute bottom-3 left-3 text-base text-white">
-                Hisob raqam:{" "}
-                <span className="font-medium">{userData?.payment_id}</span>
-              </p>
+        {userData?.teacherMoreData?.status === 2 ? (
+          <Drawer title="Hamyon" onClose={onClose} open={open}>
+            <div>
+              <div className="relative">
+                <img
+                  className="aspect-[25/16] h-full w-full"
+                  src={mycard}
+                  alt="Student's Plastic card"
+                />
+                <p className="absolute bottom-20 left-5 font-medium text-xl text-white">
+                  {userData?.amount?.balance ? userData?.amount?.balance : "0"}{" "}
+                  UZS
+                </p>
+                <p className="absolute bottom-3 left-3 text-base text-white">
+                  Hisob raqam:{" "}
+                  <span className="font-medium">{userData?.payment_id}</span>
+                </p>
+              </div>
             </div>
-          </div>
-        </Drawer> : <></>
-        }
-       
+          </Drawer>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );

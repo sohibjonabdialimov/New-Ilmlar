@@ -4,7 +4,11 @@ import star from "../../../assets/images/star.svg";
 import { formatPrice } from "../../../utils/formatPrice";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
-import { GetSaveCourse, GetTeacherAccount, GetPercentage } from "../../../services/api";
+import {
+  GetSaveCourse,
+  GetTeacherAccount,
+  GetPercentage,
+} from "../../../services/api";
 import { useContext, useEffect, useState } from "react";
 import { Button, message, notification } from "antd";
 import { useQuery } from "react-query";
@@ -77,10 +81,8 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
       enabled: !!item?.teacher_id,
     }
   );
-  const { data: percentage } = useQuery(
-    ["GetPercentage"], GetPercentage
-  );
-  
+  const { data: percentage } = useQuery(["GetPercentage"], GetPercentage);
+
   return (
     <div
       ref={ref}
@@ -160,9 +162,13 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
       ) : role === "teacher" ? (
         <div className="flex items-center justify-between">
           <p className="text-blue_color text-base font-semibold">
-            {formatPrice(+(item?.price))} so'm
+            {formatPrice(+item?.price)} so'm
           </p>
-          <p className="text-[#00FF84] text-base font-semibold">Ommaviy</p>
+          {item?.status === 2 ? (
+            <p className="text-[#00FF84] text-base font-semibold">Ommaviy</p>
+          ) : (
+            <p className="text-[#CDDA1B] text-base font-semibold">Jarayonda</p>
+          )}
         </div>
       ) : (
         <div className="absolute bottom-0 flex justify-between w-full">
@@ -172,7 +178,10 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
             </p>
           ) : (
             <p className="text-blue_color text-lg font-semibold">
-              {formatPrice(+(item?.price) * (1 + percentage?.data.data.percent / 100))} so'm
+              {formatPrice(
+                +item?.price * (1 + percentage?.data.data.percent / 100)
+              )}{" "}
+              so'm
             </p>
           )}
           <div

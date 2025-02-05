@@ -48,11 +48,13 @@ const NonActiveProfile = () => {
   );
 
   useEffect(() => {
-    if (userData.type === 1 && !userData.is_verified) {
+    if (userData?.type === 1 && !userData?.teacherMoreData.status === 1) {
       navigate("/non-active-profile");
-    } else if (userData.type === 1 && userData.is_verified) {
+    }
+    if (userData?.type === 1 && userData?.teacherMoreData.status === 2) {
       navigate("/my-profile");
-    } else {
+    }
+    if (userData?.type === 2) {
       navigate("/");
     }
   }, [userData, navigate]);
@@ -90,12 +92,12 @@ const NonActiveProfile = () => {
     setValue("EDITTEACHERPROFILE.last_name", userData.last_name);
     setValue("EDITTEACHERPROFILE.user_name", userData.user_name);
     setValue("EDITTEACHERPROFILE.email", userData.email);
-    setValue("EDITTEACHERPROFILE.info", userData.teacherMoreData.info);
-    setValue("EDITTEACHERPROFILE.link", userData.teacherMoreData.link);
-    setValue("EDITTEACHERPROFILE.phone", userData.teacherMoreData.phone);
+    setValue("EDITTEACHERPROFILE.info", userData.teacherMoreData?.info);
+    setValue("EDITTEACHERPROFILE.link", userData.teacherMoreData?.link);
+    setValue("EDITTEACHERPROFILE.phone", userData.teacherMoreData?.phone);
     setValue(
       "EDITTEACHERPROFILE.specialization",
-      userData.teacherMoreData.spiceal
+      userData.teacherMoreData?.spiceal
     );
   }, [userData, setValue, teacherRefetch]);
   console.log(userData);

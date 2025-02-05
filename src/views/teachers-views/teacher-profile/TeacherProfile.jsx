@@ -80,16 +80,16 @@ const TeacherProfile = () => {
   };
 
   useEffect(() => {
-    setValue("EDITTEACHERPROFILE.first_name", userData.first_name);
-    setValue("EDITTEACHERPROFILE.last_name", userData.last_name);
-    setValue("EDITTEACHERPROFILE.user_name", userData.user_name);
-    setValue("EDITTEACHERPROFILE.email", userData.email);
-    setValue("EDITTEACHERPROFILE.info", userData.teacherMoreData.info);
-    setValue("EDITTEACHERPROFILE.link", userData.teacherMoreData.link);
-    setValue("EDITTEACHERPROFILE.phone", userData.teacherMoreData.phone);
+    setValue("EDITTEACHERPROFILE.first_name", userData?.first_name);
+    setValue("EDITTEACHERPROFILE.last_name", userData?.last_name);
+    setValue("EDITTEACHERPROFILE.user_name", userData?.user_name);
+    setValue("EDITTEACHERPROFILE.email", userData?.email);
+    setValue("EDITTEACHERPROFILE.info", userData?.teacherMoreData?.info);
+    setValue("EDITTEACHERPROFILE.link", userData?.teacherMoreData?.link);
+    setValue("EDITTEACHERPROFILE.phone", userData?.teacherMoreData?.phone);
     setValue(
       "EDITTEACHERPROFILE.specialization",
-      userData.teacherMoreData.spiceal
+      userData?.teacherMoreData?.spiceal
     );
   }, [userData, setValue, teacherRefetch]);
 
@@ -116,6 +116,8 @@ const TeacherProfile = () => {
   const allData = queries
     ?.map((query) => query?.data?.data)
     .filter((item) => item !== undefined);
+    console.log(allData);
+    
   return (
     <div className="py-7">
       {contextHolder}
