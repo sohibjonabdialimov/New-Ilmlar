@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 export const ProfileContext = createContext(null);
 
 export default function ProfileProvider({ children }) {
-  const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("user-data")) || []);
+  const [userData, setUserData] = useState([]);
   
 
   return (

@@ -14,27 +14,45 @@ import { useQuery } from "react-query";
 import {
   GetBuyCourse,
   GetCourseDetailWithoutToken,
+  GetPercentage,
   GetSubscription,
-  GetTeacherAccountId,
+  GetTeacherAccount,
   PutSubscription,
 } from "../../services/api";
 import { formatPrice } from "../../utils/formatPrice";
-import { message, Modal } from "antd";
-import { useState } from "react";
+import { Button, message, Modal, notification } from "antd";
+import { useContext, useState } from "react";
 import Skeleton from "react-loading-skeleton";
+import { ProfileContext } from "../../context/ProfileProvider";
 
 function CourseInfo() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { userData } = useContext(ProfileContext);
   const [course, setCourse] = useState(null);
   const [url, setUrl] = useState(null);
 
   const [comments, setComments] = useState([]);
 
   const showModal = () => {
-    setIsModalOpen(true);
+    if (userData?.id) {
+      setIsModalOpen(true);
+    } else {
+      notification.open({
+        message: <h2 className="font-medium">Avval ro'yxatdan o'ting!</h2>,
+        description:
+          "Siz ro'yxatdan o'tgandan keyin kursni sotib olsangiz bo'ladi",
+        placement: "top",
+        duration: 3,
+        btn: (
+          <Button type="primary" onClick={() => navigate("/register")}>
+            Ro'yxatdan o'tish
+          </Button>
+        ),
+      });
+    }
   };
 
   const handleCancel = () => {
@@ -45,6 +63,7 @@ function CourseInfo() {
     ["GetCourseDetailWithoutToken"],
     () => GetCourseDetailWithoutToken(id),
     {
+      enabled: !!id,
       onSuccess(data) {
         setCourse(data.data.data);
         setComments(data.data.data.commits);
@@ -78,25 +97,39 @@ function CourseInfo() {
     ["GetSubscription", course?.teacher_id],
     () => GetSubscription(course?.teacher_id),
     {
-      enabled: !!course?.teacher_id,
+      enabled: !!course?.teacher_id && !!userData?.id,
     }
   );
-  
+
   const handleSubs = (id) => {
-    PutSubscription(id)
-      .then(() => {
-        refetch();
-      })
-      .catch(() => {
-        messageApi.open({
-          type: "error",
-          content: (
-            <h1 className="text-lg">
-              Xatolik yuz berdi. Keyinroq urinib ko'ring
-            </h1>
-          ),
+    if (userData?.id) {
+      PutSubscription(id)
+        .then(() => {
+          refetch();
+        })
+        .catch(() => {
+          messageApi.open({
+            type: "error",
+            content: (
+              <h1 className="text-lg">
+                Xatolik yuz berdi. Saytni yangilab, boshidan urinib ko'ring
+              </h1>
+            ),
+          });
         });
+    } else {
+      notification.open({
+        message: <h2 className="font-medium">Avval ro'yxatdan o'ting!</h2>,
+        description: "Siz ro'yxatdan o'tgandan keyin obuna bo'la olasiz",
+        placement: "top",
+        duration: 3,
+        btn: (
+          <Button type="primary" onClick={() => navigate("/register")}>
+            Ro'yxatdan o'tish
+          </Button>
+        ),
       });
+    }
   };
 
   const handleOk = () => {
@@ -126,12 +159,13 @@ function CourseInfo() {
   }
 
   const { data: teacherAccountId } = useQuery(
-    ["GetTeacherAccountId", course?.teacher_id],
-    () => GetTeacherAccountId(course?.teacher_id),
+    ["GetTeacherAccount", course?.teacher_id],
+    () => GetTeacherAccount(course?.teacher_id),
     {
       enabled: !!course?.teacher_id,
     }
   );
+  const { data: percentage } = useQuery(["GetPercentage"], GetPercentage);
   let teacherInfo = teacherAccountId?.data.data;
 
   return (
@@ -325,13 +359,16 @@ function CourseInfo() {
             </div>
             <div className="w-full">
               {course?.videos.map((module, index) => (
-                <di className="border-dotted accordion-trigger" key={index}>
+                <div className="border-dotted accordion-trigger" key={index}>
                   <div className="flex items-center sm:gap-3 gap-1">
                     <img className="sm:w-[20px] w-[15px]" src={right} alt="" />
                     <p>{module.title}</p>
                   </div>
                   {module.is_free ? (
-                    <button onClick={() => navigate(`/lessons/${module?.id}`)} className="text-blue_color font-medium sm:text-xl text-xs">
+                    <button
+                      onClick={() => navigate(`/lessons/${module?.id}`)}
+                      className="text-blue_color font-medium sm:text-xl text-xs"
+                    >
                       Ko'rish
                     </button>
                   ) : (
@@ -342,7 +379,7 @@ function CourseInfo() {
                       Yopiq
                     </button>
                   )}
-                </di>
+                </div>
               ))}
             </div>
           </div>
@@ -351,7 +388,10 @@ function CourseInfo() {
           <div className="flex justify-between mb-4">
             <p className="text-2xl font-[400]">Kurs narxi:</p>
             <p className="font-bold text-2xl">
-              {formatPrice(course?.price)} so'm
+              {formatPrice(
+                +course?.price * (1 + percentage?.data.data.percent / 100)
+              )}{" "}
+              so'm
             </p>
           </div>
           <div className="flex items-center justify-between mb-6">
@@ -387,7 +427,12 @@ function CourseInfo() {
       <div className="sm:hidden block mt-4 w-full h-[11rem] shadow-[inset_0px_0px_5px_3px_#1D7AFCFF] p-5 rounded-[16px]">
         <div className="flex justify-between mb-4">
           <p className="text-xl font-[400]">Kurs narxi:</p>
-          <p className="font-bold text-xl">{formatPrice(course?.price)} so'm</p>
+          <p className="font-bold text-xl">
+            {formatPrice(
+              +course?.price * (1 + percentage?.data.data.percent / 100)
+            )}{" "}
+            so'm
+          </p>
         </div>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2 text-sm">

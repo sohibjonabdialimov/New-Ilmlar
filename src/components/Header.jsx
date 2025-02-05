@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import uzb from "public/img/flag_uzb.png";
 import eng from "public/img/flag_eng.png";
 import rus from "public/img/flag_rus.png";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import "./styles.css";
 import { ProfileContext } from "../context/ProfileProvider";
 import { useQuery } from "react-query";
@@ -20,19 +20,17 @@ const Header = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { userData, setUserData } = useContext(ProfileContext);
-  const { text, setText } = useContext(CoursesContext);
+  const { setText } = useContext(CoursesContext);
+  const [text_1, setText_1] = useState("");
 
   useQuery(
     ["GetUsersUserme"],
     () => GetUsersUserme(localStorage.getItem("token")),
     {
+      enabled: !!localStorage.getItem("token"),
       onSuccess: (response) => {
         setUserData(response.data.data);
-        localStorage.setItem("user-data", JSON.stringify(response.data.data));
       },
-    },
-    {
-      enable: !!localStorage.getItem("token"),
     }
   );
 
@@ -49,10 +47,12 @@ const Header = () => {
       document.exitFullscreen();
     }
   }
-  const handleSearchInput = (e) => {
-    setText(e.target.value);
-    navigate("/courses");
-  };
+  // const handleSearchInput = (e) => {
+  //   console.log(e.target.value);
+
+  //   setText(e.target.value);
+  //   navigate("/courses");
+  // };
 
   function exitHandle() {
     localStorage.removeItem("token");
@@ -100,6 +100,15 @@ const Header = () => {
     </div>
   );
 
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      console.log(value);
+      setText(value);
+      navigate("/courses");
+    }, 700),
+    []
+  );
+
   return (
     <>
       <div className="py-[0.8rem]">
@@ -112,9 +121,13 @@ const Header = () => {
               <i className="fa-solid fa-magnifying-glass w-[1.125rem] h-[1.125rem]"></i>
               <input
                 type="text"
-                value={text}
+                value={text_1}
                 placeholder={"Qidirish..."}
-                onChange={(e) => debounce(handleSearchInput(e))}
+                // onChange={(e) => debounce(handleSearchInput(e))}
+                onChange={(e) => {
+                  debouncedSearch(e.target.value);
+                  setText_1(e.target.value);
+                }}
                 className="bg-[#F1F2F4] w-full outline-none border-none text-[#758195] text-sm placeholder:text-[#1E1E1E99]"
               />
             </div>

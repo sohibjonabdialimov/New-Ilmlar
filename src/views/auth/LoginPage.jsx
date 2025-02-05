@@ -30,6 +30,7 @@ const LoginPage = () => {
         } else {
           navigate("/");
         }
+        
         setUserData(response.data.data);
         localStorage.setItem("user-data", JSON.stringify(response.data.data));
       });

@@ -5,7 +5,7 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import { Navigation, FreeMode } from "swiper/modules";
 import NewCourseCard from "../home/components/NewCourseCard";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   GetSubscription,
   GetTeacherAccount,
@@ -15,10 +15,15 @@ import { useQueries, useQuery } from "react-query";
 import axiosT from "../../services/axios";
 import "./style.css";
 import Skeleton from "react-loading-skeleton";
-import { message } from "antd";
+import { Button, message, notification } from "antd";
 import CardSkeleton from "../../components/skeleton/CardSkeleton";
+import { useContext } from "react";
+import { ProfileContext } from "../../context/ProfileProvider";
+
 const TeacherProfileForStudents = () => {
   const { id } = useParams();
+  const { userData } = useContext(ProfileContext);
+  const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
 
   const {
@@ -26,33 +31,45 @@ const TeacherProfileForStudents = () => {
     isLoading: loading,
     refetch,
   } = useQuery(["GetSubscription", id], () => GetSubscription(id), {
-    enabled: !!id,
+    enabled: !!id && !!userData?.id,
   });
   const { data: teacherAccountData } = useQuery(
     ["GetTeacherAccount"],
     () => GetTeacherAccount(id),
     {
-      onSuccess: (data) => {
-        console.log(data.data.data);
-      },
+      enabled: !!id,
     }
   );
 
   const handleSubs = (id) => {
-    PutSubscription(id)
-      .then(() => {
-        refetch();
-      })
-      .catch(() => {
-        messageApi.open({
-          type: "error",
-          content: (
-            <h1 className="text-lg">
-              Xatolik yuz berdi. Keyinroq urinib ko'ring
-            </h1>
-          ),
+    if (userData?.id) {
+      PutSubscription(id)
+        .then(() => {
+          refetch();
+        })
+        .catch(() => {
+          messageApi.open({
+            type: "error",
+            content: (
+              <h1 className="text-lg">
+                Xatolik yuz berdi. Saytni yangilab, boshidan urinib ko'ring
+              </h1>
+            ),
+          });
         });
+    } else {
+      notification.open({
+        message: <h2 className="font-medium">Avval ro'yxatdan o'ting!</h2>,
+        description: "Siz ro'yxatdan o'tgandan keyin obuna bo'la olasiz",
+        placement: "top",
+        duration: 3,
+        btn: (
+          <Button type="primary" onClick={() => navigate("/register")}>
+            Ro'yxatdan o'tish
+          </Button>
+        ),
       });
+    }
   };
   const teacherAccount = teacherAccountData?.data.data;
   const fetchResource = async (id) => {
@@ -66,6 +83,7 @@ const TeacherProfileForStudents = () => {
       enabled: !!id,
     }))
   );
+
   const isLoading = queries.some((query) => query.isLoading);
 
   const allData = queries
@@ -96,7 +114,10 @@ const TeacherProfileForStudents = () => {
               </span>
             </p>
             <p className="text-[#758195] sm:text-base text-xs font-semibold">
-              Obunachilar soni: <span className="font-normal">159 ta</span>
+              Obunachilar soni:{" "}
+              <span className="font-normal">
+                {teacherAccount?.subscribedStudentsCount} ta
+              </span>
             </p>
           </div>
         </div>

@@ -4,21 +4,22 @@ import { useContext } from "react";
 import { CoursesContext } from "../context/CoursesProvider";
 import { useQuery } from "react-query";
 import { GetPurchasedCourses, GetSavedCourses } from "../services/api";
-
+import { ProfileContext } from "../context/ProfileProvider";
 const DesktopLayout = ({ children }) => {
   const { setSavedCourses, setPurchasedCourses } = useContext(CoursesContext);
-
+  const { userData } = useContext(ProfileContext);
   useQuery(["GetSavedCourses"], GetSavedCourses, {
+    enabled: !!userData?.id,
     onSuccess(data) {
       setSavedCourses(data.data.data);
     },
   });
   useQuery(["GetPurchasedCourses"], GetPurchasedCourses, {
+    enabled: !!userData?.id,
     onSuccess(data) {
       setPurchasedCourses(data.data.data);
     },
   });
-   
 
   return (
     <>

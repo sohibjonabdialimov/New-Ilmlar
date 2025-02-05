@@ -33,6 +33,9 @@ export const GetCourses = (search,
 export const GetCategories = () => {
   return axiosT.get("/api/category");
 };
+export const GetPercentage = () => {
+  return axiosT.get("/api/actioncourses/percentage");
+};
 export const GetCourseDetailWithoutToken = (id) => {
   return axiosT.get(`/api/courses/course/${id}/withouttoken`);
 };
@@ -163,14 +166,7 @@ export const GetCourseDetailWithToken = (id) => {
     },
   });
 };
-export const GetTeacherAccountId = (id) => {
-  return axiosT.get(`/api/users/teacheraccout/${id}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "multipart/form-data",
-    },
-  });
-};
+
 
 export const GetSaveCourse = (id) => {
   return axiosT.get(`/api/actioncourses/save-courses/${id}`, {

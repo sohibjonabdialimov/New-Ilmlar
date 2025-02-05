@@ -24,7 +24,6 @@ const AllCourses = () => {
   const onClose = () => {
     setOpen(false);
   };
-  console.log(prise);
 
   const { isLoading } = useQuery(
     ["GetCourses", prise, text, categoryF, language, teacher],
@@ -37,7 +36,7 @@ const AllCourses = () => {
         categoryF?.join(","),
         teacher?.join(",")
       ),
-    {
+    { 
       onSuccess(data) {
         setCourses(
           data.data.data.filter((item) => item.status === 2 && item.is_verified)

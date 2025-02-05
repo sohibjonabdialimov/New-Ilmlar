@@ -1,25 +1,23 @@
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import right from "../../assets/images/right.png";
 // import time from "../../assets/images/time.png";
 import "./my-course.css";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { Button, Input, message, Modal, Rate, Form } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import {
   GetCourseDetail,
   PostCommit,
   PostScore,
-  GetTeacherAccountId,
+  GetTeacherAccount,
 } from "../../services/api";
 const { TextArea } = Input;
 const MyCourse = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [form] = Form.useForm();
 
   const { id } = useParams();
-  const { name } = location.state || {};
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const showModal = () => {
@@ -48,27 +46,21 @@ const MyCourse = () => {
       console.error("Error in handleSubmit:", error);
     }
   };
-  useEffect(() => {
-    if (name === "buy") {
-      messageApi.open({
-        type: "info",
-        content: (
-          <h1 className="text-lg">Kurs muvaffaqqiyatli sotib olindi!</h1>
-        ),
-      });
-    }
-  }, [name, messageApi]);
 
-  const { data: course } = useQuery(["GetCourseDetail"], () =>
-    GetCourseDetail(id)
+  const { data: course } = useQuery(
+    ["GetCourseDetail"],
+    () => GetCourseDetail(id),
+    {
+      enabled: !!id,
+    }
   );
   const myCourse = course?.data.data;
 
   const { data: teacherAccountId } = useQuery(
-    ["GetTeacherAccountId", myCourse?.teacher_id],
-    () => GetTeacherAccountId(myCourse?.teacher_id),
+    ["GetTeacherAccount", myCourse?.teacher_id],
+    () => GetTeacherAccount(myCourse?.teacher_id),
     {
-      enabled: !!myCourse?.teacher_id
+      enabled: !!myCourse?.teacher_id,
     }
   );
 
@@ -114,6 +106,7 @@ const MyCourse = () => {
                   <p className="font-normal">
                     {myCourse?.commits.length} ta sharh
                   </p>
+                  {/* <p>N</p> */}
                 </div>
                 <div className="flex items-center gap-3 sm:text-base text-sm">
                   <i className="fa-regular fa-circle-check text-blue_color"></i>

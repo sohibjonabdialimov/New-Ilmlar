@@ -31,14 +31,12 @@ const StudentProfile = () => {
     ["GetUsersUserme"],
     () => GetUsersUserme(localStorage.getItem("token")),
     {
+      enabled: !!localStorage.getItem("token"),
       onSuccess: (response) => {
         setUserData(response.data.data);
-        localStorage.setItem("user-data", JSON.stringify(response.data.data));
+        // localStorage.setItem("user-data", JSON.stringify(response.data.data));
       },
     },
-    {
-      enable: !!localStorage.getItem("token"),
-    }
   );
   useEffect(() => {
     setValue("EDITPROFILE.user_name", userData.user_name);
@@ -91,12 +89,18 @@ const StudentProfile = () => {
 
   const { data: myCourses } = useQuery(
     ["GetPurchasedCourses"],
-    GetPurchasedCourses
+    GetPurchasedCourses,
+    {
+      enabled: !!userData.length
+    }
   );
 
   const { data: mySavedCourses } = useQuery(
     ["GetSavedCourses"],
-    GetSavedCourses
+    GetSavedCourses,
+    {
+      enabled: !!userData.length
+    }
   );
 
   const GetTeacherAccountId = async (id) => {

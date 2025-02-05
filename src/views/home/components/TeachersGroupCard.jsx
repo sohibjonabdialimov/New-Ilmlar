@@ -3,37 +3,54 @@ import default_teacher from "../../../assets/images/default_teacher.webp";
 import "./style.css";
 import { GetSubscription, PutSubscription } from "../../../services/api";
 import { useQuery } from "react-query";
-import { message } from "antd";
+import { Button, message, notification } from "antd";
 import { useInView } from "react-intersection-observer";
+import { useContext } from "react";
+import { ProfileContext } from "../../../context/ProfileProvider";
 const TeachersGroupCard = ({ item, type }) => {
   const navigate = useNavigate();
   const { ref, inView } = useInView({
     threshold: 0.2,
     triggerOnce: true,
   });
+  const { userData } = useContext(ProfileContext);
   const [messageApi, contextHolder] = message.useMessage();
   const { data: subsciptionData, refetch } = useQuery(
     ["GetSubscription", item?.id],
     () => GetSubscription(item?.id),
     {
-      enabled: !!item?.id,
+      enabled: !!item?.id && !!userData.length,
     }
   );
   const handleSubs = (id) => {
-    PutSubscription(id)
-      .then(() => {
-        refetch();
-      })
-      .catch(() => {
-        messageApi.open({
-          type: "error",
-          content: (
-            <h1 className="text-lg">
-              Xatolik yuz berdi. Keyinroq urinib ko'ring
-            </h1>
-          ),
+    if (userData?.id) {
+      PutSubscription(id)
+        .then(() => {
+          refetch();
+        })
+        .catch(() => {
+          messageApi.open({
+            type: "error",
+            content: (
+              <h1 className="text-lg">
+                Xatolik yuz berdi. Saytni yangilab, boshidan urinib ko'ring
+              </h1>
+            ),
+          });
         });
+    } else {
+      notification.open({
+        message: "Avval ro'yxatdan o'ting!",
+        description: "Siz ro'yxatdan o'tgandan keyin obuna bo'la olasiz",
+        placement: "top",
+        duration: 3,
+        btn: (
+          <Button type="primary" onClick={() => navigate("/register")}>
+            Ro'yxatdan o'tish
+          </Button>
+        ),
       });
+    }
   };
 
   return (

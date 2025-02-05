@@ -1,27 +1,28 @@
 import avatar from "../../../assets/images/profile.webp";
 import star from "../../../assets/images/star.svg";
-import ProgressBar from "@ramonak/react-progress-bar";
+// import ProgressBar from "@ramonak/react-progress-bar";
 import { formatPrice } from "../../../utils/formatPrice";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
-import { GetSaveCourse, GetTeacherAccountId } from "../../../services/api";
+import { GetSaveCourse, GetTeacherAccount, GetPercentage } from "../../../services/api";
 import { useContext, useEffect, useState } from "react";
-import { message } from "antd";
+import { Button, message, notification } from "antd";
 import { useQuery } from "react-query";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useInView } from "react-intersection-observer";
 import { CoursesContext } from "../../../context/CoursesProvider";
+import { ProfileContext } from "../../../context/ProfileProvider";
 const NewCourseCard = ({ type, role, item, buy, save }) => {
   const navigate = useNavigate();
   const { ref, inView } = useInView({
     threshold: 0.2,
     triggerOnce: true,
   });
+  const [messageApi, contextHolder] = message.useMessage();
   const [isSave, setIsSave] = useState(save || false);
   const [isBuy, setIsBuy] = useState(buy || false);
-  const [messageApi, contextHolder] = message.useMessage();
   const { savedCourses, purchasedCourses } = useContext(CoursesContext);
-
+  const { userData } = useContext(ProfileContext);
   useEffect(() => {
     if (savedCourses.some((element) => element.id === item?.id)) {
       setIsSave(true);
@@ -35,34 +36,51 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
   }, [item?.id, purchasedCourses]);
 
   const handleSaveCourse = (id) => {
-    GetSaveCourse(id)
-      .then((res) => {
-        if (res.data.data.action === "saved") {
-          setIsSave(true);
-        }
-        if (res.data.data.action === "not-saved") {
-          setIsSave(false);
-        }
-      })
-      .catch(() => {
-        messageApi.open({
-          type: "error",
-          content: (
-            <h1 className="text-lg">
-              Kursni saqlash uchun avval ro'yxatdan o'ting!
-            </h1>
-          ),
+    if (userData?.id) {
+      GetSaveCourse(id)
+        .then((res) => {
+          if (res.data.data.action === "saved") {
+            setIsSave(true);
+          }
+          if (res.data.data.action === "not-saved") {
+            setIsSave(false);
+          }
+        })
+        .catch(() => {
+          messageApi.open({
+            type: "error",
+            content: (
+              <h1 className="text-lg">
+                Xatolik yuz berdi. Saytni yangilab, boshidan urinib ko'ring
+              </h1>
+            ),
+          });
         });
+    } else {
+      notification.open({
+        message: "Avval ro'yxatdan o'ting!",
+        description: "Siz ro'yxatdan o'tgandan keyin obuna bo'la olasiz",
+        placement: "top",
+        duration: 3,
+        btn: (
+          <Button type="primary" onClick={() => navigate("/register")}>
+            Ro'yxatdan o'tish
+          </Button>
+        ),
       });
+    }
   };
   const { data: teacherAccountId } = useQuery(
-    ["GetTeacherAccountId", item?.teacher_id],
-    () => GetTeacherAccountId(item?.teacher_id),
+    ["GetTeacherAccount", item?.teacher_id],
+    () => GetTeacherAccount(item?.teacher_id),
     {
       enabled: !!item?.teacher_id,
     }
   );
-
+  const { data: percentage } = useQuery(
+    ["GetPercentage"], GetPercentage
+  );
+  
   return (
     <div
       ref={ref}
@@ -77,19 +95,13 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
         inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
     >
-      {contextHolder}
       <LazyLoadImage
         className="w-full object-cover rounded-2xl h-[220px]"
         effect="blur"
         src={item?.obloshka}
         alt=""
       />
-
-      {/* <img
-        className="w-full object-cover rounded-2xl h-[220px]"
-        src={item?.obloshka}
-        alt="ilmlar image of course"
-      /> */}
+      {contextHolder}
       <div className="flex items-center justify-between mt-3 mb-2">
         <div className="flex items-center gap-1">
           <img
@@ -143,38 +155,39 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
         </div>
       )}
       {type ? (
-        <ProgressBar height="18px" className="bar_container" completed={70} />
+        // <ProgressBar height="18px" className="bar_container" completed={70} />
+        <div></div>
       ) : role === "teacher" ? (
         <div className="flex items-center justify-between">
           <p className="text-blue_color text-base font-semibold">
-            {formatPrice(item?.price)} so'm
+            {formatPrice(+(item?.price))} so'm
           </p>
           <p className="text-[#00FF84] text-base font-semibold">Ommaviy</p>
         </div>
       ) : (
         <div className="absolute bottom-0 flex justify-between w-full">
-            {isBuy ? (
-              <p className="text-blue_color text-lg font-semibold">
-                Sotib olingan
-              </p>
+          {isBuy ? (
+            <p className="text-blue_color text-lg font-semibold">
+              Sotib olingan
+            </p>
+          ) : (
+            <p className="text-blue_color text-lg font-semibold">
+              {formatPrice(+(item?.price) * (1 + percentage?.data.data.percent / 100))} so'm
+            </p>
+          )}
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              handleSaveCourse(item?.id);
+            }}
+            className="flex items-center gap-2 mr-3"
+          >
+            {isSave ? (
+              <i className="fa-solid fa-bookmark text-2xl"></i>
             ) : (
-              <p className="text-blue_color text-lg font-semibold">
-                {formatPrice(item?.price)} so'm
-              </p>
+              <i className="fa-regular fa-bookmark text-2xl"></i>
             )}
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                handleSaveCourse(item?.id);
-              }}
-              className="flex items-center gap-2 mr-3"
-            >
-              {isSave ? (
-                <i className="fa-solid fa-bookmark text-2xl"></i>
-              ) : (
-                <i className="fa-regular fa-bookmark text-2xl"></i>
-              )}
-            </div>
+          </div>
         </div>
       )}
     </div>

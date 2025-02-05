@@ -23,6 +23,9 @@ body {
 a {
   text-decoration: none;
 }
+.SideDock_module_sidedockInner__0918b45a {
+  display: none !important;
+}
 .lazy_img .lazy-load-image-loaded{
   width: 100% !important;
   display: block !important;
