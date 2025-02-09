@@ -91,7 +91,7 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
           ? navigate(`/my-course/${item?.id}`)
           : role === "teacher"
           ? navigate(`/teacher-course-info/${item?.id}`)
-          : navigate(`/courses/${item?.id}`)
+          : navigate(`/course/${item?.id}`)
       }
       className={`pb-8 transition-all duration-700 ease-out transform cursor-pointer lazy_img ${
         inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"

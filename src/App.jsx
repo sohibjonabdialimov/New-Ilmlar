@@ -75,7 +75,7 @@ const App = () => {
           />
         </Route>
       </Route> */}
-      <Route path="/courses" element={<CourseWrapPage />}>
+      <Route path="/course" element={<CourseWrapPage />}>
         <Route
           path=":id"
           element={

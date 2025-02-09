@@ -1,8 +1,9 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import right from "../../assets/images/right.png";
 // import time from "../../assets/images/time.png";
+import teacher from "../../assets/images/profile.webp";
 import "./my-course.css";
-import { Button, Input, message, Modal, Rate, Form } from "antd";
+import { Button, Input, message, Modal, Rate, Form, notification } from "antd";
 import { useContext, useState } from "react";
 import { useQuery } from "react-query";
 import {
@@ -10,8 +11,12 @@ import {
   PostCommit,
   PostScore,
   GetTeacherAccount,
+  GetSubscription,
+  PutSubscription,
 } from "../../services/api";
 import { LessonsContext } from "../../context/LessonsProvider";
+import Skeleton from "react-loading-skeleton";
+import { ProfileContext } from "../../context/ProfileProvider";
 const { TextArea } = Input;
 const MyCourse = () => {
   const navigate = useNavigate();
@@ -21,6 +26,8 @@ const MyCourse = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const { courseId, setCourseId } = useContext(LessonsContext);
+  const [course, setCourse] = useState(null);
+  const { userData } = useContext(ProfileContext);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -48,18 +55,31 @@ const MyCourse = () => {
     }
   };
 
-  const { data: course } = useQuery(
+
+  const {
+    data: subsciptionData,
+    isLoading,
+    refetch,
+  } = useQuery(
+    ["GetSubscription", course?.teacher_id],
+    () => GetSubscription(course?.teacher_id),
+    {
+      enabled: !!course?.teacher_id && !!userData?.id,
+    }
+  );
+  const { data: courseDetail } = useQuery(
     ["GetCourseDetail"],
     () => GetCourseDetail(id),
     {
       enabled: !!id,
       onSuccess(data) {
         setCourseId(data.data.data.id);
+        setCourse(data.data.data);
         localStorage.setItem("courseId", data.data.data.id);
       },
     }
   );
-  const myCourse = course?.data.data;
+  const myCourse = courseDetail?.data.data;
 
   const { data: teacherAccountId } = useQuery(
     ["GetTeacherAccount", myCourse?.teacher_id],
@@ -69,6 +89,37 @@ const MyCourse = () => {
     }
   );
 
+  const handleSubs = (id) => {
+    if (userData?.id) {
+      PutSubscription(id)
+        .then(() => {
+          refetch();
+        })
+        .catch(() => {
+          messageApi.open({
+            type: "error",
+            content: (
+              <h1 className="text-lg">
+                Xatolik yuz berdi. Saytni yangilab, boshidan urinib ko'ring
+              </h1>
+            ),
+          });
+        });
+    } else {
+      notification.open({
+        message: <h2 className="font-medium">Avval ro'yxatdan o'ting!</h2>,
+        description: "Siz ro'yxatdan o'tgandan keyin obuna bo'la olasiz",
+        placement: "top",
+        duration: 3,
+        btn: (
+          <Button type="primary" onClick={() => navigate("/register")}>
+            Ro'yxatdan o'tish
+          </Button>
+        ),
+      });
+    }
+  };
+  const teacherInfo = teacherAccountId?.data.data;
   return (
     <>
       {myCourse?.is_purchased && (
@@ -84,19 +135,60 @@ const MyCourse = () => {
           <div className="sm:pb-20 sm:pt-12 pt-5 pb-10">
             <div className="col-span-1 flex flex-col justify-between">
               <div className="">
-                <h1 className="sm:text-5xl text-xl font-semibold sm:pb-8 pb-5">
+                <h1 className="sm:text-[2rem] sm:leading-[2.4rem] text-xl font-semibold sm:pb-8 pb-3">
                   {myCourse?.name}
                 </h1>
-                <h4 className="sm:text-xl text-sm sm:mb-10 mb-5">
-                  Kurs muallifi:{" "}
-                  <Link
-                    to={`/teacher-profile/${teacherAccountId?.data.data.id}`}
-                    className="sm:text-2xl text-base font-semibold border-b-2 border-black"
+                <div className="flex justify-between gap-3 items-start mb-5">
+                  <div
+                    onClick={() =>
+                      navigate(`/teacher-profile/${course?.teacher_id}`)
+                    }
+                    className="flex items-center gap-2 cursor-pointer"
                   >
-                    {teacherAccountId?.data.data.first_name}{" "}
-                    {teacherAccountId?.data.data.last_name}
-                  </Link>
-                </h4>
+                    <img
+                      className="sm:w-[60px] sm:h-[60px] w-[40px] h-[40px] object-cover rounded-full"
+                      src={
+                        teacherInfo?.profile_img
+                          ? teacherInfo?.profile_img
+                          : teacher
+                      }
+                      alt="O'qituvchi rasmi"
+                    />
+                    <div className="flex flex-col gap-1">
+                      <h2 className="sm:text-xl text-sm font-medium">
+                        {teacherInfo?.first_name} {teacherInfo?.last_name}
+                      </h2>
+                      <p className="sm:text-base text-xs font-normal">
+                        {teacherInfo?.spiceal
+                          ? teacherInfo?.spiceal
+                          : "O'qituvchi"}
+                      </p>
+                    </div>
+                  </div>
+                  {isLoading || false ? (
+                    <Skeleton className="p-1" width={120} />
+                  ) : subsciptionData?.data.data.subscribed ? (
+                    <button
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleSubs(course?.teacher_id);
+                      }}
+                      className="unbtn sm:p-[5px_15px] p-[5px_10px] text-xs"
+                    >
+                      Obuna bo'lgansiz
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleSubs(course?.teacher_id);
+                      }}
+                      className="btn sm:p-[5px_15px] p-[5px_10px] text-xs"
+                    >
+                      Obuna bo'lish
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="flex items-center sm:gap-10 gap-2 mb-0 w-full">
@@ -208,11 +300,11 @@ const MyCourse = () => {
                 >
                   <div className="flex items-center sm:gap-3 gap-1">
                     <img className="sm:w-[20px] w-[15px]" src={right} alt="" />
-                    <p>{module?.title}</p>
+                    <p className="line-clamp-1">{module?.title}</p>
                   </div>
                   <button
                     onClick={() =>
-                      navigate(`/courses/${courseId}/lesson/${module?.id}`)
+                      navigate(`/course/${courseId}/lesson/${module?.id}`)
                     }
                     className="text-blue_color font-medium sm:text-xl text-xs"
                   >

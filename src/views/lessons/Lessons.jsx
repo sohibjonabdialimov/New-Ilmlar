@@ -64,7 +64,7 @@ const Lesson = () => {
 
   function changeVideo(id, is_free) {
     if (is_free) {
-      navigate(`/courses/${courseId}/lesson/${id}`);
+      navigate(`/course/${courseId}/lesson/${id}`);
       setOpen(false);
     }
   }

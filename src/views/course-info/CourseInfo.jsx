@@ -60,7 +60,7 @@ function CourseInfo() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  
+
   useQuery(
     ["GetCourseDetailWithoutToken"],
     () => GetCourseDetailWithoutToken(id),
@@ -183,13 +183,12 @@ function CourseInfo() {
         <i className="fa-solid fa-arrow-left sm:text-base text-xs"></i>
         <button className="sm:text-lg text-sm">Ortga qaytish</button>
       </div>
-      <div className="grid grid-cols-2 gap-10 sm:pb-20 pb-12 sm:pt-12 pt-4">
+      <div className="grid grid-cols-2 sm:gap-10 gap-2 sm:pb-20 pb-5 sm:pt-12 pt-4">
         <div className="sm:col-span-1 col-span-2 flex flex-col justify-between">
-          <div className="">
-            <h1 className="sm:text-[2.6rem] sm:leading-[3.3rem] text-xl sm:pt-7 pt-2 font-semibold sm:pb-8 pb-3">
+            <h1 className="sm:text-[2rem] sm:leading-[2.4rem] text-xl font-semibold sm:pb-8 pb-3">
               {course?.name}
             </h1>
-            <div className="flex justify-between gap-3 items-start">
+            <div className="flex justify-between gap-3 items-start mb-5">
               <div
                 onClick={() =>
                   navigate(`/teacher-profile/${course?.teacher_id}`)
@@ -197,7 +196,7 @@ function CourseInfo() {
                 className="flex items-center gap-2 cursor-pointer"
               >
                 <img
-                  className="w-[70px] h-[70px] object-cover rounded-full"
+                  className="sm:w-[60px] sm:h-[60px] w-[40px] h-[40px] object-cover rounded-full"
                   src={
                     teacherInfo?.profile_img
                       ? teacherInfo?.profile_img
@@ -209,7 +208,7 @@ function CourseInfo() {
                   <h2 className="sm:text-xl text-sm font-medium">
                     {teacherInfo?.first_name} {teacherInfo?.last_name}
                   </h2>
-                  <p className="sm:text-base text-xs font-normal">
+                  <p className="sm:text-base text-xs font-normal hidden sm:block">
                     {teacherInfo?.spiceal ? teacherInfo?.spiceal : "O'qituvchi"}
                   </p>
                 </div>
@@ -222,7 +221,7 @@ function CourseInfo() {
                     event.stopPropagation();
                     handleSubs(course?.teacher_id);
                   }}
-                  className="unbtn p-[5px_15px]"
+                  className="unbtn sm:p-[5px_15px] p-[5px_10px] text-xs"
                 >
                   Obuna bo'lgansiz
                 </button>
@@ -232,13 +231,12 @@ function CourseInfo() {
                     event.stopPropagation();
                     handleSubs(course?.teacher_id);
                   }}
-                  className="btn p-[5px_15px]"
+                  className="btn sm:p-[5px_15px] p-[5px_10px] text-xs"
                 >
                   Obuna bo'lish
                 </button>
               )}
             </div>
-          </div>
 
           <div className="grid grid-cols-2 sm:gap-y-6 gap-y-3">
             <div className="flex items-center sm:gap-3 gap-1 sm:text-lg text-sm">
@@ -295,7 +293,7 @@ function CourseInfo() {
             </div>
           </div>
         </div>
-        <div className="sm:col-span-1 col-span-2">
+        <div className="sm:col-span-1 col-span-2 mt-5 sm:mt-0">
           {course?.trieler ? (
             <iframe
               src={`https://player.vimeo.com/video/${url}?h=2ac395a2694246448051ee01faf135ce&title=0&byline=0&portrait=0`}
@@ -364,11 +362,13 @@ function CourseInfo() {
                 <div className="border-dotted accordion-trigger" key={index}>
                   <div className="flex items-center sm:gap-3 gap-1">
                     <img className="sm:w-[20px] w-[15px]" src={right} alt="" />
-                    <p>{module.title}</p>
+                    <p className="line-clamp-1">{module.title}</p>
                   </div>
                   {module.is_free ? (
                     <button
-                      onClick={() => navigate(`/courses/${courseId}/lesson/${module?.id}`)}
+                      onClick={() =>
+                        navigate(`/course/${courseId}/lesson/${module?.id}`)
+                      }
                       className="text-blue_color font-medium sm:text-xl text-xs"
                     >
                       Ko'rish
