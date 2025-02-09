@@ -70,7 +70,7 @@ const Lesson = () => {
   }
 
   return (
-    <div className="py-7">
+    <div className="sm:py-7 py-4">
       <div className="flex justify-between items-center">
         <div
           onClick={() => navigate(-1)}
@@ -84,7 +84,7 @@ const Lesson = () => {
         </div>
       </div>
 
-      <div className="sm:pb-8 pb-10 sm:pt-12 pt-5">
+      <div className="sm:pt-5 pt-3">
         <div className="h-[50%] rounded-[16px]">
           {/* <video controls className="w-full aspect-[2/1] rounded-[16px]">
             <source
@@ -109,10 +109,10 @@ const Lesson = () => {
           )}
         </div>
         <div>
-          <h1 className="sm:text-3xl text-lg sm:pt-7 pt-4 font-semibold sm:pb-8 pb-3 text-main_color">
+          <h1 className="sm:text-2xl text-lg sm:pt-7 pt-4 font-semibold sm:pb-3 pb-2 text-main_color">
             {lessonData?.data.data?.title}
           </h1>
-          <p className="text-[#758195] pb-6 sm:text-xl text-sm">
+          <p className="text-[#758195] pb-6 sm:text-lg text-sm">
             {lessonData?.data.data?.description}
           </p>
           <div className="sm:mb-6 mb-4">
@@ -125,11 +125,11 @@ const Lesson = () => {
           </div>
           <hr />
           <div className="sm:mt-6 mt-4 flex justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 cursor-pointer">
               <i className="fa-solid fa-arrow-left-long sm:text-xl text-base"></i>
               <button className="sm:text-xl text-base">Oldingi dars</button>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 cursor-pointer">
               <i className="fa-solid fa-arrow-right-long sm:text-xl text-base"></i>
               <button className="sm:text-xl text-base">Keyingi dars</button>
             </div>

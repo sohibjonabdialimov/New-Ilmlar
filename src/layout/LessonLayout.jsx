@@ -35,7 +35,7 @@ const LessonLayout = ({ children }) => {
     <>
       <div className="bg-layout_color min-h-[100dvh]">
         <div className="menu_wrap fixed w-[25rem] bg-[#fff] text-[#09090BFF] h-[100dvh] overflow-y-scroll py-10">
-          <h3 className="px-2 text-center border-b-[#888] border-b-[2px] pb-4 mb-4 text-[28px] font-semibold">
+          <h3 className="px-2 text-center border-b-[#888] border-b-[2px] pb-4 mb-4 text-[24px] font-semibold">
             Mavzular ro'yxati
           </h3>
           <ul>
@@ -53,14 +53,14 @@ const LessonLayout = ({ children }) => {
                   key={item.id}
                 >
                   {item?.is_free ? (
-                    <i className="fa-regular fa-circle-play inline-block text-xl"></i>
+                    <i className="fa-regular fa-circle-play inline-block text-base"></i>
                   ) : (
-                    <i className="fa-solid fa-lock inline-block text-xl"></i>
+                    <i className="fa-solid fa-lock inline-block text-base"></i>
                   )}
 
                   <div className="flex items-center gap-1">
-                    <p className="text-xl font-normal">#{index + 1}.</p>
-                    <h1 className="line-clamp-1 text-xl font-normal">
+                    <p className="text-base font-normal">#{index + 1}.</p>
+                    <h1 className="line-clamp-1 text-base font-normal">
                       {item.title}
                     </h1>
                   </div>
