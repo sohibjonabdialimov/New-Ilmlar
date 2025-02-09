@@ -11,7 +11,7 @@ const TeachersGroupCard = ({ item, type }) => {
   const navigate = useNavigate();
   const { ref, inView } = useInView({
     threshold: 0.2,
-    triggerOnce: true,
+    triggerOnce: true
   });
   const { userData } = useContext(ProfileContext);
   const [messageApi, contextHolder] = message.useMessage();
@@ -19,9 +19,10 @@ const TeachersGroupCard = ({ item, type }) => {
     ["GetSubscription", item?.id],
     () => GetSubscription(item?.id),
     {
-      enabled: !!item?.id && !!userData.length,
+      enabled: !!item?.id && !!userData?.id,
     }
   );
+  
   const handleSubs = (id) => {
     if (userData?.id) {
       PutSubscription(id)

@@ -19,7 +19,7 @@ const AccountBalance = React.lazy(() => import("../views/teachers-views/account-
 const TeacherCourseInfo = React.lazy(() => import("../views/teachers-views/teacher-course-info/TeacherCourseInfo"));
 const UploadCourse = React.lazy(() => import("../views/teachers-views/upload-course/UploadCourse"));
 const UploadLesson = React.lazy(() => import("../views/teachers-views/upload-lesson/UploadLesson"));
-const MainLesson = React.lazy(() => import("../views/teachers-views/main-lesson/MainLesson"));
+
 const NonActiveProfile = React.lazy(() => import("../views/teachers-views/non-active-profile/NonActiveProfile"));
 
 export const RoutesConfig = [{
@@ -150,14 +150,6 @@ export const RoutesConfig = [{
     roles: [],
     subOptions: [],
     Component: UploadLesson,
-  },
-  {
-    title: "main-lesson",
-    path: "/main-lesson",
-    Layout: TeacherLayout,
-    roles: [],
-    subOptions: [],
-    Component: MainLesson,
-  },
+  }
 
 ];

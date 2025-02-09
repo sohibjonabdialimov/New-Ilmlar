@@ -72,6 +72,8 @@ const TeacherProfileForStudents = () => {
     }
   };
   const teacherAccount = teacherAccountData?.data.data;
+  console.log(teacherAccount);
+  
   const fetchResource = async (id) => {
     const { data } = await axiosT.get(`/api/courses/course/${id}/withouttoken`);
     return data;
@@ -96,8 +98,8 @@ const TeacherProfileForStudents = () => {
       <div className="flex justify-between sm:flex-row flex-col gap-5 mb-16">
         <div className="flex items-center sm:gap-5 gap-3">
           <img
-            className="sm:w-[142px] sm:h-[146px] w-[84px] h-[102px] sm:rounded-3xl rounded-[8px] object-cover"
-            src={teacher_profile}
+            className="sm:w-[142px] sm:h-[146px] w-[84px] h-[102px] sm:rounded-lg rounded-[5px] object-cover"
+            src={teacherAccount?.profile_img ? teacherAccount?.profile_img : teacher_profile}
             alt=""
           />
           <div className="flex gap-1.5 justify-between flex-col">
@@ -165,8 +167,8 @@ const TeacherProfileForStudents = () => {
       <div className="relative mt-14 sm:mb-5 mb-10">
         <h1 className="title absolute top-0">Kurslar</h1>
         <Swiper
-          slidesPerView={1.5}
-          spaceBetween={16}
+         slidesPerView={1.2}
+         spaceBetween={10}
           navigation={true}
           breakpoints={{
             640: {

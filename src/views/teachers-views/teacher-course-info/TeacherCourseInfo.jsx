@@ -159,12 +159,6 @@ function TeacherCourseInfo() {
                   {course?.videos.length} ta video dars
                 </p>
               </div>
-              {/* <div className="flex items-center sm:gap-4 gap-2">
-                <img className="w-[18px] h-[18px]" src={time} alt="" />
-                <p className="text-[#1B1D20] font-normal text-base">
-                  1.40 soat
-                </p>
-              </div> */}
             </div>
             <div className="w-full">
               {course?.videos.map((module, index) => (
@@ -173,34 +167,17 @@ function TeacherCourseInfo() {
                     <img className="sm:w-[20px] w-[15px]" src={right} alt="" />
                     <p>{module.title}</p>
                   </div>
-                  {module.is_free ? (
-                    <div className="flex items-center gap-2">
-                      <button className="text-blue_color font-medium sm:text-base text-xs">
-                        Ko'rish
-                      </button>
-                      <button
-                        onClick={handeEditFunction}
-                        className="text-gray-700 font-medium sm:text-base text-xs"
-                      >
-                        Tahrirlash
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <button
-                        disabled
-                        className="text-blue_color font-medium sm:text-base text-xs"
-                      >
-                        Yopiq
-                      </button>
-                      <button
-                        onClick={handeEditFunction}
-                        className="text-gray-700 font-medium sm:text-base text-xs"
-                      >
-                        Tahrirlash
-                      </button>
-                    </div>
-                  )}
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => navigate(`/main-lesson/${module?.id}`)} className="text-blue_color font-medium sm:text-xl text-xs">
+                      Ko'rish
+                    </button>
+                    <button
+                      onClick={handeEditFunction}
+                      className="text-gray-700 font-medium sm:text-xl text-xs"
+                    >
+                      Tahrirlash
+                    </button>
+                  </div>
                 </di>
               ))}
             </div>
@@ -293,8 +270,8 @@ function TeacherCourseInfo() {
       <div className="relative mt-14 mb-5">
         <h1 className="title absolute top-0">Izohlar</h1>
         <Swiper
-          slidesPerView={1.5}
-          spaceBetween={16}
+          slidesPerView={1.2}
+          spaceBetween={10}
           breakpoints={{
             640: {
               slidesPerView: 2,

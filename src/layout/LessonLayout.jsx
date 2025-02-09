@@ -5,9 +5,12 @@ import { CoursesContext } from "../context/CoursesProvider";
 import { useQuery } from "react-query";
 import { GetPurchasedCourses, GetSavedCourses } from "../services/api";
 import { ProfileContext } from "../context/ProfileProvider";
-const DesktopLayout = ({ children }) => {
+import "./layout.css";
+import { LessonsContext } from "../context/LessonsProvider";
+const LessonLayout = ({ children }) => {
   const { setSavedCourses, setPurchasedCourses } = useContext(CoursesContext);
   const { userData } = useContext(ProfileContext);
+  const { lessons } = useContext(LessonsContext);
   useQuery(["GetSavedCourses"], GetSavedCourses, {
     enabled: !!userData?.id,
     onSuccess(data) {
@@ -20,10 +23,24 @@ const DesktopLayout = ({ children }) => {
       setPurchasedCourses(data.data.data);
     },
   });
+  console.log(lessons);
+  
 
   return (
     <>
-      <div className="sm:px-[1.6rem] px-[1rem] bg-layout_color min-h-[100dvh] pb-6">
+      <div className=" bg-layout_color min-h-[100dvh] ">
+        <div className="fixed w-[22rem] bg-[#fff] text-[#09090BFF] h-[100dvh] text-2xl overflow-y-scroll px-5 py-10">
+            <h3 className="text-center border-b-[#888] border-b-[2px] pb-4 mb-4">Mavzular ro'yxati</h3>
+            <ul>
+              {
+
+              }
+              <li>
+                <button></button>
+              </li>
+            </ul>
+        </div>
+        <div className="sm:px-[1.6rem] px-[1rem] pb-6 lesson_layout_wrap">
         <Header />
         <div className="sm:px-6 px-3 bg-bg_color rounded-2xl mx-auto">
           {children}
@@ -61,9 +78,10 @@ const DesktopLayout = ({ children }) => {
             </NavLink>
           </div>
         </nav>
+        </div>
       </div>
     </>
   );
 };
 
-export default DesktopLayout;
+export default LessonLayout;

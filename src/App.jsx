@@ -8,6 +8,10 @@ import DesktopLayout from "./layout/DesktopLayout";
 import Loading from "./utils/Loading";
 import TeacherLayout from "./layout/TeacherLayout";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import LessonLayout from "./layout/LessonLayout";
+const MainLesson = React.lazy(() =>
+  import("./views/teachers-views/main-lesson/MainLesson")
+);
 const CourseStatistic = React.lazy(() =>
   import("./views/teachers-views/course-statistic/CourseStatistic")
 );
@@ -53,9 +57,9 @@ const App = () => {
         path={"/lessons/:id"}
         element={
           <Suspense fallback={<Loading />}>
-            <DesktopLayout>
+            <LessonLayout>
               <Lessons />
-            </DesktopLayout>
+            </LessonLayout>
           </Suspense>
         }
       />
@@ -89,6 +93,17 @@ const App = () => {
           <Suspense fallback={<Loading />}>
             <TeacherLayout>
               <TeacherCourseInfo />
+            </TeacherLayout>
+          </Suspense>
+        }
+      />
+      <Route
+        key={"main-lesson/:id"}
+        path={"/main-lesson/:id"}
+        element={
+          <Suspense fallback={<Loading />}>
+            <TeacherLayout>
+              <MainLesson />
             </TeacherLayout>
           </Suspense>
         }

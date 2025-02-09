@@ -2,7 +2,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import right from "../../assets/images/right.png";
 // import time from "../../assets/images/time.png";
 import "./my-course.css";
-import ProgressBar from "@ramonak/react-progress-bar";
 import { Button, Input, message, Modal, Rate, Form } from "antd";
 import { useState } from "react";
 import { useQuery } from "react-query";
@@ -94,7 +93,7 @@ const MyCourse = () => {
                 </h4>
               </div>
 
-              <div className="flex items-center sm:gap-10 gap-2 mb-6 w-full">
+              <div className="flex items-center sm:gap-10 gap-2 mb-0 w-full">
                 <div className="flex items-center sm:gap-3 gap-1 sm:text-base text-sm">
                   <i className="fa-solid fa-star text-[#DF742EFF]"></i>
                   <p className="font-normal">
@@ -116,7 +115,7 @@ const MyCourse = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between sm:items-center items-start sm:flex-row flex-col gap-4">
+              {/* <div className="flex justify-between sm:items-center items-start sm:flex-row flex-col gap-4">
                 <ProgressBar
                   height="25px"
                   className="bar_container sm:w-[35%] w-full"
@@ -128,7 +127,7 @@ const MyCourse = () => {
                     5 oy 3 kun 4 soat
                   </p>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px] sm:mb-16 mb-6">
@@ -139,7 +138,44 @@ const MyCourse = () => {
               {myCourse?.discription}
             </p>
           </div>
-
+          {/* <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px]">
+            <h2 className="sm:text-3xl text-xl text-main_color font-semibold mb-6">
+              Video darslar
+            </h2>
+            <div className="flex justify-between items-center sm:mb-4 mb-3">
+              <div className="flex items-center sm:gap-4 gap-2">
+                <i className="fa-solid fa-book"></i>
+                <p className="text-[#1B1D20] font-normal sm:text-base text-sm">
+                {myCourse?.videos.length} ta video dars
+                </p>
+              </div>
+            </div>
+            <div className="w-full">
+              {myCourse?.videos.map((module, index) => (
+                <div className="border-dotted accordion-trigger" key={index}>
+                  <div className="flex items-center sm:gap-3 gap-1">
+                    <img className="sm:w-[20px] w-[15px]" src={right} alt="" />
+                    <p>{module.title}</p>
+                  </div>
+                  {module.is_free ? (
+                    <button
+                      onClick={() => navigate(`/lessons/${module?.id}`)}
+                      className="text-blue_color font-medium sm:text-xl text-xs"
+                    >
+                      Ko'rish
+                    </button>
+                  ) : (
+                    <button
+                      disabled
+                      className="text-blue_color font-medium sm:text-xl text-xs"
+                    >
+                      Yopiq
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div> */}
           <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px]">
             <h2 className="sm:text-3xl text-xl text-main_color font-semibold sm:mb-6 mb-2">
               Video darslar
@@ -181,7 +217,7 @@ const MyCourse = () => {
 
           <div className="flex justify-end items-center sm:mb-5 mb-[35px] sm:mt-10 mt-4 sm:gap-5 gap-3">
             <div
-              onClick={() => navigate(-1)}
+              // onClick={() => navigate(-1)}
               className="btn inline-flex items-center sm:gap-3 gap-2 cursor-pointer sm:p-[10px_20px] p-[5px_15px]"
             >
               <i className="fa-solid fa-share-nodes"></i>

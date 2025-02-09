@@ -24,6 +24,7 @@ import { Button, message, Modal, notification } from "antd";
 import { useContext, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { ProfileContext } from "../../context/ProfileProvider";
+import { LessonsContext } from "../../context/LessonsProvider";
 
 function CourseInfo() {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ function CourseInfo() {
   const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { userData } = useContext(ProfileContext);
+  const { setLessons } = useContext(LessonsContext);
   const [course, setCourse] = useState(null);
   const [url, setUrl] = useState(null);
 
@@ -58,13 +60,14 @@ function CourseInfo() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
+  
   useQuery(
     ["GetCourseDetailWithoutToken"],
     () => GetCourseDetailWithoutToken(id),
     {
       enabled: !!id,
       onSuccess(data) {
+        setLessons(data.data.data.videos);
         setCourse(data.data.data);
         setComments(data.data.data.commits);
         setUrl(
@@ -293,11 +296,8 @@ function CourseInfo() {
         <div className="sm:col-span-1 col-span-2">
           {course?.trieler ? (
             <iframe
-              // src={lesson?.video_link}
-              src={`https://player.vimeo.com/video/${url}?h=2ac395a2694246448051ee01faf135ce`}
-              // width="500px"
-              className="w-full aspect-[7/6] rounded-[16px]"
-              // height="400px"
+              src={`https://player.vimeo.com/video/${url}?h=2ac395a2694246448051ee01faf135ce&title=0&byline=0&portrait=0`}
+              className="w-full aspect-[2/1] rounded-[16px]"
               frameBorder={0}
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen

@@ -34,6 +34,9 @@ a {
 .lazy_img .lazy-load-image-loaded img{
   border-radius: 1rem !important;
 }
+#player{
+  height: 100% !important;
+}
 button {
   outline: none;
   border: none;

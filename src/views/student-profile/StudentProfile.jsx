@@ -91,7 +91,7 @@ const StudentProfile = () => {
     ["GetPurchasedCourses"],
     GetPurchasedCourses,
     {
-      enabled: !!userData.length
+      enabled: !!userData?.id
     }
   );
 
@@ -99,7 +99,7 @@ const StudentProfile = () => {
     ["GetSavedCourses"],
     GetSavedCourses,
     {
-      enabled: !!userData.length
+      enabled: !!userData?.id
     }
   );
 

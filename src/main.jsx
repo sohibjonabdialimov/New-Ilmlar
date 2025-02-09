@@ -8,7 +8,8 @@ import AuthProvider from "./context/AuthProvider.jsx";
 import ProfileProvider from "./context/ProfileProvider.jsx";
 import CoursesProvider from "./context/CoursesProvider.jsx";
 import TeacherDataProvider from "./context/TeacherDataProvider.jsx";
-import 'react-loading-skeleton/dist/skeleton.css'
+import "react-loading-skeleton/dist/skeleton.css";
+import LessonsProvider from "./context/LessonsProvider.jsx";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -29,7 +30,9 @@ createRoot(document.getElementById("root")).render(
           <ProfileProvider>
             <CoursesProvider>
               <TeacherDataProvider>
-                <App />
+                <LessonsProvider>
+                  <App />
+                </LessonsProvider>
               </TeacherDataProvider>
             </CoursesProvider>
           </ProfileProvider>

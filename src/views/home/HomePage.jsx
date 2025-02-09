@@ -45,8 +45,6 @@ const HomePage = () => {
     () => GetCourses(null, null, null, null, null, null),
     {
       onSuccess(data) {
-        console.log(data.data.data);
-
         setNewCourses(
           data.data.data
             .filter((item) => item.status === 2 && item.is_verified)
@@ -82,8 +80,8 @@ const HomePage = () => {
         /> */}
 
           <Swiper
-            slidesPerView={1.5}
-            spaceBetween={30}
+            slidesPerView={1.2}
+            spaceBetween={10}
             navigation={true}
             freeMode={true}
             breakpoints={{
@@ -199,8 +197,8 @@ const HomePage = () => {
       <div className="relative mt-14 mb-10">
         <h1 className="title absolute top-0">Bepul kurslar</h1>
         <Swiper
-          slidesPerView={1.5}
-          spaceBetween={30}
+          slidesPerView={1.2}
+          spaceBetween={10}
           navigation={true}
           breakpoints={{
             640: {

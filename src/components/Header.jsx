@@ -40,13 +40,13 @@ const Header = () => {
   const onClose = () => {
     setOpen(false);
   };
-  function toggleFullScreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    } else if (document.exitFullscreen) {
-      document.exitFullscreen();
-    }
-  }
+  // function toggleFullScreen() {
+  //   if (!document.fullscreenElement) {
+  //     document.documentElement.requestFullscreen();
+  //   } else if (document.exitFullscreen) {
+  //     document.exitFullscreen();
+  //   }
+  // }
   // const handleSearchInput = (e) => {
   //   console.log(e.target.value);
 
@@ -147,12 +147,12 @@ const Header = () => {
               </div>
             )}
 
-            <div
+            {/* <div
               onClick={toggleFullScreen}
               className="cursor-pointer w-[44px] h-[44px] bg-[#E9F2FF] rounded-full hidden sm:flex items-center justify-center"
             >
               <i className="fa-solid fa-expand text-[1.2rem]"></i>
-            </div>
+            </div> */}
             <Select
               defaultValue={"uzb"}
               className="sm:w-[100px] w-[70px]"

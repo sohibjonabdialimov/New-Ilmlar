@@ -63,7 +63,7 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
     } else {
       notification.open({
         message: "Avval ro'yxatdan o'ting!",
-        description: "Siz ro'yxatdan o'tgandan keyin obuna bo'la olasiz",
+        description: "Siz ro'yxatdan o'tgandan keyin kursni saqlay olasiz",
         placement: "top",
         duration: 3,
         btn: (
@@ -98,7 +98,7 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
       }`}
     >
       <LazyLoadImage
-        className="w-full object-cover rounded-2xl h-[220px]"
+        className="w-full object-cover rounded-2xl sm:h-[220px] h-[180px]"
         effect="blur"
         src={item?.obloshka}
         alt=""
@@ -124,10 +124,10 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
         {item?.name}
       </h1>
       {role !== "teacher" ? (
-        <div className="flex items-center gap-1 mb-2">
+        <div className="flex items-center gap-1.5 mb-2">
           {teacherAccountId?.data.data.profile_img ? (
             <img
-              className="w-6 h-6 object-cover rounded-full"
+              className="w-9 h-9 object-cover rounded-full"
               src={teacherAccountId?.data.data.profile_img}
               alt="Avatar ilmlar"
             />

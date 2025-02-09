@@ -5,3 +5,25 @@
 .mobile_navbar a.active i {
   color: #1d7afc;
 }
+.lesson_layout_wrap{
+  width: calc(100dvw - 23rem);
+  position: relative;
+  left: 22rem;
+}
+/* Global CSS faylga yozish */
+::-webkit-scrollbar {
+  width: 5px; /* Skroll eni */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track (fon) rangi */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Skroll rang */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Hover effekti */
+}

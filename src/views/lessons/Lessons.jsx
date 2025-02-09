@@ -2,31 +2,29 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./lesson.css";
 import { useQuery } from "react-query";
 import { GetVideoInfo } from "../../services/api";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Vimeo from "@vimeo/player";
 import { Spin } from "antd";
+import { LessonsContext } from "../../context/LessonsProvider";
 const Lesson = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+   const { lessons } = useContext(LessonsContext);
   const [url, setUrl] = useState(null);
-  // console.log(id);
-
+  console.log(lessons);
+  
   const { data: lessonData, isLoading } = useQuery(
     ["GetVideoInfo", id],
     () => GetVideoInfo(id),
     {
+      enabled: !!id,
       onSuccess(data) {
-        console.log(data);
-
         setUrl(
           data.data.data.video_link.split("/")[
             data.data.data.video_link.split("/").length - 1
           ]
         );
       },
-    },
-    {
-      enabled: !!id,
     }
   );
 
@@ -44,7 +42,7 @@ const Lesson = () => {
         console.log("title:", title);
       });
     } else {
-      console.error("Iframe element topilmadi!");
+      // console.error("Iframe element topilmadi!");
     }
   }, [url]);
 
