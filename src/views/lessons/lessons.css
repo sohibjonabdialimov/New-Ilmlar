@@ -1,0 +1,19 @@
+.lesson_drawer .ant-drawer-body{
+  padding: 0 !important;
+}
+.mobile_lessons_menu{
+  display: none;
+}
+@media only screen and (max-width: 1100px) {
+  .mobile_lessons_menu{
+    display: block;
+  }
+  .lesson_layout_wrap {
+    width: 100%;
+    position: relative;
+    left: auto;
+  }
+  .menu_wrap{
+    display: none;
+  }
+}

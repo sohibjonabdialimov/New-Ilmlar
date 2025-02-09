@@ -1,14 +1,15 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { ComponentList } from "./router/ComponentList";
-import LoginPage from "./views//auth/LoginPage";
+import LoginPage from "./views/auth/LoginPage";
 import LoginLayout from "./layout/AuthLayout";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useCallback } from "react";
 import { verifyToken } from "./services/verifyToken";
 import DesktopLayout from "./layout/DesktopLayout";
 import Loading from "./utils/Loading";
 import TeacherLayout from "./layout/TeacherLayout";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import LessonLayout from "./layout/LessonLayout";
+import CourseWrapPage from "./views/all-courses/components/CourseWrapPage";
+
 const MainLesson = React.lazy(() =>
   import("./views/teachers-views/main-lesson/MainLesson")
 );
@@ -24,15 +25,23 @@ const MyCourse = React.lazy(() => import("./views/my-course/MyCourse"));
 const TeacherProfileForStudents = React.lazy(() =>
   import("./views/teacher-profile-for-students/TeacherProfileForStudents")
 );
+import "react-lazy-load-image-component/src/effects/blur.css";
+
 const App = () => {
   const navigate = useNavigate();
-  // console.log(import.meta.env.VITE_API_KEY);
-  useEffect(() => {
+
+  // Tokenni tekshirish uchun callback yaratish
+  const checkAuth = useCallback(() => {
     verifyToken(navigate);
   }, [navigate]);
 
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
   return (
     <Routes>
+      {/* Login sahifasi */}
       <Route
         path="/login"
         element={
@@ -41,32 +50,57 @@ const App = () => {
           </LoginLayout>
         }
       />
-      <Route
-        key={"courses/:id"}
-        path={"/courses/:id"}
-        element={
-          <Suspense fallback={<Loading />}>
-            <DesktopLayout>
-              <CourseInfo />
-            </DesktopLayout>
-          </Suspense>
-        }
-      />
-      <Route
-        key={"lessons/:id"}
-        path={"/lessons/:id"}
-        element={
-          <Suspense fallback={<Loading />}>
-            <LessonLayout>
-              <Lessons />
-            </LessonLayout>
-          </Suspense>
-        }
-      />
 
+      {/* Kurslar bo‘limi */}
+      {/* <Route path="/courses" element={<CourseWrapPage />}>
+        <Route
+          path=":id"
+          element={
+            <Suspense fallback={<Loading />}>
+              <DesktopLayout>
+                <CourseInfo />
+              </DesktopLayout>
+            </Suspense>
+          }
+        >
+          <Route
+            path="lesson/:lessonId"
+            element={
+              <Suspense fallback={<Loading />}>
+                <LessonLayout>
+                  <Lessons />
+                </LessonLayout>
+              </Suspense>
+            }
+          />
+        </Route>
+      </Route> */}
+      <Route path="/courses" element={<CourseWrapPage />}>
+        <Route
+          path=":id"
+          element={
+            <Suspense fallback={<Loading />}>
+              <DesktopLayout>
+                <CourseInfo />
+              </DesktopLayout>
+            </Suspense>
+          }
+        />
+        <Route
+          path=":id/lesson/:lessonId"
+          element={
+            <Suspense fallback={<Loading />}>
+              <LessonLayout>
+                <Lessons />
+              </LessonLayout>
+            </Suspense>
+          }
+        />
+      </Route>
+
+      {/* O'qituvchi profili */}
       <Route
-        key={"teacher-profile/:id"}
-        path={"/teacher-profile/:id"}
+        path="/teacher-profile/:id"
         element={
           <Suspense fallback={<Loading />}>
             <DesktopLayout>
@@ -75,9 +109,10 @@ const App = () => {
           </Suspense>
         }
       />
+
+      {/* Mening kurslarim */}
       <Route
-        key={"my-course/:id"}
-        path={"/my-course/:id"}
+        path="/my-course/:id"
         element={
           <Suspense fallback={<Loading />}>
             <DesktopLayout>
@@ -86,9 +121,10 @@ const App = () => {
           </Suspense>
         }
       />
+
+      {/* O'qituvchining kurs ma’lumotlari */}
       <Route
-        key={"teacher-course-info/:id"}
-        path={"/teacher-course-info/:id"}
+        path="/teacher-course-info/:id"
         element={
           <Suspense fallback={<Loading />}>
             <TeacherLayout>
@@ -97,9 +133,10 @@ const App = () => {
           </Suspense>
         }
       />
+
+      {/* Dars bosh sahifasi */}
       <Route
-        key={"main-lesson/:id"}
-        path={"/main-lesson/:id"}
+        path="/main-lesson/:id"
         element={
           <Suspense fallback={<Loading />}>
             <TeacherLayout>
@@ -108,9 +145,10 @@ const App = () => {
           </Suspense>
         }
       />
+
+      {/* Kurs statistikasi */}
       <Route
-        key={"course-statistic/:id"}
-        path={"/course-statistic/:id"}
+        path="/course-statistic/:id"
         element={
           <Suspense fallback={<Loading />}>
             <TeacherLayout>
@@ -119,6 +157,8 @@ const App = () => {
           </Suspense>
         }
       />
+
+      {/* Qo‘shimcha routelar */}
       {ComponentList()}
     </Routes>
   );

@@ -32,7 +32,7 @@ function CourseInfo() {
   const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { userData } = useContext(ProfileContext);
-  const { setLessons } = useContext(LessonsContext);
+  const { setLessons, setCourseId, courseId } = useContext(LessonsContext);
   const [course, setCourse] = useState(null);
   const [url, setUrl] = useState(null);
 
@@ -70,6 +70,8 @@ function CourseInfo() {
         setLessons(data.data.data.videos);
         setCourse(data.data.data);
         setComments(data.data.data.commits);
+        setCourseId(data.data.data.id);
+        localStorage.setItem("courseId", data.data.data.id);
         setUrl(
           data.data.data.trieler?.split("/")[
             data.data.data.trieler?.split("/").length - 1
@@ -366,7 +368,7 @@ function CourseInfo() {
                   </div>
                   {module.is_free ? (
                     <button
-                      onClick={() => navigate(`/lessons/${module?.id}`)}
+                      onClick={() => navigate(`/courses/${courseId}/lesson/${module?.id}`)}
                       className="text-blue_color font-medium sm:text-xl text-xs"
                     >
                       Ko'rish

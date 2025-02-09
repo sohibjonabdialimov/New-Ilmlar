@@ -3,7 +3,7 @@ import right from "../../assets/images/right.png";
 // import time from "../../assets/images/time.png";
 import "./my-course.css";
 import { Button, Input, message, Modal, Rate, Form } from "antd";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useQuery } from "react-query";
 import {
   GetCourseDetail,
@@ -11,6 +11,7 @@ import {
   PostScore,
   GetTeacherAccount,
 } from "../../services/api";
+import { LessonsContext } from "../../context/LessonsProvider";
 const { TextArea } = Input;
 const MyCourse = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const MyCourse = () => {
   const { id } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+  const { courseId, setCourseId } = useContext(LessonsContext);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -51,6 +53,10 @@ const MyCourse = () => {
     () => GetCourseDetail(id),
     {
       enabled: !!id,
+      onSuccess(data) {
+        setCourseId(data.data.data.id);
+        localStorage.setItem("courseId", data.data.data.id);
+      },
     }
   );
   const myCourse = course?.data.data;
@@ -205,7 +211,9 @@ const MyCourse = () => {
                     <p>{module?.title}</p>
                   </div>
                   <button
-                    onClick={() => navigate(`/lessons/${module?.id}`)}
+                    onClick={() =>
+                      navigate(`/courses/${courseId}/lesson/${module?.id}`)
+                    }
                     className="text-blue_color font-medium sm:text-xl text-xs"
                   >
                     Ko'rish

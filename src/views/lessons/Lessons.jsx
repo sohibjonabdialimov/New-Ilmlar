@@ -1,23 +1,39 @@
 import { useNavigate, useParams } from "react-router-dom";
-import "./lesson.css";
+import "./lessons.css";
 import { useQuery } from "react-query";
 import { GetVideoInfo } from "../../services/api";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Vimeo from "@vimeo/player";
-import { Spin } from "antd";
+import { Spin, Drawer } from "antd";
 import { LessonsContext } from "../../context/LessonsProvider";
+import { GetCourseDetailWithoutToken } from "../../services/api";
+
 const Lesson = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
-   const { lessons } = useContext(LessonsContext);
   const [url, setUrl] = useState(null);
-  console.log(lessons);
-  
-  const { data: lessonData, isLoading } = useQuery(
-    ["GetVideoInfo", id],
-    () => GetVideoInfo(id),
+  const { id, lessonId } = useParams();
+  const [open, setOpen] = useState(false);
+  const { lessons, setLessons, courseId } = useContext(LessonsContext);
+
+  const { data } = useQuery(
+    ["GetCourseDetailWithoutToken", id],
+    () => GetCourseDetailWithoutToken(id),
     {
-      enabled: !!id,
+      enabled: Boolean(id),
+    }
+  );
+
+  useEffect(() => {
+    if (data?.data?.data?.videos) {
+      setLessons(data.data.data.videos);
+    }
+  }, [data, setLessons]);
+
+  const { data: lessonData, isLoading } = useQuery(
+    ["GetVideoInfo", lessonId, id],
+    () => GetVideoInfo(lessonId),
+    {
+      enabled: !!lessonId && !!id,
       onSuccess(data) {
         setUrl(
           data.data.data.video_link.split("/")[
@@ -46,14 +62,26 @@ const Lesson = () => {
     }
   }, [url]);
 
+  function changeVideo(id, is_free) {
+    if (is_free) {
+      navigate(`/courses/${courseId}/lesson/${id}`);
+      setOpen(false);
+    }
+  }
+
   return (
     <div className="py-7">
-      <div
-        onClick={() => navigate(-1)}
-        className="inline-flex items-center sm:gap-3 gap-1 cursor-pointer font-medium"
-      >
-        <i className="fa-solid fa-arrow-left sm:text-base text-xs"></i>
-        <button className="sm:text-lg text-sm">Ortga qaytish</button>
+      <div className="flex justify-between items-center">
+        <div
+          onClick={() => navigate(-1)}
+          className="inline-flex items-center sm:gap-3 gap-1 cursor-pointer font-medium"
+        >
+          <i className="fa-solid fa-arrow-left sm:text-base text-xs"></i>
+          <button className="sm:text-lg text-sm">Ortga qaytish</button>
+        </div>
+        <div className="cursor-pointer mobile_lessons_menu" onClick={() => setOpen(true)}>
+          <i className="fa-solid fa-list-ul text-2xl"></i>
+        </div>
       </div>
 
       <div className="sm:pb-8 pb-10 sm:pt-12 pt-5">
@@ -71,7 +99,7 @@ const Lesson = () => {
           ) : url ? (
             <iframe
               src={`https://player.vimeo.com/video/${url}?h=2ac395a2694246448051ee01faf135ce&title=0&byline=0&portrait=0`}
-              className="w-full aspect-[2/1] rounded-[16px]"
+              className="w-full aspect-[7/4] rounded-[16px]"
               frameBorder={0}
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
@@ -108,6 +136,49 @@ const Lesson = () => {
           </div>
         </div>
       </div>
+
+      <Drawer
+        className="lesson_drawer"
+        title={<h3 className="text-[20px] font-semibold">Mavzular ro'yxati</h3>}
+        onClose={() => setOpen(false)}
+        open={open}
+      >
+        <div className="fixed bg-[#fff] text-[#09090BFF] h-[100dvh] overflow-y-scroll py-5">
+          <ul>
+            {lessons?.map((item, index) => {
+              return (
+                <li
+                  onClick={() => changeVideo(item.id, item.is_free)}
+                  className={`px-4 flex transition-colors py-5 items-center border-b-2 gap-2 hover:bg-[#eee] ${
+                    item?.is_free
+                      ? "opacity-100 cursor-pointer select-auto"
+                      : "opacity-40 cursor-not-allowed select-none"
+                  } ${
+                    item?.id == lessonId ? "bg-[#dfdfdf]" : "bg-transparent"
+                  }`}
+                  key={item.id}
+                >
+                  {item?.is_free ? (
+                    <i className="fa-regular fa-circle-play inline-block text-base"></i>
+                  ) : (
+                    <i className="fa-solid fa-lock inline-block text-base"></i>
+                  )}
+
+                  <div className="flex items-center gap-1">
+                    <p className="text-base font-normal">#{index + 1}.</p>
+                    <h1 className="line-clamp-1 text-base font-normal">
+                      {item.title}
+                    </h1>
+                  </div>
+                </li>
+              );
+            })}
+            <li>
+              <button></button>
+            </li>
+          </ul>
+        </div>
+      </Drawer>
     </div>
   );
 };
