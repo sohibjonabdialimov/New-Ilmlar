@@ -47,22 +47,22 @@ const AllCourses = () => {
 
   return (
     <div className="pt-7 sm:pb-16 pb-2 sm:mb-0 mb-16">
-      <div className="grid items-center grid-cols-6 gap-2 sm:hidden mb-4">
+      <div className="grid items-center grid-cols-6 sm:gap-2 gap-1 sm:hidden mb-4">
         <div
           onClick={showDrawer}
-          className="col-span-2 border cursor-pointer bg-blue_color transition hover:bg-white hover:border-blue_color hover:text-blue_color text-white border-[#DCDFE3] flex items-center justify-center py-[5px] gap-2 rounded-[16px]"
+          className="col-span-2 border cursor-pointer bg-blue_color transition hover:bg-white hover:border-blue_color hover:text-blue_color text-white border-[#DCDFE3] flex items-center justify-center sm:py-[5px] py-[4px] gap-2 rounded-[16px]"
         >
           <i className="fa-solid fa-sort text-base"></i>
-          <button className="text-sm">Filterlar</button>
+          <button className="sm:text-sm text-xs">Filterlar</button>
         </div>
-        <div className="col-span-4 nav-search rounded-[16px] border-[2px] border-solid border-[#1E1E1E1A] p-[0.5rem_1rem] bg-[#F1F2F4] flex items-center justify-between gap-2 text-[#1E1E1E99] font-[500] focus:drop-shadow-[0_15px_15px_rgba(0,0,0,0.2)] hover:drop-shadow-[0_5px_5px_rgba(0,0,0,0.15)]">
-          <i className="fa-solid fa-magnifying-glass w-[1.125rem] h-[1.125rem]"></i>
+        <div className="col-span-4 nav-search rounded-[16px] border-[2px] border-solid border-[#1E1E1E1A] sm:p-[0.5rem_1rem] p-[7px_0.8rem] bg-[#F1F2F4] flex items-center justify-between gap-2 text-[#1E1E1E99] font-[500] focus:drop-shadow-[0_15px_15px_rgba(0,0,0,0.2)] hover:drop-shadow-[0_5px_5px_rgba(0,0,0,0.15)]">
+          <i className="fa-solid fa-magnifying-glass sm:w-[1.125rem] sm:h-[1.125rem] w-[0.9rem] h-[0.9rem]"></i>
           <input
             type="text"
             value={searchText}
             placeholder={"Qidirish..."}
             onChange={(e) => debounce(handleSearchInput(e))}
-            className="header_search bg-[#F1F2F4] w-full outline-none border-none text-[#64748BFF] text-sm placeholder:text-[#1E1E1E99]"
+            className="header_search bg-[#F1F2F4] w-full outline-none border-none text-[#64748BFF] sm:text-sm text-xs placeholder:text-[#1E1E1E99]"
           />
         </div>
       </div>

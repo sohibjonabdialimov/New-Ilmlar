@@ -94,7 +94,7 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
           : navigate(`/course/${item?.id}`)
       }
       className={`pb-8 transition-all duration-700 ease-out transform cursor-pointer lazy_img ${
-        inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+        inView ? "sm:opacity-100 sm:translate-y-0" : "sm:opacity-0 sm:translate-y-10"
       }`}
     >
       <LazyLoadImage
@@ -178,10 +178,11 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
             </p>
           ) : (
             <p className="text-blue_color text-lg font-semibold">
-              {formatPrice(
-                +item?.price * (1 + percentage?.data.data.percent / 100)
-              )}{" "}
-              so'm
+              {item?.price == 0
+                ? "Bepul"
+                : `${formatPrice(
+                    +item?.price * (1 + percentage?.data.data.percent / 100)
+                  )} so'm`}
             </p>
           )}
           <div
@@ -192,9 +193,9 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
             className="flex items-center gap-2 mr-3"
           >
             {isSave ? (
-              <i className="fa-solid fa-bookmark text-2xl"></i>
+              <i className="fa-solid fa-bookmark sm:text-2xl text-xl"></i>
             ) : (
-              <i className="fa-regular fa-bookmark text-2xl"></i>
+              <i className="fa-regular fa-bookmark sm:text-2xl text-xl"></i>
             )}
           </div>
         </div>

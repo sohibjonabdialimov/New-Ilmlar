@@ -33,7 +33,6 @@ const RegisterPage = () => {
         });
       });
 
-    //
     // axiosT
     //   .post("/accounts/Token", login)
     //   .then(({ data }) => {
@@ -67,7 +66,7 @@ const RegisterPage = () => {
     <>
       {contextHolder}
 
-      <div className="grid grid-cols-12 p-6 w-full gap-6 min-h-[100dvh]">
+      <div className="grid grid-cols-12 p-6 pt-0 w-full gap-6 min-h-[100dvh]">
         <div className="sm:col-span-6 col-span-12 sm:mx-[50px] mx-auto flex justify-center items-center">
           <Form
             layout="vertical"
@@ -77,7 +76,7 @@ const RegisterPage = () => {
               submitHandler();
             }}
           >
-            <h1 className="text-main_color sm:text-[25px] text-xl sm:leading-[30px] font-semibold text-center mb-3">
+            <h1 className="text-main_color sm:text-[25px] text-lg sm:leading-[30px] font-semibold text-center mb-3">
               Katta imkoniyatlar dunyosiga qadam qo'ying
             </h1>
             <div className="grid grid-cols-1 gap-0">
@@ -261,7 +260,7 @@ const RegisterPage = () => {
               >
                 Ro'yxatdan o'tish
               </button>
-              <p className="text-center text-secondary_color text-sm font-normal ">
+              <p className="text-center text-secondary_color text-sm font-normal">
                 Shaxsiy sahifangiz bormi?{" "}
                 <Link
                   className="cursor-pointer font-medium text-blue_color"

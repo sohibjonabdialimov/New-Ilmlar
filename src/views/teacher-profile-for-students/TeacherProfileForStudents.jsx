@@ -79,7 +79,7 @@ const TeacherProfileForStudents = () => {
     return data;
   };
   const queries = useQueries(
-    (teacherAccount?.courses || []).map(({ id }) => ({
+    (teacherAccountData?.data.data?.courses || []).map(({ id }) => ({
       queryKey: ["resource", id],
       queryFn: () => fetchResource(id),
       enabled: !!id,
@@ -90,24 +90,30 @@ const TeacherProfileForStudents = () => {
 
   const allData = queries
     ?.map((query) => query?.data?.data)
-    .filter((item) => item !== undefined);
+    .filter((item) => item !== undefined)
+    .filter((item) => item.status === 2 && item.is_verified);
+
+    
 
   return (
-    <div className="py-7">
+    <div className="sm:py-7 pt-7 pb-0 mb-16">
       {contextHolder}
-      <div className="flex justify-between sm:flex-row flex-col gap-5 mb-16">
-        <div className="flex items-center sm:gap-5 gap-3">
+      <div className="flex justify-between sm:flex-row flex-col gap-5 sm:mb-16 mb-10">
+        <div className="flex items-start sm:gap-5 gap-3">
           <img
             className="sm:w-[142px] sm:h-[146px] w-[84px] h-[102px] sm:rounded-lg rounded-[5px] object-cover"
             src={teacherAccount?.profile_img ? teacherAccount?.profile_img : teacher_profile}
             alt=""
           />
-          <div className="flex gap-1.5 justify-between flex-col">
+          <div className="flex sm:gap-1.5 gap-1 justify-between flex-col">
             <h1 className="text-main_color font-semibold sm:text-xl text-base mb-1">
               {teacherAccount?.first_name} {teacherAccount?.last_name}
             </h1>
             <p className="text-[#758195] sm:text-base text-xs font-medium">
               {teacherAccount?.spiceal}
+            </p>
+            <p className="text-[#758195] sm:text-base text-xs font-medium">
+              {teacherAccount?.link}
             </p>
             <p className="text-[#758195] sm:text-base text-xs font-semibold">
               Kurslar soni:{" "}
@@ -155,16 +161,11 @@ const TeacherProfileForStudents = () => {
           O'qituvchi haqida ma’lumot
         </h2>
         <p className="sm:text-xl sm:leading-8 text-sm">
-          Explore Auto Layout in Figma, starting with horizontal, vertical, and
-          wrap layouts. Manage padding, gaps, and alignment, and use constraints
-          like fixed, hug, and fill for optimal sizing. Design navigation bars,
-          top bars, headings, cards, and lists for mobile, tablet, and desktop.
-          This course prepares you to create scalable and adaptable UI
-          designs...
+        {teacherAccount?.info}
         </p>
       </div>
 
-      <div className="relative mt-14 sm:mb-5 mb-10">
+      <div className="relative mt-14 sm:mb-5 mb-5">
         <h1 className="title absolute top-0">Kurslar</h1>
         <Swiper
          slidesPerView={1.2}

@@ -1,8 +1,4 @@
-.my-course_accordion {
-  width: 100%;
-}
-
-.my-course_accordion .accordion-trigger {
+.accordion-trigger {
   width: 100%;
   border: 2px dashed #dcdfe3;
   margin-bottom: 16px;
@@ -17,28 +13,9 @@
   border-radius: 16px;
 }
 
-.my-course_accordion .accordion-content {
-  background: #ffffff;
-  padding: 10px 15px;
-  border-radius: 16px;
-  margin-bottom: 16px;
-}
 
-.my-course_accordion .accordion-content ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.my-course_accordion .accordion-content li {
-  margin: 5px 0;
-}
-.my-course_accordion .accordion-header button:disabled {
-  opacity: 0.6;
-  outline: none;
-}
-@media only screen and (max-width: 540px){
-  .my-course_accordion .accordion-trigger {
+@media only screen and (max-width: 540px) {
+  .accordion-trigger {
     border: 1.5px dashed #dcdfe3;
     margin-bottom: 5px;
     padding: 4px 5px;

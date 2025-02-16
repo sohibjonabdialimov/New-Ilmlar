@@ -15,7 +15,7 @@ import { useQueries, useQuery } from "react-query";
 import {
   GetPurchasedCourses,
   GetSavedCourses,
-  GetUsersUserme,
+  GetUsersUsermeWithoutLocalStorage,
   PostEditProfileImage,
   PutUsers,
 } from "../../services/api";
@@ -27,17 +27,7 @@ const StudentProfile = () => {
   const { userData, setUserData } = useContext(ProfileContext);
   const fileInputRef = useRef(null);
   const [messageApi, contextHolder] = message.useMessage();
-  const { refetch } = useQuery(
-    ["GetUsersUserme"],
-    () => GetUsersUserme(localStorage.getItem("token")),
-    {
-      enabled: !!localStorage.getItem("token"),
-      onSuccess: (response) => {
-        setUserData(response.data.data);
-        // localStorage.setItem("user-data", JSON.stringify(response.data.data));
-      },
-    },
-  );
+
   useEffect(() => {
     setValue("EDITPROFILE.user_name", userData.user_name);
     setValue("EDITPROFILE.first_name", userData.first_name);
@@ -91,7 +81,7 @@ const StudentProfile = () => {
     ["GetPurchasedCourses"],
     GetPurchasedCourses,
     {
-      enabled: !!userData?.id
+      enabled: !!userData?.id,
     }
   );
 
@@ -99,7 +89,18 @@ const StudentProfile = () => {
     ["GetSavedCourses"],
     GetSavedCourses,
     {
-      enabled: !!userData?.id
+      enabled: !!userData?.id,
+    }
+  );
+
+  const { refetch } = useQuery(
+    ["GetUsersUsermeWithoutLocalStorage"],
+    GetUsersUsermeWithoutLocalStorage,
+    {
+      enabled: !!localStorage.getItem("token"),
+      onSuccess: (response) => {
+        setUserData(response.data.data);
+      },
     }
   );
 
@@ -113,12 +114,14 @@ const StudentProfile = () => {
     return data;
   };
 
-  const queries = useQueries(
-    userData?.subscribedTeachers.map((id) => ({
-      queryKey: ["data", id],
-      queryFn: () => GetTeacherAccountId(id),
-      enabled: !!userData?.subscribedTeachers.length,
-    }))
+  const teacherQueries = useQueries(
+    (userData?.subscribedTeachers?.length > 0) 
+      ? userData.subscribedTeachers.map((id) => ({
+          queryKey: ["data", id],
+          queryFn: () => GetTeacherAccountId(id),
+          enabled: !!id, 
+        }))
+      : [] 
   );
 
   return (
@@ -196,11 +199,11 @@ const StudentProfile = () => {
         </div>
       </div>
 
-      <div className="relative mt-14 mb-14">
+      <div className="relative mt-14 sm:mb-10 mb-0">
         <h1 className="title absolute top-0">Sotib olingan kurslar</h1>
         <Swiper
-          slidesPerView={1.5}
-          spaceBetween={16}
+          slidesPerView={1.2}
+          spaceBetween={10}
           navigation={true}
           breakpoints={{
             640: {
@@ -220,7 +223,7 @@ const StudentProfile = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {myCourses?.data.data?.map((item) => {
+          {myCourses?.data?.data?.map((item) => {
             return (
               <SwiperSlide key={item?.id}>
                 <NewCourseCard item={item} buy={true} type={true} />
@@ -229,11 +232,11 @@ const StudentProfile = () => {
           })}
         </Swiper>
       </div>
-      <div className="relative mt-14 mb-14">
+      <div className="relative sm:mt-14 mt-0 sm:mb-14 mb-4">
         <h1 className="title absolute top-0">Saqlangan kurslar</h1>
         <Swiper
-          slidesPerView={1.5}
-          spaceBetween={16}
+          slidesPerView={1.2}
+          spaceBetween={10}
           navigation={true}
           freeMode={true}
           breakpoints={{
@@ -253,7 +256,7 @@ const StudentProfile = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {mySavedCourses?.data.data?.map((item) => {
+          {mySavedCourses?.data?.data?.map((item) => {
             return (
               <SwiperSlide key={item?.id} className="">
                 <NewCourseCard save={true} item={item} />
@@ -262,7 +265,7 @@ const StudentProfile = () => {
           })}
         </Swiper>
       </div>
-      <div className="relative mt-14 sm:mb-5 mb-10">
+      <div className="relative sm:mt-14 mt-0 sm:mb-5 mb-10">
         <h1 className="title absolute top-0">Obunalar</h1>
         <Swiper
           slidesPerView={2}
@@ -290,7 +293,7 @@ const StudentProfile = () => {
           modules={[FreeMode, Navigation]}
           className="mySwiper"
         >
-          {queries?.map((item) => {
+          {teacherQueries?.map((item) => {
             return (
               <SwiperSlide key={item?.data?.data.id} className="">
                 <TeachersGroupCard item={item?.data?.data} type={true} />

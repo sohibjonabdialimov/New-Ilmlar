@@ -250,7 +250,7 @@ const UploadLesson = () => {
               <Form.Item
                 label={
                   <span className="text-secondary_color font-semibold text-base">
-                    Qo’shimcha fayl ( pdf, word, excel, ppt )
+                    Qo’shimcha fayl ( pdf, word, excel )
                   </span>
                 }
                 className="col-span-1 row-span-1"

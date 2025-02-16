@@ -13,17 +13,17 @@ import { useQuery } from "react-query";
 
 const columns = [
   {
-    title: "Yechib olindi",
+    title: "Pul miqdori",
     dataIndex: "credit",
     key: "credit",
   },
   {
-    title: "Izohi",
+    title: "Izoh",
     dataIndex: "comment",
     key: "comment",
   },
   {
-    title: "Chiqim ( pul yechib olingan )",
+    title: "Operatsiya vaqti",
     dataIndex: "created_at",
     key: "created_at",
     render: (created_at) => <p>{formatDate(created_at)}</p>,

@@ -307,20 +307,52 @@ const UploadCourse = () => {
                   label: "1 oy",
                 },
                 {
+                  value: 2,
+                  label: "2 oy",
+                },
+                {
                   value: 3,
                   label: "3 oy",
+                },
+                {
+                  value: 4,
+                  label: "4 oy",
+                },
+                {
+                  value: 5,
+                  label: "5 oy",
                 },
                 {
                   value: 6,
                   label: "6 oy",
                 },
                 {
+                  value: 7,
+                  label: "7 oy",
+                },
+                {
+                  value: 8,
+                  label: "8 oy",
+                },
+                {
                   value: 9,
                   label: "9 oy",
                 },
                 {
+                  value: 10,
+                  label: "10 oy",
+                },
+                {
+                  value: 11,
+                  label: "11 oy",
+                },
+                {
                   value: 12,
-                  label: "1 yil",
+                  label: "12 oy",
+                },
+                {
+                  value: 13,
+                  label: "umrbod",
                 },
               ]}
             />

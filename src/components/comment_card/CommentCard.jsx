@@ -5,7 +5,7 @@ const CommentCard = ({ item }) => {
     <div className="bg-[#F1F2F4] rounded-[16px] sm:p-3 p-3">
       <div className="flex items-center sm:gap-2 gap-1 mb-2">
         <img
-          className="sm:w-[40px] sm:h-[40px] w-[35px] h-[35px] rounded-full"
+          className="sm:w-[40px] sm:h-[40px] w-[35px] h-[35px] rounded-full object-cover"
           src={item?.profile_img ? item?.profile_img : avatar_comment}
           alt=""
         />

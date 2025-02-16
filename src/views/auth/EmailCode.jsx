@@ -39,7 +39,7 @@ const EmailCode = () => {
               Raqamingizni tasdiqlang
             </h1>
             <h3 className="text-secondary_color sm:text-xl text-sm font-medium sm:mb-10 mb-5">
-              Emailingizga yuborilgan 4 xonali raqamni kiriting
+              Emailingizga yuborilgan 6 xonali raqamni kiriting
             </h3>
             <div className="grid grid-cols-1 sm:gap-10 gap-3">
               <OTPInput

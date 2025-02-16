@@ -68,7 +68,7 @@ const HomePage = () => {
   return (
     <div className="pt-7 sm:pb-7 pb-2 sm:mb-0 mb-16">
       {newCourses.length && !isLoading ? (
-        <div className="relative mb-20">
+        <div className="relative sm:mb-20 mb-8">
           <h1 className="title absolute top-0">Yangi qo’shilgan kurslar</h1>
           {/* <iframe
           src="https://player.vimeo.com/video/1045989772?h=2ac395a2694246448051ee01faf135ce"
@@ -122,7 +122,7 @@ const HomePage = () => {
         ""
       )}
 
-      <div className="relative mb-20">
+      <div className="relative sm:mb-20 mb-8">
         <h1 className="title absolute top-0">Obuna bo‘ling va o‘rganing</h1>
 
         <Swiper
@@ -183,7 +183,7 @@ const HomePage = () => {
               return <NewCourseCard item={item} key={item.id} />;
             })}
       </div>
-      <div className="flex justify-center mb-20">
+      <div className="flex justify-center sm:mb-20 mb-8">
         <button
           onClick={() => {
             navigate("/courses");
@@ -194,7 +194,7 @@ const HomePage = () => {
           Hammasi ko’rish
         </button>
       </div>
-      <div className="relative mt-14 mb-10">
+      <div className="relative mt-14 sm:mb-10 mb-0">
         <h1 className="title absolute top-0">Bepul kurslar</h1>
         <Swiper
           slidesPerView={1.2}

@@ -185,10 +185,10 @@ function CourseInfo() {
       </div>
       <div className="grid grid-cols-2 sm:gap-10 gap-2 sm:pb-20 pb-5 sm:pt-12 pt-4">
         <div className="sm:col-span-1 col-span-2 flex flex-col justify-between">
-            <h1 className="sm:text-[2rem] sm:leading-[2.4rem] text-xl font-semibold sm:pb-8 pb-3">
+            <h1 className="sm:text-[2rem] sm:leading-[2.4rem] text-lg font-semibold sm:pb-8 pb-5">
               {course?.name}
             </h1>
-            <div className="flex justify-between gap-3 items-start mb-5">
+            <div className="flex justify-between gap-3 items-start mb-7">
               <div
                 onClick={() =>
                   navigate(`/teacher-profile/${course?.teacher_id}`)
@@ -313,7 +313,7 @@ function CourseInfo() {
       </div>
       <div className="flex gap-8">
         <div className="flex-grow flex-shrink-0 basis-0 sm:w-[72%] w-full">
-          <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px] sm:mb-16 mb-6">
+          <div className="sm:p-6 px-2 py-3 bg-[#f1f2f466] rounded-[16px] sm:mb-16 mb-6">
             <h2 className="sm:text-3xl text-xl text-main_color font-semibold sm:mb-6 mb-2">
               Kurs haqida qisqacha
             </h2>
@@ -321,7 +321,7 @@ function CourseInfo() {
               {course?.discription}
             </p>
           </div>
-          <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px] sm:mb-16 mb-6">
+          <div className="sm:p-6 px-2 py-3 bg-[#f1f2f466] rounded-[16px] sm:mb-16 mb-6">
             <h2 className="sm:text-3xl text-xl text-main_color font-semibold mb-6">
               Siz nimani o’rganasiz?
             </h2>
@@ -330,7 +330,7 @@ function CourseInfo() {
                 return (
                   <div
                     key={item?.id}
-                    className="border-[1px] border-[#DCDFE3] rounded-[24px] p-4 flex sm:gap-4 gap-2"
+                    className="border-[1px] border-[#DCDFE3] rounded-[24px] sm:p-4 p-3 flex sm:gap-4 gap-2"
                   >
                     <div className="sm:w-[32px] sm:h-[32px] w-[20px] h-[20px]">
                       <img className="w-full h-full" src={check_green} alt="" />
@@ -345,7 +345,7 @@ function CourseInfo() {
               })}
             </div>
           </div>
-          <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px]">
+          <div className="sm:p-6 px-2 py-3 bg-[#f1f2f466] rounded-[16px]">
             <h2 className="sm:text-3xl text-xl text-main_color font-semibold mb-6">
               Video darslar
             </h2>
@@ -359,7 +359,7 @@ function CourseInfo() {
             </div>
             <div className="w-full">
               {course?.videos.map((module, index) => (
-                <div className="border-dotted accordion-trigger" key={index}>
+                <div className="border-dotted accordion-trigger flex items-center gap-2" key={index}>
                   <div className="flex items-center sm:gap-3 gap-1">
                     <img className="sm:w-[20px] w-[15px]" src={right} alt="" />
                     <p className="line-clamp-1">{module.title}</p>

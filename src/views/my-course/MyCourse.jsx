@@ -138,7 +138,7 @@ const MyCourse = () => {
                 <h1 className="sm:text-[2rem] sm:leading-[2.4rem] text-xl font-semibold sm:pb-8 pb-3">
                   {myCourse?.name}
                 </h1>
-                <div className="flex justify-between gap-3 items-start mb-5">
+                <div className="flex sm:justify-start justify-between sm:gap-28 gap-3 items-center mb-5">
                   <div
                     onClick={() =>
                       navigate(`/teacher-profile/${course?.teacher_id}`)
@@ -285,17 +285,11 @@ const MyCourse = () => {
                   {myCourse?.videos.length} ta video dars
                 </p>
               </div>
-              {/* <div className="flex items-center sm:gap-4 gap-2">
-                <img className="w-[18px] h-[18px]" src={time} alt="" />
-                <p className="text-[#1B1D20] font-normal sm:text-base text-sm">
-                  1.40 soat
-                </p>
-              </div> */}
             </div>
             <div className="w-full">
               {myCourse?.videos.map((module, index) => (
-                <di
-                  className="border-dotted accordion-trigger flex items-center gap-2"
+                <div
+                  className="border-dotted accordion-trigger flex items-center gap-3"
                   key={index}
                 >
                   <div className="flex items-center sm:gap-3 gap-1">
@@ -310,7 +304,7 @@ const MyCourse = () => {
                   >
                     Ko'rish
                   </button>
-                </di>
+                </div>
               ))}
             </div>
           </div>

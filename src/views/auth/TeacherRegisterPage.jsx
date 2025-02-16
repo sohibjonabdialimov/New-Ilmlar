@@ -38,7 +38,7 @@ const TeacherRegisterPage = () => {
     <>
       {contextHolder}
 
-      <div className="p-6 w-full gap-6 sm:h-[100dvh] min-h-[100dvh]">
+      <div className="p-6 pt-0 w-full gap-6 sm:h-[100dvh] min-h-[100dvh]">
         <div className="sm:mx-[50px] mx-auto h-full flex justify-center items-center">
           <Form
             layout="vertical"
@@ -48,14 +48,14 @@ const TeacherRegisterPage = () => {
               submitHandler();
             }}
           >
-            <h1 className="text-main_color sm:text-[25px] text-xl sm:leading-[30px] font-semibold text-center mb-3">
+            <h1 className="text-main_color sm:text-[25px] text-lg sm:leading-[30px] font-semibold text-center mb-3">
               Katta imkoniyatlar dunyosiga qadam qo'ying
             </h1>
-            <div className="grid grid-cols-2 grid-rows-2 gap-5">
+            <div className="grid sm:grid-cols-2 sm:grid-rows-2 grid-cols-1 sm:gap-5 gap-1">
               <Form.Item
                 className="mb-2 col-span-1 row-span-1"
                 label={
-                  <span className="text-secondary_color  font-semibold sm:text-base text-sm">
+                  <span className="text-secondary_color font-semibold sm:text-base text-sm">
                     Ism
                   </span>
                 }
@@ -298,7 +298,7 @@ const TeacherRegisterPage = () => {
                 />
               </Form.Item>
             </div>
-            <div className="w-[30%] mx-auto flex justify-center items-center flex-col">
+            <div className="sm:w-[30%] w-full mx-auto flex justify-center items-center flex-col">
               <button
                 type="submit"
                 className="w-full my-[10px] sm:text-base text-sm sm:py-2 py-1 text-white rounded-2xl bg-blue_color cursor-pointer transition-opacity hover:opacity-85"

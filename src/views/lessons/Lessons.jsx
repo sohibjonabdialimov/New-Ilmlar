@@ -80,7 +80,7 @@ const Lesson = () => {
           <button className="sm:text-lg text-sm">Ortga qaytish</button>
         </div>
         <div className="cursor-pointer mobile_lessons_menu" onClick={() => setOpen(true)}>
-          <i className="fa-solid fa-list-ul text-2xl"></i>
+          <i className="fa-solid fa-list-ul text-xl"></i>
         </div>
       </div>
 
@@ -130,8 +130,8 @@ const Lesson = () => {
               <button className="sm:text-xl text-base">Oldingi dars</button>
             </div>
             <div className="flex items-center gap-3 cursor-pointer">
-              <i className="fa-solid fa-arrow-right-long sm:text-xl text-base"></i>
               <button className="sm:text-xl text-base">Keyingi dars</button>
+              <i className="fa-solid fa-arrow-right-long sm:text-xl text-base"></i>
             </div>
           </div>
         </div>
@@ -173,9 +173,6 @@ const Lesson = () => {
                 </li>
               );
             })}
-            <li>
-              <button></button>
-            </li>
           </ul>
         </div>
       </Drawer>

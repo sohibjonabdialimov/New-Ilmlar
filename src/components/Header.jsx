@@ -11,7 +11,7 @@ import { useCallback, useContext, useState } from "react";
 import "./styles.css";
 import { ProfileContext } from "../context/ProfileProvider";
 import { useQuery } from "react-query";
-import { GetUsersUserme } from "../services/api";
+import { GetUsersUsermeWithoutLocalStorage } from "../services/api";
 import { CoursesContext } from "../context/CoursesProvider";
 import { debounce } from "../utils/debounce";
 
@@ -24,8 +24,7 @@ const Header = () => {
   const [text_1, setText_1] = useState("");
 
   useQuery(
-    ["GetUsersUserme"],
-    () => GetUsersUserme(localStorage.getItem("token")),
+    ["GetUsersUsermeWithoutLocalStorage"], GetUsersUsermeWithoutLocalStorage,
     {
       enabled: !!localStorage.getItem("token"),
       onSuccess: (response) => {
@@ -40,19 +39,7 @@ const Header = () => {
   const onClose = () => {
     setOpen(false);
   };
-  // function toggleFullScreen() {
-  //   if (!document.fullscreenElement) {
-  //     document.documentElement.requestFullscreen();
-  //   } else if (document.exitFullscreen) {
-  //     document.exitFullscreen();
-  //   }
-  // }
-  // const handleSearchInput = (e) => {
-  //   console.log(e.target.value);
 
-  //   setText(e.target.value);
-  //   navigate("/courses");
-  // };
 
   function exitHandle() {
     localStorage.removeItem("token");
@@ -102,7 +89,6 @@ const Header = () => {
 
   const debouncedSearch = useCallback(
     debounce((value) => {
-      console.log(value);
       setText(value);
       navigate("/courses");
     }, 700),
@@ -178,7 +164,7 @@ const Header = () => {
             {!userData?.is_verified ? (
               <button
                 onClick={() => navigate("/login")}
-                className="btn p-[8px_25px]"
+                className="btn sm:text-base text-xs sm:p-[8px_25px] p-[6px_15px]"
               >
                 Kirish
               </button>
