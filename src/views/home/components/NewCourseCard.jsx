@@ -109,7 +109,7 @@ const NewCourseCard = ({ type, role, item, buy, save }) => {
           <img
             className="w-[13px] h-[12.4px] object-cover"
             src={star}
-            alt="Ilmlar yulduz"
+            alt="Ilmlar"
           />
           <p className="font-normal text-[11px] leading-5 text-secondary_color">
             {Number(item?.average_score).toFixed(1)} ({item?.comments_count}{" "}

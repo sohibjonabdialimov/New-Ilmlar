@@ -235,7 +235,6 @@ const MyCourse = () => {
               {myCourse?.discription}
             </p>
           </div>
-          <ShareDropdown />
 
           <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px]">
             <h2 className="sm:text-3xl text-xl text-main_color font-semibold sm:mb-6 mb-2">
