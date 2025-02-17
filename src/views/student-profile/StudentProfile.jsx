@@ -232,7 +232,7 @@ const StudentProfile = () => {
           })}
         </Swiper>
       </div>
-      <div className="relative sm:mt-14 mt-0 sm:mb-14 mb-4">
+      <div className="relative sm:mt-14 mt-0 sm:mb-14 mb-4npm ">
         <h1 className="title absolute top-0">Saqlangan kurslar</h1>
         <Swiper
           slidesPerView={1.2}
