@@ -17,6 +17,7 @@ import {
 import { LessonsContext } from "../../context/LessonsProvider";
 import Skeleton from "react-loading-skeleton";
 import { ProfileContext } from "../../context/ProfileProvider";
+import ShareDropdown from "../../components/ShareButton";
 const { TextArea } = Input;
 const MyCourse = () => {
   const navigate = useNavigate();
@@ -234,6 +235,7 @@ const MyCourse = () => {
               {myCourse?.discription}
             </p>
           </div>
+          <ShareDropdown />
 
           <div className="sm:p-6 p-4 bg-[#f1f2f466] rounded-[16px]">
             <h2 className="sm:text-3xl text-xl text-main_color font-semibold sm:mb-6 mb-2">
@@ -271,19 +273,13 @@ const MyCourse = () => {
           </div>
 
           <div className="flex justify-end items-center sm:mb-5 mb-[35px] sm:mt-10 mt-4 sm:gap-5 gap-3">
-            <div
-              // onClick={() => navigate(-1)}
-              className="btn inline-flex items-center sm:gap-3 gap-2 cursor-pointer sm:p-[10px_20px] p-[5px_15px]"
-            >
-              <i className="fa-solid fa-share-nodes"></i>
-              <button className="sm:text-lg text-sm">Ulashish</button>
-            </div>
+            <ShareDropdown newUrl={`${import.meta.env.VITE_URL}/course/${id}`} />
             <div
               onClick={showModal}
-              className="btn inline-flex items-center sm:gap-3 gap-2 cursor-pointer sm:p-[10px_20px] p-[5px_15px]"
+              className="btn inline-flex items-center sm:gap-2 gap-1 cursor-pointer sm:p-[8px_15px] p-[5px_15px]"
             >
               <i className="fa-regular fa-face-rolling-eyes"></i>
-              <button className="sm:text-lg text-sm">Baholash</button>
+              <button className="sm:text-base text-sm">Baholash</button>
             </div>
           </div>
 

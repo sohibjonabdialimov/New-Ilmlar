@@ -12,11 +12,13 @@ import {
 import { useState } from "react";
 import {
   GetCourseDetail,
+  GetPercentage,
   PatchCoursesComplete,
   PostCourses,
 } from "../../../services/api";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
+import { formatPrice } from "../../../utils/formatPrice";
 
 const UploadCourse = () => {
   const [form] = Form.useForm();
@@ -28,14 +30,18 @@ const UploadCourse = () => {
   const [inputs, setInputs] = useState([{ name: "" }]);
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+  const [prise, setPrise] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
   const text = location.state?.text;
 
+  const { data: percentage } = useQuery(["GetPercentage"], GetPercentage);
+
   const { data: courseDetail } = useQuery(
     ["GetCourseDetail", localStorage.getItem("lesson_id")],
-    () => GetCourseDetail(localStorage.getItem("lesson_id")),{
-      enabled: !!localStorage.getItem("lesson_id")
+    () => GetCourseDetail(localStorage.getItem("lesson_id")),
+    {
+      enabled: !!localStorage.getItem("lesson_id"),
     }
   );
 
@@ -98,7 +104,7 @@ const UploadCourse = () => {
     formData.append("file", imageFile);
     formData.append("trieler", videoFile);
     formData.append("category", value?.category);
-    formData.append("price", value?.price);
+    formData.append("price", +value?.price || 0);
     formData.append("period", value?.period);
     formData.append("level", value?.level);
     formData.append("language", value?.language);
@@ -130,7 +136,7 @@ const UploadCourse = () => {
     PatchCoursesComplete({ course_id: localStorage.getItem("lesson_id") })
       .then((res) => {
         console.log(res);
-        navigate('/my-profile')
+        navigate("/my-profile");
       })
       .catch((error) => {
         console.log(error);
@@ -158,6 +164,7 @@ const UploadCourse = () => {
       </div>
     );
   }
+
   return (
     <div className="py-7 sm:mb-0 mb-16 sm:px-10 px-0">
       {contextHolder}
@@ -182,7 +189,7 @@ const UploadCourse = () => {
           variant: "filled",
         }}
       >
-        <div className="grid grid-cols-4 grid-rows-3 w-full gap-x-10">
+        <div className="grid grid-cols-4 grid-rows-3 w-full gap-x-10 pb-1">
           <Form.Item
             label={
               <span className="text-secondary_color font-semibold text-base">
@@ -452,17 +459,31 @@ const UploadCourse = () => {
               </span>
             }
             name="price"
-            rules={[
-              {
-                required: true,
-                message: "Please input!",
-              },
-            ]}
+            // rules={[
+            //   {
+            //     required: true,
+            //     message: "Please input!",
+            //   },
+            // ]}
           >
             <InputNumber
+              onChange={(val) => {
+                setPrise(val);
+              }}
+              max={10000000000}
+              min={0}
+              value={prise || 0}
               placeholder="Narxni kiriting..."
               className="w-full py-1 px-2 rounded-[10px] text-base"
             />
+            <p className="mt-1 text-base text-slate-800 font-medium">
+              Sotuvdagi narxi:{" "}
+              <span className="block">
+                {formatPrice(
+                  +prise * (1 + percentage?.data.data.percent / 100)
+                )} {" "} so'm
+              </span>
+            </p>
           </Form.Item>
         </div>
         <div className="flex sm:gap-16 gap-8">

@@ -15,7 +15,9 @@
   background-color: #fff;
   border-radius: 16px;
 }
-
+.buy_btn{
+  width: calc(100% - 45px);
+}
 @media only screen and (max-width: 540px) {
   .accordion-trigger {
     border: 1.5px dashed #dcdfe3;

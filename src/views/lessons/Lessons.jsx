@@ -173,14 +173,18 @@ const Lesson = () => {
             <p className="text-[#758195] pb-6 sm:text-lg text-sm">
               {lessonData?.data.data?.description}
             </p>
-            <div className="sm:mb-6 mb-4">
+            {
+              lessonData?.data.data?.file && <div className="sm:mb-6 mb-4">
               <a
+                target="_blank"
                 href={lessonData?.data.data?.file}
                 className="text-blue_color sm:text-xl text-base font-normal underline"
               >
                 Darsga oid fayl
               </a>
             </div>
+            }
+            
             <hr />
             <div className="sm:mt-6 mt-4 flex justify-between">
               <button

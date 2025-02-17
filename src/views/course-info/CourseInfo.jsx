@@ -25,6 +25,7 @@ import { useContext, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { ProfileContext } from "../../context/ProfileProvider";
 import { LessonsContext } from "../../context/LessonsProvider";
+import ShareDropdown from "../../components/ShareButton";
 
 function CourseInfo() {
   const navigate = useNavigate();
@@ -184,58 +185,54 @@ function CourseInfo() {
       </div>
       <div className="grid grid-cols-2 sm:gap-10 gap-2 sm:pb-20 pb-5 sm:pt-12 pt-4">
         <div className="sm:col-span-1 col-span-2 flex flex-col justify-between">
-            <h1 className="sm:text-[2rem] sm:leading-[2.4rem] text-lg font-semibold sm:pb-8 pb-5">
-              {course?.name}
-            </h1>
-            <div className="flex justify-between gap-3 items-start mb-7">
-              <div
-                onClick={() =>
-                  navigate(`/teacher-profile/${course?.teacher_id}`)
+          <h1 className="sm:text-[2rem] sm:leading-[2.4rem] text-lg font-semibold sm:pb-8 pb-5">
+            {course?.name}
+          </h1>
+          <div className="flex justify-between gap-3 items-start mb-7">
+            <div
+              onClick={() => navigate(`/teacher-profile/${course?.teacher_id}`)}
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <img
+                className="sm:w-[60px] sm:h-[60px] w-[40px] h-[40px] object-cover rounded-full"
+                src={
+                  teacherInfo?.profile_img ? teacherInfo?.profile_img : teacher
                 }
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <img
-                  className="sm:w-[60px] sm:h-[60px] w-[40px] h-[40px] object-cover rounded-full"
-                  src={
-                    teacherInfo?.profile_img
-                      ? teacherInfo?.profile_img
-                      : teacher
-                  }
-                  alt="O'qituvchi rasmi"
-                />
-                <div className="flex flex-col gap-1">
-                  <h2 className="sm:text-xl text-sm font-medium">
-                    {teacherInfo?.first_name} {teacherInfo?.last_name}
-                  </h2>
-                  <p className="sm:text-base text-xs font-normal hidden sm:block">
-                    {teacherInfo?.spiceal ? teacherInfo?.spiceal : "O'qituvchi"}
-                  </p>
-                </div>
+                alt="O'qituvchi rasmi"
+              />
+              <div className="flex flex-col gap-1">
+                <h2 className="sm:text-xl text-sm font-medium">
+                  {teacherInfo?.first_name} {teacherInfo?.last_name}
+                </h2>
+                <p className="sm:text-base text-xs font-normal hidden sm:block">
+                  {teacherInfo?.spiceal ? teacherInfo?.spiceal : "O'qituvchi"}
+                </p>
               </div>
-              {isLoading || false ? (
-                <Skeleton className="p-1" width={120} />
-              ) : subsciptionData?.data.data.subscribed ? (
-                <button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    handleSubs(course?.teacher_id);
-                  }}
-                  className="unbtn sm:p-[5px_15px] p-[5px_10px] text-xs"
-                >
-                  Obuna bo'lgansiz
-                </button>
-              ) : (
-                <button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    handleSubs(course?.teacher_id);
-                  }}
-                  className="btn sm:p-[5px_15px] p-[5px_10px] text-xs"
-                >
-                  Obuna bo'lish
-                </button>
-              )}
             </div>
+            {isLoading || false ? (
+              <Skeleton className="p-1" width={120} />
+            ) : subsciptionData?.data.data.subscribed ? (
+              <button
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleSubs(course?.teacher_id);
+                }}
+                className="unbtn sm:p-[5px_15px] p-[5px_10px] text-xs"
+              >
+                Obuna bo'lgansiz
+              </button>
+            ) : (
+              <button
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleSubs(course?.teacher_id);
+                }}
+                className="btn sm:p-[5px_15px] p-[5px_10px] text-xs"
+              >
+                Obuna bo'lish
+              </button>
+            )}
+          </div>
 
           <div className="grid grid-cols-2 sm:gap-y-6 gap-y-3">
             <div className="flex items-center sm:gap-3 gap-1 sm:text-lg text-sm">
@@ -358,7 +355,10 @@ function CourseInfo() {
             </div>
             <div className="w-full">
               {course?.videos.map((module, index) => (
-                <div className="border-dotted accordion-trigger flex items-center gap-2" key={index}>
+                <div
+                  className="border-dotted accordion-trigger flex items-center gap-2"
+                  key={index}
+                >
                   <div className="flex items-center sm:gap-3 gap-1">
                     <img className="sm:w-[20px] w-[15px]" src={right} alt="" />
                     <p className="line-clamp-1">{module.title}</p>
@@ -415,11 +415,12 @@ function CourseInfo() {
           </div>
           <hr />
 
-          <div
-            onClick={showModal}
-            className="flex justify-center items-center pt-5"
-          >
-            <button className="w-full py-[10px] rounded-[100px] text-white bg-blue_color text-base font-medium">
+          <div className="flex justify-center items-center pt-5 gap-2">
+            <ShareDropdown type={true} />
+            <button
+              onClick={showModal}
+              className="buy_btn py-[10px] rounded-[100px] text-white bg-blue_color hover:bg-blue-500 transition-colors text-base font-medium"
+            >
               Sotib olish
             </button>
           </div>

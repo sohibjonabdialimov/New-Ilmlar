@@ -1,1 +1,0 @@
-import{j as e}from"./index-DaLwsWWZ.js";const t=()=>e.jsx(e.Fragment,{children:e.jsxs("div",{className:"skeleton-wrapper",children:[e.jsx("div",{className:"skeleton-image"}),e.jsx("div",{className:"skeleton-text"}),e.jsx("div",{className:"skeleton-text"}),e.jsx("div",{className:"skeleton-text short"})]})});export{t as C};

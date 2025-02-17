@@ -116,7 +116,6 @@ const TeacherProfile = () => {
   const allData = queries
     ?.map((query) => query?.data?.data)
     .filter((item) => item !== undefined);
-    console.log(allData);
     
   return (
     <div className="py-7">
