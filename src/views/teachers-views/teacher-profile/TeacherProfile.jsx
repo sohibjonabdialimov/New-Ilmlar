@@ -8,7 +8,7 @@ import axiosT from "../../../services/axios";
 import { useQueries, useQuery } from "react-query";
 import {
   GetTeacherAccount,
-  GetUsersUsermeWithoutLocalStorage,
+  GetUsersUsermeWithoutStorage,
   PostEditProfileImage,
   PutUsers,
 } from "../../../services/api";
@@ -41,8 +41,8 @@ const TeacherProfile = () => {
   };
 
   const { refetch: teacherRefetch } = useQuery(
-    ["GetUsersUsermeWithoutLocalStorage"],
-    GetUsersUsermeWithoutLocalStorage,
+    ["GetUsersUsermeWithoutStorage"],
+    GetUsersUsermeWithoutStorage,
     {
       onSuccess(data) {
         setUserData(data.data.data);

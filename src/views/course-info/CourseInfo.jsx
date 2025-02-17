@@ -71,7 +71,6 @@ function CourseInfo() {
         setCourse(data.data.data);
         setComments(data.data.data.commits);
         setCourseId(data.data.data.id);
-        localStorage.setItem("courseId", data.data.data.id);
         setUrl(
           data.data.data.trieler?.split("/")[
             data.data.data.trieler?.split("/").length - 1
@@ -376,7 +375,7 @@ function CourseInfo() {
                   ) : (
                     <button
                       disabled
-                      className="text-blue_color font-medium sm:text-xl text-xs"
+                      className="text-gray-400 opacity-70 cursor-not-allowed font-medium sm:text-xl text-xs"
                     >
                       Yopiq
                     </button>

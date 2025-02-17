@@ -11,7 +11,7 @@ import { useCallback, useContext, useState } from "react";
 import "./styles.css";
 import { ProfileContext } from "../context/ProfileProvider";
 import { useQuery } from "react-query";
-import { GetUsersUsermeWithoutLocalStorage } from "../services/api";
+import { GetUsersUsermeWithoutStorage } from "../services/api";
 import { CoursesContext } from "../context/CoursesProvider";
 import { debounce } from "../utils/debounce";
 
@@ -24,7 +24,7 @@ const Header = () => {
   const [text_1, setText_1] = useState("");
 
   useQuery(
-    ["GetUsersUsermeWithoutLocalStorage"], GetUsersUsermeWithoutLocalStorage,
+    ["GetUsersUsermeWithoutStorage"], GetUsersUsermeWithoutStorage,
     {
       enabled: !!localStorage.getItem("token"),
       onSuccess: (response) => {

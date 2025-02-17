@@ -4,10 +4,11 @@ import { useQuery } from "react-query";
 import "./layout.css";
 
 import { LessonsContext } from "../context/LessonsProvider";
-import { GetCourseDetailWithoutToken } from "../services/api";
+import { GetCourseDetail, GetCourseDetailWithoutToken } from "../services/api";
 
 const LessonLayout = ({ children }) => {
-  const { lessons, setLessons, courseId } = useContext(LessonsContext);
+  const { lessons, setLessons, courseId, setIsPurchased, isPurchased } =
+    useContext(LessonsContext);
   const { id, lessonId } = useParams();
   const navigate = useNavigate();
 
@@ -19,6 +20,12 @@ const LessonLayout = ({ children }) => {
     }
   );
 
+  useQuery(["GetCourseDetail"], () => GetCourseDetail(id), {
+    enabled: !!id,
+    onSuccess(data) {
+      setIsPurchased(data.data.data.is_purchased);
+    },
+  });
   useEffect(() => {
     if (data?.data?.data?.videos) {
       setLessons(data.data.data.videos);
@@ -26,8 +33,8 @@ const LessonLayout = ({ children }) => {
   }, [data, setLessons]);
 
   function changeVideo(id, is_free) {
-    if (is_free) {
-      navigate(`/courses/${courseId}/lesson/${id}`);
+    if (is_free || isPurchased) {
+      navigate(`/course/${courseId}/lesson/${id}`);
     }
   }
 
@@ -44,7 +51,7 @@ const LessonLayout = ({ children }) => {
                 <li
                   onClick={() => changeVideo(item.id, item.is_free)}
                   className={`px-4 flex transition-colors py-5 items-center border-b-2 gap-2 hover:bg-[#eee] ${
-                    item?.is_free
+                    item?.is_free || isPurchased
                       ? "opacity-100 cursor-pointer select-auto"
                       : "opacity-40 cursor-not-allowed select-none"
                   } ${
@@ -52,7 +59,7 @@ const LessonLayout = ({ children }) => {
                   }`}
                   key={item.id}
                 >
-                  {item?.is_free ? (
+                  {item?.is_free || isPurchased ? (
                     <i className="fa-regular fa-circle-play inline-block text-base"></i>
                   ) : (
                     <i className="fa-solid fa-lock inline-block text-base"></i>

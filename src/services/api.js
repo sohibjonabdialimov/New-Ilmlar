@@ -48,6 +48,7 @@ export const GetCourseDetail = (id) => {
   });
 };
 
+
 export const GetPurchasedCourses = () => {
   return axiosT.get("/api/courses/purchased-courses", {
     headers: {
@@ -75,7 +76,7 @@ export const GetUsersUserme = (token) => {
     },
   });
 };
-export const GetUsersUsermeWithoutLocalStorage = () => {
+export const GetUsersUsermeWithoutStorage = () => {
   return axiosT.get("/api/users/userme", {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -152,14 +153,6 @@ export const GetVideoInfo = (id) => {
 };
 export const GetTeacherAccount = (id) => {
   return axiosT.get(`/api/users/teacheraccout/${id}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "multipart/form-data",
-    },
-  });
-};
-export const GetCourseDetailWithToken = (id) => {
-  return axiosT.get(`/api/courses/course/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "multipart/form-data",

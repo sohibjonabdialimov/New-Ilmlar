@@ -15,7 +15,7 @@ import { useQueries, useQuery } from "react-query";
 import {
   GetPurchasedCourses,
   GetSavedCourses,
-  GetUsersUsermeWithoutLocalStorage,
+  GetUsersUsermeWithoutStorage,
   PostEditProfileImage,
   PutUsers,
 } from "../../services/api";
@@ -94,8 +94,8 @@ const StudentProfile = () => {
   );
 
   const { refetch } = useQuery(
-    ["GetUsersUsermeWithoutLocalStorage"],
-    GetUsersUsermeWithoutLocalStorage,
+    ["GetUsersUsermeWithoutStorage"],
+    GetUsersUsermeWithoutStorage,
     {
       enabled: !!localStorage.getItem("token"),
       onSuccess: (response) => {
@@ -232,7 +232,7 @@ const StudentProfile = () => {
           })}
         </Swiper>
       </div>
-      <div className="relative sm:mt-14 mt-0 sm:mb-14 mb-4npm ">
+      <div className="relative sm:mt-14 mt-0 sm:mb-14 mb-4">
         <h1 className="title absolute top-0">Saqlangan kurslar</h1>
         <Swiper
           slidesPerView={1.2}

@@ -6,7 +6,7 @@ import { ProfileContext } from "../../../context/ProfileProvider";
 import { formatDate } from "../../../utils/formatDate";
 import {
   CardWithDrawal,
-  GetUsersUsermeWithoutLocalStorage,
+  GetUsersUsermeWithoutStorage,
 } from "../../../services/api";
 import TextArea from "antd/es/input/TextArea";
 import { useQuery } from "react-query";
@@ -36,8 +36,8 @@ const AccountBalance = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const { refetch: teacherRefetch } = useQuery(
-    ["GetUsersUsermeWithoutLocalStorage"],
-    GetUsersUsermeWithoutLocalStorage,
+    ["GetUsersUsermeWithoutStorage"],
+    GetUsersUsermeWithoutStorage,
     {
       onSuccess(data) {
         setUserData(data.data.data);

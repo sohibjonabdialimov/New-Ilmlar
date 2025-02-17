@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { ProfileContext } from "../../../context/ProfileProvider";
 import { useContext, useEffect, useRef } from "react";
 import {
-  GetUsersUsermeWithoutLocalStorage,
+  GetUsersUsermeWithoutStorage,
   PostEditProfileImage,
   PutUsers,
 } from "../../../services/api";
@@ -38,8 +38,8 @@ const NonActiveProfile = () => {
   };
 
   const { refetch: teacherRefetch } = useQuery(
-    ["GetUsersUsermeWithoutLocalStorage"],
-    GetUsersUsermeWithoutLocalStorage,
+    ["GetUsersUsermeWithoutStorage"],
+    GetUsersUsermeWithoutStorage,
     {
       onSuccess(data) {
         setUserData(data.data.data);

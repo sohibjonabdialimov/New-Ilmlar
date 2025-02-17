@@ -1,7 +1,7 @@
 import { Button, Form, Input, message, Radio, Spin, Upload } from "antd";
 import { useState } from "react";
 import {
-  GetCourseDetailWithToken,
+  GetCourseDetail,
   PostCoursesVideos,
 } from "../../../services/api";
 import SuccessResult from "../../../components/SuccessResult";
@@ -18,8 +18,8 @@ const UploadLesson = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const { data: courseDetail } = useQuery(
-    ["GetCourseDetailWithToken", success],
-    () => GetCourseDetailWithToken(localStorage.getItem("lesson_id"))
+    ["GetCourseDetail", success],
+    () => GetCourseDetail(localStorage.getItem("lesson_id"))
   );
   function onCourseAdd() {
     setSuccess(false);

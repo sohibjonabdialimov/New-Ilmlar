@@ -11,7 +11,7 @@ import {
 } from "antd";
 import { useState } from "react";
 import {
-  GetCourseDetailWithToken,
+  GetCourseDetail,
   PatchCoursesComplete,
   PostCourses,
 } from "../../../services/api";
@@ -33,8 +33,8 @@ const UploadCourse = () => {
   const text = location.state?.text;
 
   const { data: courseDetail } = useQuery(
-    ["GetCourseDetailWithToken", localStorage.getItem("lesson_id")],
-    () => GetCourseDetailWithToken(localStorage.getItem("lesson_id")),{
+    ["GetCourseDetail", localStorage.getItem("lesson_id")],
+    () => GetCourseDetail(localStorage.getItem("lesson_id")),{
       enabled: !!localStorage.getItem("lesson_id")
     }
   );
