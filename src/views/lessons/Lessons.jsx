@@ -93,24 +93,26 @@ const Lesson = () => {
     }
   }, [lessons, lessonId, isPurchased]);
 
-  function nextLesson(id) {
-    const currentIndex = lessons.findIndex((item) => item.id === id);
+  function nextLesson(lesson_id) {
+    const currentIndex = lessons.findIndex((item) => item.id === lesson_id);
     const nextLessonId = lessons[currentIndex + 1]?.id;
+    const isNext = isPurchased
+      ? !!lessons[currentIndex + 1]?.id
+      : !!lessons[currentIndex + 1]?.id && lessons[currentIndex + 1]?.is_free;
 
-    if (!nextLessonId) {
+    if (!isNext) {
       return;
     }
-    setIsNext(false);
     navigate(`/course/${id}/lesson/${nextLessonId}`);
   }
 
   function prevLesson(id) {
     const currentIndex = lessons.findIndex((item) => item.id === id);
     const prevLessonId = lessons[currentIndex - 1]?.id;
-    if (!prevLessonId) {
+
+    if (isPrev || !prevLessonId) {
       return;
     }
-    setIsPrev(false);
     navigate(`/course/${id}/lesson/${prevLessonId}`);
   }
   function onBack() {
