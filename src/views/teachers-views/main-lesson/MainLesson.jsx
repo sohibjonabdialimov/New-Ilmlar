@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import { GetVideoInfo } from "../../../services/api";
 import Vimeo from "@vimeo/player";
 import { Spin } from "antd";
+import VimeoPlayer from "../../../components/VimeoPlayer";
 
 const MainLesson = () => {
   const navigate = useNavigate();
@@ -57,7 +58,6 @@ const MainLesson = () => {
           <button className="sm:text-lg text-sm">Ortga qaytish</button>
         </div>
         <div
-          // onClick={() => navigate(-1)}
           className="btn inline-flex items-center sm:gap-3 gap-1 cursor-pointer sm:p-[4px_20px] p-[5px_10px]"
         >
           <i className="fa-regular fa-pen-to-square sm:text-base text-xs"></i>
@@ -66,27 +66,17 @@ const MainLesson = () => {
       </div>
       <div className="sm:pb-8 pb-10 sm:pt-12 pt-5">
         <div className="h-[50%] rounded-[16px]">
-          {/* <video controls className="w-full aspect-[2/1] rounded-[16px]">
-            <source
-              src="https://static.vecteezy.com/system/resources/previews/007/433/346/mp4/close-up-waves-on-sunset-travel-destinations-free-video.mp4"
-              type="video/mp4"
-            ></source>
-          </video> */}
-          {isLoading ? (
-            <div className="flex justify-center h-[10rem] items-center">
-              <Spin size="large" />
-            </div>
-          ) : url ? (
-            <iframe
-              src={`https://player.vimeo.com/video/${url}?h=2ac395a2694246448051ee01faf135ce&title=0&byline=0&portrait=0`}
-              className="w-full aspect-[5/2] rounded-[16px]"
-              frameBorder={0}
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-            />
-          ) : (
-            <p>Video topilmadi yoki noto'g'ri ID.</p>
-          )}
+        <div className="h-[50%] rounded-[16px]">
+            {isLoading ? (
+              <div className="flex justify-center h-[10rem] items-center">
+                <Spin size="large" />
+              </div>
+            ) : url ? (
+              <VimeoPlayer videoId={url} />
+            ) : (
+              <p>Video topilmadi yoki noto'g'ri ID.</p>
+            )}
+          </div>
         </div>
         <div>
           <h1 className="sm:text-3xl text-lg sm:pt-7 pt-4 font-semibold sm:pb-8 pb-3 text-main_color">

@@ -14,23 +14,27 @@ import { GetCourseDetail } from "../../../services/api";
 import { useContext, useState } from "react";
 import { formatPrice } from "../../../utils/formatPrice";
 import { TeacherDataContext } from "../../../context/TeacherDataProvider";
+import VimeoPlayer from "../../../components/VimeoPlayer";
 function TeacherCourseInfo() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [comments, setComments] = useState([]);
   const { setCourse, course } = useContext(TeacherDataContext);
-
+  const [url, setUrl] = useState(null);
   useQuery(["GetCourseDetail"], () => GetCourseDetail(id), {
     onSuccess(data) {
       console.log(data.data.data);
       setCourse(data.data.data);
       setComments(data.data.data.commits);
+      setUrl(
+        data.data.data.trieler?.split("/")[
+          data.data.data.trieler?.split("/").length - 1
+        ]
+      );
     },
   });
   const handeEditFunction = (e) => {
     e.stopPropagation();
-
-    console.log("Hello");
   };
 
   return (
@@ -107,11 +111,15 @@ function TeacherCourseInfo() {
           </div>
         </div>
         <div className="sm:col-span-1 col-span-2">
-          <img
-            className="w-full h-full aspect-[8/7] rounded-[16px]"
-            src={course?.obloshka}
-            alt=""
-          />
+        {course?.trieler ? (
+            <VimeoPlayer videoId={url} />
+          ) : (
+            <img
+              className="w-full h-full aspect-[7/6] object-fill rounded-[16px]"
+              src={course?.obloshka}
+              alt="Kurs obloshka image"
+            />
+          )}
         </div>
       </div>
       <div className="flex gap-8">

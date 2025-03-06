@@ -10,7 +10,6 @@ import "swiper/css/navigation";
 import { Navigation, FreeMode } from "swiper/modules";
 import CommentCard from "../../components/comment_card/CommentCard";
 import { useQuery } from "react-query";
-// import Vimeo from "@vimeo/player";
 import {
   GetBuyCourse,
   GetCourseDetailWithoutToken,
@@ -26,6 +25,7 @@ import Skeleton from "react-loading-skeleton";
 import { ProfileContext } from "../../context/ProfileProvider";
 import { LessonsContext } from "../../context/LessonsProvider";
 import ShareDropdown from "../../components/ShareButton";
+import VimeoPlayer from "../../components/VimeoPlayer";
 
 function CourseInfo() {
   const navigate = useNavigate();
@@ -72,6 +72,7 @@ function CourseInfo() {
         setCourse(data.data.data);
         setComments(data.data.data.commits);
         setCourseId(data.data.data.id);
+        
         setUrl(
           data.data.data.trieler?.split("/")[
             data.data.data.trieler?.split("/").length - 1
@@ -80,20 +81,6 @@ function CourseInfo() {
       },
     }
   );
-  // useEffect(() => {
-  //   const iframe = document.querySelector("iframe");
-  //   const player = new Vimeo(iframe);
-  //   // const player = new Player(iframe);
-
-  //   // Play event listener
-  //   // player.on("play", () => {
-  //   //   console.log("Played the video");
-  //   // });
-
-  //   // player.getVideoTitle().then((title) => {
-  //   //   console.log("title:", title);
-  //   // });
-  // }, []);
   const {
     data: subsciptionData,
     isLoading,
@@ -291,13 +278,7 @@ function CourseInfo() {
         </div>
         <div className="sm:col-span-1 col-span-2 mt-5 sm:mt-0">
           {course?.trieler ? (
-            <iframe
-              src={`https://player.vimeo.com/video/${url}?h=2ac395a2694246448051ee01faf135ce&title=0&byline=0&portrait=0`}
-              className="w-full aspect-[2/1] rounded-[16px]"
-              frameBorder={0}
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-            />
+            <VimeoPlayer videoId={url} />
           ) : (
             <img
               className="w-full h-full aspect-[7/6] object-fill rounded-[16px]"
@@ -454,7 +435,8 @@ function CourseInfo() {
         </div>
         <hr />
 
-        <div className="flex justify-center items-center pt-4">
+        <div className="flex justify-center items-center pt-4 gap-1.5">
+          <ShareDropdown type={true} />
           <button className="w-full py-[10px] rounded-[100px] text-white bg-blue_color text-sm font-medium">
             Sotib olish
           </button>

@@ -46,6 +46,7 @@ const TeacherProfile = () => {
     {
       onSuccess(data) {
         setUserData(data.data.data);
+        localStorage.setItem("user-data", JSON.stringify(data.data.data));
       },
     }
   );

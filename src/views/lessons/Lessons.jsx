@@ -3,10 +3,10 @@ import "./lessons.css";
 import { useQuery } from "react-query";
 import { GetVideoInfo } from "../../services/api";
 import { useEffect, useState, useContext } from "react";
-import Vimeo from "@vimeo/player";
 import { Spin, Drawer } from "antd";
 import { LessonsContext } from "../../context/LessonsProvider";
 import { GetCourseDetailWithoutToken } from "../../services/api";
+import VimeoPlayer from "../../components/VimeoPlayer";
 
 const Lesson = () => {
   const navigate = useNavigate();
@@ -46,24 +46,6 @@ const Lesson = () => {
       },
     }
   );
-
-  useEffect(() => {
-    const iframe = document.querySelector("iframe");
-
-    if (iframe) {
-      const player = new Vimeo(iframe);
-
-      player.on("play", () => {
-        console.log("Played the video");
-      });
-
-      player.getVideoTitle().then((title) => {
-        console.log("title:", title);
-      });
-    } else {
-      // console.error("Iframe element topilmadi!");
-    }
-  }, [url]);
 
   function changeVideo(id, is_free) {
     if (is_free || isPurchased) {
@@ -144,24 +126,12 @@ const Lesson = () => {
 
         <div className="sm:pt-5 pt-3">
           <div className="h-[50%] rounded-[16px]">
-            {/* <video controls className="w-full aspect-[2/1] rounded-[16px]">
-              <source
-                src="https://static.vecteezy.com/system/resources/previews/007/433/346/mp4/close-up-waves-on-sunset-travel-destinations-free-video.mp4"
-                type="video/mp4"
-              ></source>
-            </video> */}
             {isLoading ? (
               <div className="flex justify-center h-[10rem] items-center">
                 <Spin size="large" />
               </div>
             ) : url ? (
-              <iframe
-                src={`https://player.vimeo.com/video/${url}?h=2ac395a2694246448051ee01faf135ce&title=0&byline=0&portrait=0`}
-                className="w-full aspect-[7/4] rounded-[16px]"
-                frameBorder={0}
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-              />
+              <VimeoPlayer videoId={url} />
             ) : (
               <p>Video topilmadi yoki noto'g'ri ID.</p>
             )}
@@ -173,18 +143,18 @@ const Lesson = () => {
             <p className="text-[#758195] pb-6 sm:text-lg text-sm">
               {lessonData?.data.data?.description}
             </p>
-            {
-              lessonData?.data.data?.file && <div className="sm:mb-6 mb-4">
-              <a
-                target="_blank"
-                href={lessonData?.data.data?.file}
-                className="text-blue_color sm:text-xl text-base font-normal underline"
-              >
-                Darsga oid fayl
-              </a>
-            </div>
-            }
-            
+            {lessonData?.data.data?.file && (
+              <div className="sm:mb-6 mb-4">
+                <a
+                  target="_blank"
+                  href={lessonData?.data.data?.file}
+                  className="text-blue_color sm:text-xl text-base font-normal underline"
+                >
+                  Darsga oid fayl
+                </a>
+              </div>
+            )}
+
             <hr />
             <div className="sm:mt-6 mt-4 flex justify-between">
               <button
