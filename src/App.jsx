@@ -30,7 +30,6 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 const App = () => {
   const navigate = useNavigate();
 
-  // Tokenni tekshirish uchun callback yaratish
   const checkAuth = useCallback(() => {
     verifyToken(navigate);
   }, [navigate]);
@@ -41,7 +40,6 @@ const App = () => {
 
   return (
     <Routes>
-      {/* Login sahifasi */}
       <Route
         path="/login"
         element={
@@ -50,31 +48,6 @@ const App = () => {
           </LoginLayout>
         }
       />
-
-      {/* Kurslar bo‘limi */}
-      {/* <Route path="/courses" element={<CourseWrapPage />}>
-        <Route
-          path=":id"
-          element={
-            <Suspense fallback={<Loading />}>
-              <DesktopLayout>
-                <CourseInfo />
-              </DesktopLayout>
-            </Suspense>
-          }
-        >
-          <Route
-            path="lesson/:lessonId"
-            element={
-              <Suspense fallback={<Loading />}>
-                <LessonLayout>
-                  <Lessons />
-                </LessonLayout>
-              </Suspense>
-            }
-          />
-        </Route>
-      </Route> */}
       <Route path="/course" element={<CourseWrapPage />}>
         <Route
           path=":id"
@@ -98,7 +71,6 @@ const App = () => {
         />
       </Route>
 
-      {/* O'qituvchi profili */}
       <Route
         path="/teacher-profile/:id"
         element={
@@ -109,8 +81,6 @@ const App = () => {
           </Suspense>
         }
       />
-
-      {/* Mening kurslarim */}
       <Route
         path="/my-course/:id"
         element={
@@ -122,7 +92,6 @@ const App = () => {
         }
       />
 
-      {/* O'qituvchining kurs ma’lumotlari */}
       <Route
         path="/teacher-course-info/:id"
         element={
@@ -134,7 +103,6 @@ const App = () => {
         }
       />
 
-      {/* Dars bosh sahifasi */}
       <Route
         path="/main-lesson/:id"
         element={
@@ -146,7 +114,6 @@ const App = () => {
         }
       />
 
-      {/* Kurs statistikasi */}
       <Route
         path="/course-statistic/:id"
         element={
@@ -158,7 +125,6 @@ const App = () => {
         }
       />
 
-      {/* Qo‘shimcha routelar */}
       {ComponentList()}
     </Routes>
   );
